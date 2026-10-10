@@ -1,0 +1,403 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+model Brand {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  slug      String   @unique
+  cars      Car[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  cars        Car[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Car {
+  id               String       @id @default(uuid()) @db.Uuid
+  brandId          String       @db.Uuid
+  brand            Brand        @relation(fields: [brandId], references: [id], onDelete: Restrict)
+  name             String
+  slug             String       @unique
+  shortDescription String?
+  content          String?
+  seats            Int
+  luggage          Int
+  transmission     Transmission
+  fuelType         FuelType
+  pricePerDay      Float
+  isActive         Boolean      @default(false)
+  isFeatured       Boolean      @default(false)
+  sortOrder        Int          @default(0)
+
+  seoMetadata Json?
+
+  categories Category[]
+  images     CarImage[]
+  faqs       FAQ[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+}
+
+enum Transmission {
+  MANUAL
+  AUTOMATIC
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  ELECTRIC
+  HYBRID
+}
+
+model Media {
+  id        String     @id @default(uuid()) @db.Uuid
+  publicId  String     @unique
+  secureUrl String
+  altText   String?
+  width     Int?
+  height    Int?
+  carImages CarImage[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CarImage {
+  id        String @id @default(uuid()) @db.Uuid
+  carId     String @db.Uuid
+  car       Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
+  mediaId   String @db.Uuid
+  media     Media  @relation(fields: [mediaId], references: [id], onDelete: Restrict)
+  sortOrder Int    @default(0)
+
+  @@unique([carId, mediaId])
+  @@index([carId])
+}
+
+model Location {
+  id          String       @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String       @unique
+  type        LocationType
+  parentId    String?      @db.Uuid
+  parent      Location?    @relation("LocationHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
+  children    Location[]   @relation("LocationHierarchy")
+  description String?
+  content     String?
+  isActive    Boolean      @default(false)
+
+  seoMetadata Json?
+
+  faqs              FAQ[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([parentId])
+}
+
+enum LocationType {
+  CITY
+  AIRPORT
+  AREA
+  DESTINATION
+}
+
+model Service {
+  id               String  @id @default(uuid()) @db.Uuid
+  title            String
+  slug             String  @unique
+  shortDescription String?
+  content          String?
+  isActive         Boolean @default(false)
+  sortOrder        Int     @default(0)
+
+  seoMetadata Json?
+
+  faqs FAQ[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model Route {
+  id            String   @id @default(uuid()) @db.Uuid
+  origin        String
+  destination   String
+  slug          String   @unique
+  title         String
+  distance      Float?
+  duration      String?
+  startingPrice Float?
+  content       String?
+  inclusions    String[]
+  exclusions    String[]
+  isActive      Boolean  @default(false)
+
+  seoMetadata Json?
+
+  faqs FAQ[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([origin, destination])
+  @@index([slug])
+}
+
+model FAQ {
+  id       String @id @default(uuid()) @db.Uuid
+  question String
+  answer   String
+
+  carId String? @db.Uuid
+  car   Car?    @relation(fields: [carId], references: [id], onDelete: Cascade)
+
+  locationId String?   @db.Uuid
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  serviceId String?  @db.Uuid
+  service   Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  routeId String? @db.Uuid
+  route   Route?  @relation(fields: [routeId], references: [id], onDelete: Cascade)
+
+  isGlobal  Boolean @default(false)
+  sortOrder Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([carId])
+  @@index([locationId])
+  @@index([serviceId])
+  @@index([routeId])
+}
+
+model BlogCategory {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  blogs       Blog[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Blog {
+  id          String        @id @default(uuid()) @db.Uuid
+  title       String
+  slug        String        @unique
+  excerpt     String?
+  content     String?
+  status      BlogStatus    @default(DRAFT)
+  publishedAt DateTime?
+  categoryId  String?       @db.Uuid
+  category    BlogCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  seoMetadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([status])
+}
+
+enum BlogStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Testimonial {
+  id              String   @id @default(uuid()) @db.Uuid
+  customerName    String
+  rating          Int      @default(5)
+  review          String
+  locationContext String?
+  isActive        Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Lead {
+  id             String     @id @default(uuid()) @db.Uuid
+  name           String
+  phone          String
+  email          String?
+  pickupLocation String?
+  dropLocation   String?
+  pickupDatetime DateTime?
+  service        String?
+  vehicle        String?
+  message        String?
+  notes          String?
+  status         LeadStatus @default(NEW)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  communications LeadCommunication[]
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+  LOST
+}
+
+model SeoSettings {
+  id                  String   @id @default(uuid())
+  siteName            String   @default("Apna Car Rental")
+  homepageTitle       String?
+  homepageDescription String?
+  organizationName    String?
+  logoMediaId         String?
+  faviconMediaId      String?
+  defaultOgImageId    String?
+  canonicalBaseUrl    String?
+  defaultRobotsIndex  Boolean  @default(true)
+  defaultRobotsFollow Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model PageSeo {
+  id            String   @id @default(uuid())
+  path          String   @unique
+  title         String?
+  description   String?
+  h1            String?
+  canonicalUrl  String?
+  robotsIndex   Boolean  @default(true)
+  robotsFollow  Boolean  @default(true)
+  ogTitle       String?
+  ogDescription String?
+  ogImageId     String?
+  focusKeyword  String?
+  secondaryKeywords String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Redirect {
+  id          String   @id @default(uuid())
+  source      String   @unique
+  destination String
+  statusCode  Int      @default(301)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model InternalLink {
+  id              String   @id @default(uuid())
+  sourcePath      String
+  anchorText      String
+  destinationPath String
+  priority        Int      @default(0)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([sourcePath, destinationPath, anchorText])
+}
+
+model NavigationItem {
+  id           String           @id @default(uuid())
+  label        String
+  href         String
+  parentId     String?
+  position     Int              @default(0)
+  isVisible    Boolean          @default(true)
+  openInNewTab Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  parent       NavigationItem?  @relation("NavHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
+  children     NavigationItem[] @relation("NavHierarchy")
+}
+
+model LeadCommunication {
+  id                String                 @id @default(uuid()) @db.Uuid
+  leadId            String                 @db.Uuid
+  lead              Lead                   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  channel           CommunicationChannel
+  direction         CommunicationDirection
+  status            CommunicationStatus
+  recipient         String
+  subject           String?
+  message           String
+  provider          CommunicationProvider
+  providerMessageId String?
+  errorMessage      String?
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  @@index([leadId])
+}
+
+enum CommunicationChannel {
+  EMAIL
+  WHATSAPP
+}
+
+enum CommunicationDirection {
+  OUTBOUND
+  INBOUND
+}
+
+enum CommunicationStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum CommunicationProvider {
+  EMAIL
+  WHATSAPP
+  MOCK
+}
+
+
+
+
+

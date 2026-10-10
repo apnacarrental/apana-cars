@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.admin-root {
+  /* Scope Tailwind utilities here if needed or let them apply naturally */
+}

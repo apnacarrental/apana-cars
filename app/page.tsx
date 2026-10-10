@@ -1,0 +1,61 @@
+﻿import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
+import { HeroSection } from '@/components/home/hero'
+import { BookingSection } from '@/components/home/booking-section'
+import { TrustBar } from '@/components/home/trust-bar'
+import { AboutSection } from '@/components/home/about-section'
+import { ServicesSection } from '@/components/home/services-section'
+import { FleetSection } from '@/components/home/fleet-section'
+import { BenefitsSection } from '@/components/home/benefits-section'
+import { ProcessSection } from '@/components/home/process-section'
+import { CorporateSection } from '@/components/home/corporate-section'
+import { LocationsSection } from '@/components/home/locations-section'
+import { TestimonialsSection } from '@/components/home/testimonials-section'
+import { FaqSection } from '@/components/home/faq-section'
+import { FinalCtaSection } from '@/components/home/final-cta-section'
+import { buildMetadata, getBaseUrl } from '@/lib/seo'
+import type { Metadata } from 'next'
+
+export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
+  fallbackTitle: 'Apna Car Rental | Your journey. Your car. Your way.',
+  fallbackDescription: 'Premium self-drive cars, chauffeur services, airport transfers, and outstation rentals across Hyderabad and beyond.',
+  path: '/',
+}) }
+
+export default function Page() {
+  return (
+    <>
+      <Header />
+      <main id="home">
+        <HeroSection />
+        <BookingSection />
+        <TrustBar />
+        <AboutSection />
+        <ServicesSection />
+        <FleetSection />
+        <BenefitsSection />
+        <ProcessSection />
+        <CorporateSection />
+        <LocationsSection />
+        <TestimonialsSection />
+        <FaqSection />
+        <FinalCtaSection />
+      </main>
+      <Footer />
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{ 
+          __html: JSON.stringify({ 
+            '@context': 'https://schema.org', 
+            '@type': 'AutoRental', 
+            name: 'Apna Car Rental', 
+            url: getBaseUrl(), 
+            telephone: '+91 90000 00000', 
+            areaServed: 'Hyderabad' 
+          }) 
+        }} 
+      />
+    </>
+  )
+}
+

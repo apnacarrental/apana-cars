@@ -1,0 +1,32 @@
+﻿import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowRight, Phone } from 'lucide-react'
+import { nav as staticNav } from '@/lib/data/home'
+import { getNavigationItems } from '@/lib/data/seo'
+import { HeaderWrapper } from '@/components/ui/mobile-menu'
+
+export async function Header() {
+  const dbNav = await getNavigationItems()
+  const activeNav = dbNav.length ? dbNav.map(n => ({ label: n.label, href: n.href })) : staticNav
+
+  return (
+    <HeaderWrapper navItems={activeNav}>
+      <Link href="/" className="brand">
+        <Image src="/images/logo-apna-car.png" alt="Apna Car Rental" width={182} height={58} priority />
+      </Link>
+      <nav className="desktop-nav" aria-label="Main navigation">
+        {activeNav.map((item) => (
+          <Link key={item.label} href={item.href}>{item.label}</Link>
+        ))}
+      </nav>
+      <div className="header-actions">
+        <a className="call-link" href="tel:+919000000000">
+          <Phone size={15} /> Call us
+        </a>
+        <Link className="button button-dark" href="/#book">
+          Book a car <ArrowRight size={16} />
+        </Link>
+      </div>
+    </HeaderWrapper>
+  )
+}

@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 import { useTransition } from 'react'
-import { createService, updateService } from '@/app/admin/services/actions'
+import { createService, updateService } from '@/app/admin/(dashboard)/services/actions'
 import Link from 'next/link'
 
 export function ServiceForm({ item }: { item?: any }) {

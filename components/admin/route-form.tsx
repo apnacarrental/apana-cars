@@ -1,6 +1,6 @@
 ﻿'use client'
 import { useTransition } from 'react'
-import { createRoute, updateRoute } from '@/app/admin/routes/actions'
+import { createRoute, updateRoute } from '@/app/admin/(dashboard)/routes/actions'
 import Link from 'next/link'
 
 export function RouteForm({ item, locations = [] }: { item?: any, locations?: any[] }) {

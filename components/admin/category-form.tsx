@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 import { useTransition } from 'react'
-import { createCategory, updateCategory } from '@/app/admin/categories/actions'
+import { createCategory, updateCategory } from '@/app/admin/(dashboard)/categories/actions'
 import Link from 'next/link'
 
 export function CategoryForm({ item }: { item?: any }) {

@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 import { useTransition } from 'react'
-import { createTestimonial, updateTestimonial } from '@/app/admin/testimonials/actions'
+import { createTestimonial, updateTestimonial } from '@/app/admin/(dashboard)/testimonials/actions'
 import Link from 'next/link'
 
 export function TestimonialForm({ item }: { item?: any }) {

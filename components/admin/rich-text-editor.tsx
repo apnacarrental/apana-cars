@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEditor, EditorContent, Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -13,7 +13,7 @@ import {
   Heading1, Heading2, Heading3, Undo, Redo, RemoveFormatting
 } from 'lucide-react'
 import { useState, useRef } from 'react'
-import { uploadMediaAction } from '@/app/admin/media/actions'
+import { uploadMediaAction } from '@/app/admin/(dashboard)/media/actions'
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const [isUploading, setIsUploading] = useState(false)

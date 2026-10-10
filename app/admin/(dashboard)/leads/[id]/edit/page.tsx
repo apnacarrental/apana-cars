@@ -1,7 +1,7 @@
 ﻿import { getAuthSession } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import { redirect, notFound } from 'next/navigation'
-import { updateLeadStatus } from '@/app/admin/leads/actions'
+import { updateLeadStatus } from '@/app/admin/(dashboard)/leads/actions'
 import Link from 'next/link'
 import { LeadCommunications } from '@/components/admin/lead-communications'
 

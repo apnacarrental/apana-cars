@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 import { useTransition } from 'react'
-import { createLocation, updateLocation } from '@/app/admin/locations/actions'
+import { createLocation, updateLocation } from '@/app/admin/(dashboard)/locations/actions'
 import Link from 'next/link'
 
 export function LocationForm({ item, locations = [] }: { item?: any, locations?: any[] }) {

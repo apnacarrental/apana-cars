@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
-import { saveEntitySeoAction } from '@/app/admin/seo/entity-actions'
+import { saveEntitySeoAction } from '@/app/admin/(dashboard)/seo/entity-actions'
 
 function SubmitButton() {
   const { pending } = useFormStatus()

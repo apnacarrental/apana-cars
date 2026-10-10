@@ -1,7 +1,7 @@
-'use client'
+﻿'use client'
 
 import { useTransition } from 'react'
-import { createBlog, updateBlog } from '@/app/admin/blogs/actions'
+import { createBlog, updateBlog } from '@/app/admin/(dashboard)/blogs/actions'
 import Link from 'next/link'
 import { RichTextEditor } from '@/components/admin/rich-text-editor'
 

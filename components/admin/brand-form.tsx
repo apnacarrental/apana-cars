@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 import { useTransition } from 'react'
-import { createBrand, updateBrand } from '@/app/admin/brands/actions'
+import { createBrand, updateBrand } from '@/app/admin/(dashboard)/brands/actions'
 import Link from 'next/link'
 
 export function BrandForm({ item }: { item?: any }) {

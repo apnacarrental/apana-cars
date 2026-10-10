@@ -1,7 +1,7 @@
-'use client'
+﻿'use client'
 
 import { useTransition } from 'react'
-import { createCar, updateCar } from '@/app/admin/cars/actions'
+import { createCar, updateCar } from '@/app/admin/(dashboard)/cars/actions'
 import Link from 'next/link'
 
 export function CarForm({ car, brands }: { car?: any, brands: any[] }) {
@@ -87,7 +87,7 @@ export function CarForm({ car, brands }: { car?: any, brands: any[] }) {
             </select>
           </div>
           <div>
-            <label htmlFor="pricePerDay" className="block text-sm font-medium text-gray-700">Price Per Day (₹)</label>
+            <label htmlFor="pricePerDay" className="block text-sm font-medium text-gray-700">Price Per Day (â‚¹)</label>
             <input type="number" step="0.01" name="pricePerDay" id="pricePerDay" defaultValue={car?.pricePerDay || 1000} required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
           </div>
         </div>

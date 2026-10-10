@@ -1,7 +1,7 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
-import { attachMediaToCar, removeMediaFromCar } from '@/app/admin/cars/actions'
+import { attachMediaToCar, removeMediaFromCar } from '@/app/admin/(dashboard)/cars/actions'
 import { useRouter } from 'next/navigation'
 
 type MediaItem = {

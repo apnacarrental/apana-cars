@@ -1,7 +1,7 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
-import { sendEmailAction, sendWhatsAppAction } from '@/app/admin/leads/communications'
+import { sendEmailAction, sendWhatsAppAction } from '@/app/admin/(dashboard)/leads/communications'
 import { Mail, MessageCircle, AlertCircle } from 'lucide-react'
 import { useFormStatus } from 'react-dom'
 
@@ -95,7 +95,7 @@ export function LeadCommunications({ leadId, email, phone, communications }: { l
                     {comm.status}
                   </span>
                 </div>
-                <div className="text-gray-500 text-xs mb-2">{new Date(comm.createdAt).toLocaleString()} • {comm.direction}</div>
+                <div className="text-gray-500 text-xs mb-2">{new Date(comm.createdAt).toLocaleString()} â€¢ {comm.direction}</div>
                 {comm.subject && <div className="font-semibold mb-1">{comm.subject}</div>}
                 <div className="text-gray-800 bg-gray-50 p-2 rounded whitespace-pre-wrap">{comm.message}</div>
                 {comm.errorMessage && (

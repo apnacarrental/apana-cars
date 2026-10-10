@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 import { useTransition } from 'react'
-import { createFaq, updateFaq } from '@/app/admin/faqs/actions'
+import { createFaq, updateFaq } from '@/app/admin/(dashboard)/faqs/actions'
 import Link from 'next/link'
 
 export function FaqForm({ item }: { item?: any }) {

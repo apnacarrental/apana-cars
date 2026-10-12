@@ -169,10 +169,10 @@ const PLACES_TO_VISIT = [
 const VEHICLES = [
   {
     name: 'Maruti Suzuki Dzire',
-    category: 'Compact Sedan',
+    category: 'Executive Sedan',
     seating: '4+1 seats',
     luggage: '2 bags',
-    image: '/images/srisailam/swift-dzire.jpg',
+    image: '/images/srisailam/swift-dzire.png', // Our high-end black executive sedan (hero-car.png)
     description: 'Fuel-efficient, comfortable, and economical choice for couples and small families visiting the shrine.',
   },
   {
@@ -180,7 +180,7 @@ const VEHICLES = [
     category: 'Spacious Sedan',
     seating: '4+1 seats',
     luggage: '3 bags',
-    image: '/images/srisailam/toyota-etios.jpg',
+    image: '/images/srisailam/toyota-etios.png', // Our cinematic highway outstation sedan (journey-road.png)
     description: 'Renowned for rear seat legroom, generous boot space, and smooth highway stability on long drives.',
   },
   {
@@ -188,7 +188,7 @@ const VEHICLES = [
     category: 'Comfortable MUV',
     seating: '6+1 seats',
     luggage: '3–4 bags',
-    image: '/images/srisailam/maruti-ertiga.jpg',
+    image: '/images/srisailam/maruti-ertiga.jpg', // Clean silver front perspective
     description: 'The preferred family vehicle balancing comfortable 3-row seating, great AC airflow, and value pricing.',
   },
   {
@@ -196,7 +196,7 @@ const VEHICLES = [
     category: 'Premium MPV',
     seating: '7+1 seats',
     luggage: '4–5 bags',
-    image: '/images/srisailam/toyota-innova.jpg',
+    image: '/images/srisailam/toyota-innova.png', // Our signature luxury architectural SUV (fleet-suv.png)
     description: 'Legendary Indian highway cruiser offering exceptional ride quality and supreme suspension over hill roads.',
   },
   {
@@ -204,7 +204,7 @@ const VEHICLES = [
     category: 'Luxury MPV',
     seating: '7+1 seats',
     luggage: '5 bags',
-    image: '/images/srisailam/innova-crysta.jpg',
+    image: '/images/srisailam/innova-crysta.jpg', // Clean overcast road shot of Innova Crysta
     description: 'Plush captain seating, high ground clearance, silent cabin, and unmatched prestige for pilgrimage travel.',
   },
   {

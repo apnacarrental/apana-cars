@@ -1,4 +1,4 @@
-﻿'use server'
+'use server'
 
 import { requireAdmin } from '@/lib/admin-auth'
 import { fetchBackendApi } from '@/lib/backend-api'
@@ -37,12 +37,24 @@ async function handleApiError(res: Response): Promise<ActionResponse> {
   return undefined;
 }
 
+function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '')
+}
+
 export async function createCar(formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
   const data = {
     name: formData.get('name') as string,
-    slug: formData.get('slug') as string,
+    slug: slugify((formData.get('slug') as string) || (formData.get('name') as string) || ''),
     brandId: formData.get('brandId') as string,
     shortDescription: (formData.get('shortDescription') as string)?.trim() || null,
     content: (formData.get('description') as string)?.trim() || null,
@@ -84,7 +96,7 @@ export async function updateCar(id: string, formData: FormData): Promise<ActionR
 
   const data = {
     name: formData.get('name') as string,
-    slug: formData.get('slug') as string,
+    slug: slugify((formData.get('slug') as string) || (formData.get('name') as string) || ''),
     brandId: formData.get('brandId') as string,
     shortDescription: (formData.get('shortDescription') as string)?.trim() || null,
     content: (formData.get('description') as string)?.trim() || null,

@@ -55,7 +55,7 @@ export default async function FleetPage() {
                       <h3>{car.shortDescription}</h3>
                       <span className="fleet-meta">{meta}</span>
                       <div className="fleet-bottom">
-                        <strong>from Ã¢â€šÂ¹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
+                        <strong>from ₹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
                         <Link href={`/fleet/${car.slug}`}>
                           View details <ArrowRight size={15} />
                         </Link>

@@ -84,7 +84,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ slug
               <div style={{ padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '12px', marginBottom: '2rem' }}>
                 <span className="fleet-meta" style={{ fontSize: '1rem' }}>{meta}</span>
                 <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <strong style={{ fontSize: '1.5rem' }}>from â‚¹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
+                  <strong style={{ fontSize: '1.5rem' }}>from ₹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
                   <a className="button button-dark" href="/#book">
                     Book now <ArrowRight size={16} />
                   </a>

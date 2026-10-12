@@ -42,7 +42,7 @@ export async function FleetSection() {
                 <h3>{car.shortDescription}</h3>
                 <span className="fleet-meta">{meta}</span>
                 <div className="fleet-bottom">
-                  <strong>from â‚¹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
+                  <strong>from ₹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
                   <a href="#book">
                     Book now <ArrowRight size={15} />
                   </a>

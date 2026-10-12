@@ -71,7 +71,7 @@ export default async function RouteDetailPage({ params }: { params: Promise<{ sl
               {route.startingPrice && (
                 <div>
                   <strong style={{ display: 'block', fontSize: '0.9rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Starting From</strong>
-                  <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>â‚¹{route.startingPrice.toLocaleString('en-IN')}</span>
+                  <span style={{ fontSize: '1.2rem', fontWeight: 600 }}>₹{route.startingPrice.toLocaleString('en-IN')}</span>
                 </div>
               )}
             </div>

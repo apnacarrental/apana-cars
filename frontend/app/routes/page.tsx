@@ -39,7 +39,7 @@ export default async function RoutesPage() {
                     </div>
                     <h3 className="text-xl font-bold mb-3">{route.title}</h3>
                     {route.startingPrice && (
-                      <p className="font-semibold text-lg mb-6">From â‚¹{route.startingPrice.toLocaleString('en-IN')}</p>
+                      <p className="font-semibold text-lg mb-6">From ₹{route.startingPrice.toLocaleString('en-IN')}</p>
                     )}
                     <Link href={`/routes/${route.slug}`} className="inline-flex items-center gap-2 font-medium text-black hover:opacity-70">
                       View Route Details <ArrowRight size={16} />

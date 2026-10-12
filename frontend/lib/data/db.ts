@@ -30,8 +30,14 @@ export const getCars = cache(async () => {
 })
 
 export const getCarBySlug = cache(async (slug: string) => {
+  const decoded = decodeURIComponent(slug);
   return await prisma.car.findFirst({
-    where: { slug, isActive: true },
+    where: {
+      OR: [
+        { slug, isActive: true },
+        { slug: decoded, isActive: true },
+      ],
+    },
     include: {
       images: {
         include: { media: true },
@@ -52,8 +58,14 @@ export const getServices = cache(async () => {
 })
 
 export const getServiceBySlug = cache(async (slug: string) => {
+  const decoded = decodeURIComponent(slug);
   return await prisma.service.findFirst({
-    where: { slug, isActive: true },
+    where: {
+      OR: [
+        { slug, isActive: true },
+        { slug: decoded, isActive: true },
+      ],
+    },
     include: {
       faqs: true
     }
@@ -68,8 +80,14 @@ export const getLocations = cache(async () => {
 })
 
 export const getLocationBySlug = cache(async (slug: string) => {
+  const decoded = decodeURIComponent(slug);
   return await prisma.location.findFirst({
-    where: { slug, isActive: true },
+    where: {
+      OR: [
+        { slug, isActive: true },
+        { slug: decoded, isActive: true },
+      ],
+    },
     include: {
       parent: true,
       children: true,
@@ -79,8 +97,14 @@ export const getLocationBySlug = cache(async (slug: string) => {
 })
 
 export const getRouteBySlug = cache(async (slug: string) => {
+  const decoded = decodeURIComponent(slug);
   return await prisma.route.findFirst({
-    where: { slug, isActive: true },
+    where: {
+      OR: [
+        { slug, isActive: true },
+        { slug: decoded, isActive: true },
+      ],
+    },
     include: {
       faqs: true
     }
@@ -96,8 +120,14 @@ export const getPublishedBlogs = cache(async () => {
 })
 
 export const getBlogBySlug = cache(async (slug: string) => {
+  const decoded = decodeURIComponent(slug);
   return await prisma.blog.findFirst({
-    where: { slug, status: 'PUBLISHED' },
+    where: {
+      OR: [
+        { slug, status: 'PUBLISHED' },
+        { slug: decoded, status: 'PUBLISHED' },
+      ],
+    },
     include: { category: true }
   });
 })

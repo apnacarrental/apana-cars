@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { getFeaturedCars } from '@/lib/data/db'
 import { getSafeImageUrl } from '@/lib/utils/image'
+import { getCarStartingPricePerKm } from '@/lib/utils/pricing'
 
 export async function FleetSection() {
   const cars = await getFeaturedCars()
@@ -42,7 +43,7 @@ export async function FleetSection() {
                 <h3>{car.shortDescription}</h3>
                 <span className="fleet-meta">{meta}</span>
                 <div className="fleet-bottom">
-                  <strong>from ₹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
+                  <strong>{getCarStartingPricePerKm(car)}</strong>
                   <a href="#book">
                     Book now <ArrowRight size={15} />
                   </a>

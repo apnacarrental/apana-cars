@@ -1,4 +1,4 @@
-﻿import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import prisma from '../../../db';
 import { getPagination, formatPaginatedResponse } from '../../../utils/pagination';
 
@@ -15,6 +15,10 @@ const publicCarSelect = {
   transmission: true,
   fuelType: true,
   pricePerDay: true,
+  petrolPricePerKm: true,
+  dieselPricePerKm: true,
+  electricPricePerKm: true,
+  hybridPricePerKm: true,
   seoMetadata: true,
   images: {
     orderBy: { sortOrder: 'asc' as const },

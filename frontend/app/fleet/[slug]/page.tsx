@@ -1,4 +1,4 @@
-﻿import { notFound } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ArrowLeft } from 'lucide-react'
@@ -10,6 +10,7 @@ import { FaqAccordion } from '@/components/ui/faq-accordion'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import { FaqSchema } from '@/components/seo/schemas'
 import { getSafeImageUrl } from '@/lib/utils/image'
+import { getCarFuelPrices, getCarStartingPricePerKm } from '@/lib/utils/pricing'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
@@ -52,7 +53,9 @@ export default async function CarDetailPage({ params }: { params: Promise<{ slug
     car.transmission,
     car.fuelType
   ].filter(Boolean)
-  const meta = metaParts.join(' \u2022 ')
+  const meta = metaParts.join(' • ')
+  const fuelPrices = getCarFuelPrices(car)
+  const startingPriceText = getCarStartingPricePerKm(car)
 
   return (
     <>
@@ -77,14 +80,35 @@ export default async function CarDetailPage({ params }: { params: Promise<{ slug
             </div>
             
             <div>
-              <p className="eyebrow">{car.brand?.name || 'Apna'} \u2022 {car.categories[0]?.name || 'Car'}</p>
+              <p className="eyebrow">{(car.brand?.name || 'Apna') + ' • ' + (car.categories[0]?.name || 'Car')}</p>
               <h1 style={{ fontSize: '3rem', margin: '0.5rem 0', letterSpacing: '-0.02em' }}>{car.name}</h1>
               <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '1.5rem' }}>{car.shortDescription}</p>
               
               <div style={{ padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '12px', marginBottom: '2rem' }}>
                 <span className="fleet-meta" style={{ fontSize: '1rem' }}>{meta}</span>
-                <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <strong style={{ fontSize: '1.5rem' }}>from ₹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
+                
+                <div style={{ marginTop: '1.25rem' }}>
+                  <h4 style={{ fontSize: '0.85rem', fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
+                    Pricing per kilometer
+                  </h4>
+                  {fuelPrices.length > 0 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.75rem', marginBottom: '1.25rem' }}>
+                      {fuelPrices.map((item) => (
+                        <div key={item.type} style={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '0.75rem 1rem' }}>
+                          <span style={{ fontSize: '0.8rem', color: '#666', display: 'block' }}>{item.type}</span>
+                          <strong style={{ fontSize: '1.2rem', color: '#000' }}>₹{item.price.toLocaleString('en-IN')}<span style={{ fontSize: '0.8rem', fontWeight: 400, color: '#666' }}>/km</span></strong>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p style={{ fontSize: '1.1rem', fontWeight: 600, color: '#333', marginBottom: '1.25rem' }}>
+                      Price on request
+                    </p>
+                  )}
+                </div>
+
+                <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #e5e7eb', paddingTop: '1rem' }}>
+                  <span style={{ fontSize: '0.9rem', color: '#666' }}>Rate: <strong style={{ color: '#000' }}>{startingPriceText}</strong></span>
                   <a className="button button-dark" href="/#book">
                     Book now <ArrowRight size={16} />
                   </a>

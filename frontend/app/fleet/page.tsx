@@ -1,4 +1,4 @@
-﻿import Image from 'next/image'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getCars } from '@/lib/data/db'
@@ -6,6 +6,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { getSafeImageUrl } from '@/lib/utils/image'
+import { getCarStartingPricePerKm } from '@/lib/utils/pricing'
 
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
@@ -55,7 +56,7 @@ export default async function FleetPage() {
                       <h3>{car.shortDescription}</h3>
                       <span className="fleet-meta">{meta}</span>
                       <div className="fleet-bottom">
-                        <strong>from ₹{car.pricePerDay.toLocaleString('en-IN')}/day</strong>
+                        <strong>{getCarStartingPricePerKm(car)}</strong>
                         <Link href={`/fleet/${car.slug}`}>
                           View details <ArrowRight size={15} />
                         </Link>

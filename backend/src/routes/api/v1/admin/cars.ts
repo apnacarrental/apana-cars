@@ -1,4 +1,4 @@
-﻿import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import prisma from '../../../../db';
 import { requireAdminApi } from '../../../../middleware/auth';
@@ -17,6 +17,10 @@ const CarSchema = z.object({
   transmission: z.enum(['MANUAL', 'AUTOMATIC']),
   fuelType: z.enum(['PETROL', 'DIESEL', 'ELECTRIC', 'HYBRID']),
   pricePerDay: z.number().min(0),
+  petrolPricePerKm: z.number().min(0).optional().nullable(),
+  dieselPricePerKm: z.number().min(0).optional().nullable(),
+  electricPricePerKm: z.number().min(0).optional().nullable(),
+  hybridPricePerKm: z.number().min(0).optional().nullable(),
   isActive: z.boolean().default(false),
   isFeatured: z.boolean().optional().default(false),
   sortOrder: z.number().int().default(0),
@@ -43,6 +47,10 @@ const selectCarFields = {
   transmission: true,
   fuelType: true,
   pricePerDay: true,
+  petrolPricePerKm: true,
+  dieselPricePerKm: true,
+  electricPricePerKm: true,
+  hybridPricePerKm: true,
   isActive: true,
   isFeatured: true,
   sortOrder: true,

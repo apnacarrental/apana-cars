@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useTransition, useState } from 'react'
 import { createCar, updateCar } from '@/app/admin/(dashboard)/cars/actions'
@@ -98,6 +98,29 @@ export function CarForm({ car, brands }: { car?: any, brands: any[] }) {
           <div>
             <label htmlFor="pricePerDay" className="block text-sm font-medium text-gray-700">Price Per Day (₹)</label>
             <input type="number" step="0.01" name="pricePerDay" id="pricePerDay" defaultValue={car?.pricePerDay || 1000} required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+          </div>
+        </div>
+
+        <div className="pt-4 border-t border-gray-100">
+          <h4 className="text-sm font-semibold text-gray-900 mb-3">Per Kilometer Fuel Pricing (₹/km)</h4>
+          <p className="text-xs text-gray-500 mb-4">Enter rates for available fuel variants. Leave blank if not applicable.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="petrolPricePerKm" className="block text-sm font-medium text-gray-700">Petrol Price / KM (₹)</label>
+              <input type="number" step="0.01" min="0" name="petrolPricePerKm" id="petrolPricePerKm" defaultValue={car?.petrolPricePerKm ?? ''} placeholder="e.g. 14" className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+            </div>
+            <div>
+              <label htmlFor="dieselPricePerKm" className="block text-sm font-medium text-gray-700">Diesel Price / KM (₹)</label>
+              <input type="number" step="0.01" min="0" name="dieselPricePerKm" id="dieselPricePerKm" defaultValue={car?.dieselPricePerKm ?? ''} placeholder="e.g. 16" className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+            </div>
+            <div>
+              <label htmlFor="electricPricePerKm" className="block text-sm font-medium text-gray-700">Electric Price / KM (₹)</label>
+              <input type="number" step="0.01" min="0" name="electricPricePerKm" id="electricPricePerKm" defaultValue={car?.electricPricePerKm ?? ''} placeholder="e.g. 18" className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+            </div>
+            <div>
+              <label htmlFor="hybridPricePerKm" className="block text-sm font-medium text-gray-700">Hybrid Price / KM (₹)</label>
+              <input type="number" step="0.01" min="0" name="hybridPricePerKm" id="hybridPricePerKm" defaultValue={car?.hybridPricePerKm ?? ''} placeholder="e.g. 20" className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+            </div>
           </div>
         </div>
 

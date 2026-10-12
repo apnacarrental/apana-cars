@@ -18,6 +18,10 @@ const CarSchema = z.object({
   transmission: z.nativeEnum(Transmission).default(Transmission.AUTOMATIC),
   fuelType: z.nativeEnum(FuelType).default(FuelType.PETROL),
   pricePerDay: z.number().min(0, "Price per day must be non-negative").default(1000),
+  petrolPricePerKm: z.number().min(0, "Price must be non-negative").optional().nullable(),
+  dieselPricePerKm: z.number().min(0, "Price must be non-negative").optional().nullable(),
+  electricPricePerKm: z.number().min(0, "Price must be non-negative").optional().nullable(),
+  hybridPricePerKm: z.number().min(0, "Price must be non-negative").optional().nullable(),
   isActive: z.boolean().default(false),
   sortOrder: z.number().int().default(0),
 })
@@ -49,6 +53,12 @@ function slugify(text: string): string {
     .replace(/-+$/, '')
 }
 
+function parseOptionalFloat(val: FormDataEntryValue | null): number | null {
+  if (!val || typeof val !== 'string' || val.trim() === '') return null;
+  const num = parseFloat(val.trim());
+  return isNaN(num) ? null : num;
+}
+
 export async function createCar(formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
@@ -63,6 +73,10 @@ export async function createCar(formData: FormData): Promise<ActionResponse> {
     transmission: ((formData.get('transmission') as string)?.toUpperCase() as Transmission) || Transmission.AUTOMATIC,
     fuelType: ((formData.get('fuelType') as string)?.toUpperCase() as FuelType) || FuelType.PETROL,
     pricePerDay: parseFloat((formData.get('pricePerDay') as string) || '1000'),
+    petrolPricePerKm: parseOptionalFloat(formData.get('petrolPricePerKm')),
+    dieselPricePerKm: parseOptionalFloat(formData.get('dieselPricePerKm')),
+    electricPricePerKm: parseOptionalFloat(formData.get('electricPricePerKm')),
+    hybridPricePerKm: parseOptionalFloat(formData.get('hybridPricePerKm')),
     isActive: formData.get('isActive') === 'on',
     sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
   }
@@ -105,6 +119,10 @@ export async function updateCar(id: string, formData: FormData): Promise<ActionR
     transmission: ((formData.get('transmission') as string)?.toUpperCase() as Transmission) || Transmission.AUTOMATIC,
     fuelType: ((formData.get('fuelType') as string)?.toUpperCase() as FuelType) || FuelType.PETROL,
     pricePerDay: parseFloat((formData.get('pricePerDay') as string) || '1000'),
+    petrolPricePerKm: parseOptionalFloat(formData.get('petrolPricePerKm')),
+    dieselPricePerKm: parseOptionalFloat(formData.get('dieselPricePerKm')),
+    electricPricePerKm: parseOptionalFloat(formData.get('electricPricePerKm')),
+    hybridPricePerKm: parseOptionalFloat(formData.get('hybridPricePerKm')),
     isActive: formData.get('isActive') === 'on',
     sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
   }

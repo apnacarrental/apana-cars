@@ -1,4 +1,4 @@
-﻿import Image from 'next/image'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Phone } from 'lucide-react'
 import { nav as staticNav } from '@/lib/data/home'
@@ -20,8 +20,11 @@ export async function Header() {
         ))}
       </nav>
       <div className="header-actions">
-        <a className="call-link" href="tel:+919000000000">
-          <Phone size={15} /> Call us
+        <a className="call-link" href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp" style={{ color: '#25D366' }}>
+          WhatsApp
+        </a>
+        <a className="call-link" href="tel:+919988123444">
+          <Phone size={15} /> 099881 23444
         </a>
         <Link className="button button-dark" href="/#book">
           Book a car <ArrowRight size={16} />

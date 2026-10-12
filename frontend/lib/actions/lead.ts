@@ -1,4 +1,4 @@
-﻿'use server'
+'use server'
 
 import { headers } from 'next/headers'
 import prisma from '@/lib/prisma'
@@ -39,17 +39,41 @@ export async function submitLead(prevState: ActionState, formData: FormData): Pr
       return { error: 'Too many requests. Please try again later.' }
     }
 
-    // 2. Data Parsing
+    // 2. Data Parsing & Sanitization
+    let rawPhone = (formData.get('phone') as string || '').trim().replace(/[\s\-\(\)]/g, '')
+    if (rawPhone.startsWith('0')) {
+      rawPhone = '+91' + rawPhone.slice(1)
+    } else if (!rawPhone.startsWith('+')) {
+      if (rawPhone.length === 10) {
+        rawPhone = '+91' + rawPhone
+      } else {
+        rawPhone = '+' + rawPhone
+      }
+    }
+
+    const pickupCity = (formData.get('pickupCity') as string)?.trim()
+    const dropCity = (formData.get('dropCity') as string)?.trim()
+    const carType = (formData.get('carType') as string)?.trim()
+    const userMessage = (formData.get('message') as string)?.trim()
+
+    const details: string[] = []
+    if (pickupCity) details.push(`Pickup: ${pickupCity}`)
+    if (dropCity) details.push(`Drop: ${dropCity}`)
+    if (carType) details.push(`Vehicle: ${carType}`)
+    if (userMessage) details.push(`Notes: ${userMessage}`)
+
+    const compositeMessage = details.length > 0 ? details.join('\n') : null
+
     const data = {
       name: formData.get('name') as string,
-      phone: formData.get('phone') as string,
+      phone: rawPhone,
       email: formData.get('email') as string,
       pickupLocation: formData.get('pickupLocation') as string,
       dropLocation: formData.get('dropLocation') as string,
       pickupDatetime: formData.get('pickupDatetime') as string,
       service: formData.get('service') as string,
       vehicle: formData.get('vehicle') as string,
-      message: formData.get('message') as string,
+      message: compositeMessage || userMessage,
       _website: formData.get('_website') as string
     }
 

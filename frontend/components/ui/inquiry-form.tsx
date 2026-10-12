@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useActionState } from 'react'
 import { submitLead, ActionState } from '@/lib/actions/lead'
@@ -57,7 +57,7 @@ export function InquiryForm({
         </div>
         <div>
           <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone *</label>
-          <input type="tel" name="phone" id="phone" placeholder="+919000000000" required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-black focus:border-black" />
+          <input type="tel" name="phone" id="phone" placeholder="099881 23444" required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-black focus:border-black" />
           {state.fieldErrors?.phone && <p className="mt-1 text-xs text-red-600">{state.fieldErrors.phone[0]}</p>}
         </div>
       </div>

@@ -1,4 +1,4 @@
-﻿import { Header } from '@/components/layout/header'
+import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { HeroSection } from '@/components/home/hero'
 import { BookingSection } from '@/components/home/booking-section'
@@ -50,7 +50,15 @@ export default function Page() {
             '@type': 'AutoRental', 
             name: 'Apna Car Rental', 
             url: getBaseUrl(), 
-            telephone: '+91 90000 00000', 
+            telephone: '+91 99881 23444', 
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: 'Garden colony, H. No - 4-4-123, opp. SBI ATM, Quthbullapur Garden Colony, Bhagyalaxmi Nagar, Quthbullapur',
+              addressLocality: 'Hyderabad',
+              addressRegion: 'Telangana',
+              postalCode: '500055',
+              addressCountry: 'IN'
+            },
             areaServed: 'Hyderabad' 
           }) 
         }} 

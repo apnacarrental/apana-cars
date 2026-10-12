@@ -53,8 +53,12 @@ model Car {
   luggage          Int
   transmission     Transmission
   fuelType         FuelType
-  pricePerDay      Float
-  isActive         Boolean      @default(false)
+  pricePerDay        Float
+  petrolPricePerKm   Float?
+  dieselPricePerKm   Float?
+  electricPricePerKm Float?
+  hybridPricePerKm   Float?
+  isActive           Boolean      @default(false)
   isFeatured       Boolean      @default(false)
   sortOrder        Int          @default(0)
 

@@ -19,8 +19,8 @@ export function FinalCtaSection() {
           <a className="button button-light" href="#book">
             Book your car <ArrowRight size={17} />
           </a>
-          <a className="text-button light" href="tel:+919000000000">
-            Contact us <Phone size={17} />
+          <a className="text-button light" href="tel:+919988123444">
+            Call us 099881 23444 <Phone size={17} />
           </a>
         </div>
       </div>

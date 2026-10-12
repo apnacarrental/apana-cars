@@ -1,4 +1,4 @@
-﻿import { Header } from '@/components/layout/header'
+import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ArrowRight, Mail, Phone, MapPin } from 'lucide-react'
 
@@ -22,14 +22,21 @@ export default function ContactPage() {
             We&apos;re here to <em>help.</em>
           </h1>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginTop: '4rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '4rem' }}>
             <div style={{ padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
               <Phone size={32} style={{ marginBottom: '1rem' }} />
               <h3>Call us</h3>
-              <p style={{ color: '#666', marginBottom: '1rem' }}>Available 24/7 for urgent inquiries.</p>
-              <a href="tel:+919000000000" className="text-button" style={{ fontSize: '1.2rem' }}>+91 90000 00000</a>
+              <p style={{ color: '#666', marginBottom: '1rem' }}>Available 24/7 for bookings & inquiries.</p>
+              <a href="tel:+919988123444" className="text-button" style={{ fontSize: '1.2rem', fontWeight: 600 }}>099881 23444</a>
             </div>
             
+            <div style={{ padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '1rem' }}>💬</span>
+              <h3>WhatsApp</h3>
+              <p style={{ color: '#666', marginBottom: '1rem' }}>Quick chat for instant car availability.</p>
+              <a href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" className="text-button" style={{ fontSize: '1.2rem', color: '#25D366', fontWeight: 600 }}>Chat on WhatsApp</a>
+            </div>
+
             <div style={{ padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
               <Mail size={32} style={{ marginBottom: '1rem' }} />
               <h3>Email us</h3>
@@ -40,10 +47,12 @@ export default function ContactPage() {
             <div style={{ padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
               <MapPin size={32} style={{ marginBottom: '1rem' }} />
               <h3>Visit us</h3>
-              <p style={{ color: '#666', marginBottom: '1rem' }}>Our main office in Hyderabad.</p>
-              <address style={{ fontStyle: 'normal', fontSize: '1.1rem' }}>
-                Hitec City, Madhapur<br />
-                Hyderabad, Telangana 500081
+              <p style={{ color: '#666', marginBottom: '0.5rem' }}>Our main office:</p>
+              <address style={{ fontStyle: 'normal', fontSize: '0.95rem', lineHeight: 1.4, color: '#444' }}>
+                Garden colony, H. No - 4-4-123,<br />
+                opp. SBI ATM, Quthbullapur Garden Colony,<br />
+                Bhagyalaxmi Nagar, Quthbullapur,<br />
+                Hyderabad, Telangana 500055
               </address>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Phone } from 'lucide-react'
+import { ArrowRight, Phone, MessageCircle } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -20,9 +20,12 @@ export function Footer() {
           </div>
           <div>
             <h3>Get in touch</h3>
-            <a href="tel:+919000000000">+91 90000 00000</a>
+            <a href="tel:+919988123444" style={{ fontWeight: 600 }}>099881 23444</a>
+            <a href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', fontWeight: 600 }}>Chat on WhatsApp</a>
             <a href="mailto:hello@apnacarrental.com">hello@apnacarrental.com</a>
-            <span>Hyderabad, Telangana</span>
+            <span style={{ fontSize: '0.85rem', lineHeight: '1.4', marginTop: '0.5rem', display: 'block', color: '#888' }}>
+              Garden colony, H. No - 4-4-123, opp. SBI ATM, Quthbullapur Garden Colony, Bhagyalaxmi Nagar, Quthbullapur, Hyderabad, Telangana 500055
+            </span>
           </div>
         </div>
         <div className="footer-bottom">
@@ -31,13 +34,13 @@ export function Footer() {
         </div>
       </footer>
       <div className="floating">
-        <a href="tel:+919000000000">
+        <a href="tel:+919988123444" aria-label="Call Apna Car Rental">
           <Phone size={17} /> Call
         </a>
-        <a href="https://wa.me/919000000000">
-          <span className="whatsapp-dot" /> WhatsApp
+        <a href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" style={{ color: '#25D366' }}>
+          <MessageCircle size={17} /> WhatsApp
         </a>
-        <a href="#book">
+        <a href="/#book">
           Book now <ArrowRight size={15} />
         </a>
       </div>

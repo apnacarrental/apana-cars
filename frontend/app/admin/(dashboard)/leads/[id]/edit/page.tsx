@@ -1,4 +1,4 @@
-﻿import { getAuthSession } from '@/lib/auth'
+import { getAuthSession } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 import { redirect, notFound } from 'next/navigation'
 import { updateLeadStatus } from '@/app/admin/(dashboard)/leads/actions'
@@ -53,7 +53,12 @@ export default async function EditLeadPage({ params }: { params: Promise<{ id: s
               </div>
               <div>
                 <p className="text-sm text-gray-500">Phone</p>
-                <p className="font-medium">{lead.phone}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <a href={`tel:${lead.phone}`} className="font-semibold text-blue-600 hover:underline">{lead.phone}</a>
+                  <a href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded font-medium hover:bg-green-200">
+                    WhatsApp
+                  </a>
+                </div>
               </div>
               <div>
                 <p className="text-sm text-gray-500">Email</p>

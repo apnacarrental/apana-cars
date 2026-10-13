@@ -1,4 +1,4 @@
-﻿import { Metadata } from 'next'
+import { Metadata } from 'next'
 import prisma from '@/lib/prisma'
 
 export function getBaseUrl() {
@@ -33,8 +33,15 @@ type BuildMetadataOptions = {
 }
 
 export async function buildMetadata({ seoMetadata, fallbackTitle, fallbackDescription, path, fallbackOgImage }: BuildMetadataOptions): Promise<Metadata> {
-  const globalSeo = await prisma.seoSettings.findFirst({ orderBy: { createdAt: 'desc' } })
-  const pageSeo = await prisma.pageSeo.findUnique({ where: { path } })
+  let globalSeo = null
+  let pageSeo = null
+
+  try {
+    globalSeo = await prisma.seoSettings.findFirst({ orderBy: { createdAt: 'desc' } })
+    pageSeo = await prisma.pageSeo.findUnique({ where: { path } })
+  } catch (error) {
+    // Database may be unreachable during static build or cold start; safely fallback
+  }
 
   const entitySeo = (seoMetadata as SeoMetadataJson) || {}
   

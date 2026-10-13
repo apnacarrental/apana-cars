@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getServices } from '@/lib/data/db'
+import { ClientServicesGrid } from '@/components/home/client-services-grid'
 
 export async function ServicesSection() {
   const services = await getServices()
@@ -16,18 +17,8 @@ export async function ServicesSection() {
         </div>
         <p>Whatever the destination, there&apos;s an Apna way to get there.</p>
       </div>
-      <div className="service-grid">
-        {services.map((srv) => (
-          <Link className="service-card" href={`/${srv.slug}`} key={srv.id}>
-            <span className="service-number">{srv.sortOrder.toString().padStart(2, '0')}</span>
-            <div>
-              <h3>{srv.title}</h3>
-              <p>{srv.shortDescription}</p>
-            </div>
-            <ArrowRight className="service-arrow" size={21} />
-          </Link>
-        ))}
-      </div>
+
+      <ClientServicesGrid services={services} />
     </section>
   )
 }

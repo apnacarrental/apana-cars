@@ -147,14 +147,14 @@ export const FALLBACK_FAQS = [
 ]
 
 export const FALLBACK_LOCATIONS = [
-  { id: 'loc-1', name: 'RGIA Airport (Shamshabad)', slug: 'shamshabad-airport', isActive: true },
-  { id: 'loc-2', name: 'Gachibowli & Financial District', slug: 'gachibowli', isActive: true },
-  { id: 'loc-3', name: 'Hitec City / Madhapur', slug: 'hitec-city', isActive: true },
-  { id: 'loc-4', name: 'Jubilee Hills & Banjara Hills', slug: 'jubilee-hills', isActive: true },
-  { id: 'loc-5', name: 'Secunderabad & Uppal', slug: 'secunderabad', isActive: true },
-  { id: 'loc-6', name: 'Kukatpally & Miyapur', slug: 'kukatpally', isActive: true },
-  { id: 'loc-7', name: 'Begumpet & Somajiguda', slug: 'begumpet', isActive: true },
-  { id: 'loc-8', name: 'Srisailam Highway Route', slug: 'srisailam-route', isActive: true },
+  { id: 'loc-1', name: 'RGIA Airport (Shamshabad)', slug: 'shamshabad-airport', type: 'AIRPORT', description: 'Hyderabad Rajiv Gandhi International Airport car rental and taxi hub.', isActive: true, parent: null, children: [], faqs: [] },
+  { id: 'loc-2', name: 'Gachibowli & Financial District', slug: 'gachibowli', type: 'AREA', description: 'Financial District and IT corridor car rental hub.', isActive: true, parent: null, children: [], faqs: [] },
+  { id: 'loc-3', name: 'Hitec City / Madhapur', slug: 'hitec-city', type: 'AREA', description: 'Cyberabad IT hub cab services and self-drive rentals.', isActive: true, parent: null, children: [], faqs: [] },
+  { id: 'loc-4', name: 'Jubilee Hills & Banjara Hills', slug: 'jubilee-hills', type: 'AREA', description: 'Luxury car rentals and premium chauffeur services in Jubilee Hills.', isActive: true, parent: null, children: [], faqs: [] },
+  { id: 'loc-5', name: 'Secunderabad & Uppal', slug: 'secunderabad', type: 'CITY', description: 'Secunderabad railway station and Uppal junction taxi services.', isActive: true, parent: null, children: [], faqs: [] },
+  { id: 'loc-6', name: 'Kukatpally & Miyapur', slug: 'kukatpally', type: 'AREA', description: 'Kukatpally Housing Board and Miyapur metro car rental services.', isActive: true, parent: null, children: [], faqs: [] },
+  { id: 'loc-7', name: 'Begumpet & Somajiguda', slug: 'begumpet', type: 'AREA', description: 'Old airport road and central Hyderabad car hire.', isActive: true, parent: null, children: [], faqs: [] },
+  { id: 'loc-8', name: 'Srisailam Highway Route', slug: 'srisailam-route', type: 'DESTINATION', description: 'Srisailam pilgrimage highway cab rentals.', isActive: true, parent: null, children: [], faqs: [] },
 ]
 
 export const getFeaturedCars = cache(async () => {

@@ -55,7 +55,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
           ]} />
           
           <div style={{ maxWidth: '800px', marginTop: '2rem' }}>
-            <p className="eyebrow">{location.type.charAt(0) + location.type.slice(1).toLowerCase()}</p>
+            <p className="eyebrow">{location.type ? (location.type.charAt(0) + location.type.slice(1).toLowerCase()) : 'Location'}</p>
             <h1 style={{ fontSize: '3rem', margin: '0.5rem 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <MapPin size={40} /> {location.name}
             </h1>

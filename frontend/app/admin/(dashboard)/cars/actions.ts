@@ -2,6 +2,7 @@
 
 import { requireAdmin } from '@/lib/admin-auth'
 import { fetchBackendApi } from '@/lib/backend-api'
+import { uploadToCloudinary, deleteFromCloudinary } from '@/lib/cloudinary'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -99,6 +100,39 @@ export async function createCar(formData: FormData): Promise<ActionResponse> {
 
   const errorObj = await handleApiError(res)
   if (errorObj) return errorObj;
+
+  const newCar = await res.json().catch(() => null)
+
+  // Direct image upload support during car creation
+  const imageFile = formData.get('carImage') as File | null
+  if (newCar?.id && imageFile && imageFile.size > 0 && ['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(imageFile.type)) {
+    try {
+      const arrayBuffer = await imageFile.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+      const uploadRes = await uploadToCloudinary(buffer, imageFile.type)
+
+      const mediaRes = await fetchBackendApi('/api/v1/admin/media', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          publicId: uploadRes.public_id,
+          secureUrl: uploadRes.secure_url,
+          altText: `${parsed.data.name} Car Photo`,
+        }),
+      })
+
+      if (mediaRes.ok) {
+        const media = await mediaRes.json()
+        await fetchBackendApi(`/api/v1/admin/cars/${newCar.id}/images`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mediaId: media.id, sortOrder: 0 }),
+        })
+      }
+    } catch (uploadErr) {
+      console.warn('Direct image upload warning during createCar:', uploadErr)
+    }
+  }
 
   revalidatePath('/fleet')
   revalidatePath('/admin/cars')
@@ -247,5 +281,79 @@ export async function removeMediaFromCar(carId: string, mediaId: string): Promis
     return { success: true }
   } catch (err: any) {
     return { error: err.message || 'Network error or backend unavailable' }
+  }
+}
+
+export async function uploadAndAttachCarImage(carId: string, formData: FormData): Promise<{ error?: string; success?: boolean }> {
+  await requireAdmin()
+
+  const file = formData.get('file') as File
+  const altText = (formData.get('altText') as string)?.trim() || ''
+
+  if (!file || file.size === 0) {
+    return { error: 'Please choose an image file to upload.' }
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    return { error: 'Image file size exceeds the 5MB limit.' }
+  }
+
+  if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+    return { error: 'Unsupported file format. Please upload JPG, PNG, WEBP, or GIF.' }
+  }
+
+  try {
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    const uploadRes = await uploadToCloudinary(buffer, file.type)
+
+    const mediaRes = await fetchBackendApi('/api/v1/admin/media', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        publicId: uploadRes.public_id,
+        secureUrl: uploadRes.secure_url,
+        altText: altText || null,
+      }),
+    })
+
+    if (!mediaRes.ok) {
+      await deleteFromCloudinary(uploadRes.public_id).catch(() => {})
+      let errText = 'Failed to create media record';
+      try {
+        const d = await mediaRes.json();
+        if (d.message) errText = d.message;
+        else if (d.error) errText = d.error;
+      } catch (e) {}
+      return { error: errText };
+    }
+
+    const media = await mediaRes.json()
+
+    const attachRes = await fetchBackendApi(`/api/v1/admin/cars/${carId}/images`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mediaId: media.id, sortOrder: 0 }),
+    })
+
+    if (!attachRes.ok) {
+      let errText = 'Failed to link image to car';
+      try {
+        const d = await attachRes.json();
+        if (d.message) errText = d.message;
+        else if (d.error) errText = d.error;
+      } catch (e) {}
+      return { error: errText };
+    }
+
+    const data = await attachRes.json()
+    revalidatePath('/fleet')
+    if (data?.carSlug) revalidatePath(`/fleet/${data.carSlug}`)
+    revalidatePath(`/admin/cars/${carId}/edit`)
+    return { success: true }
+  } catch (err: any) {
+    console.error('Direct car image upload error:', err)
+    return { error: err.message || 'Failed to upload and attach image' }
   }
 }

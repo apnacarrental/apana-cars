@@ -1,7 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 .admin-root {
-  /* Scope Tailwind utilities here if needed or let them apply naturally */
+  min-height: 100vh;
+  background-color: #f8fafc;
+  color: #0f172a;
 }

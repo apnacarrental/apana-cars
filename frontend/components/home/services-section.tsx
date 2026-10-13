@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getServices } from '@/lib/data/db'
 
@@ -17,14 +18,14 @@ export async function ServicesSection() {
       </div>
       <div className="service-grid">
         {services.map((srv) => (
-          <a className="service-card" href="#book" key={srv.id}>
+          <Link className="service-card" href={`/${srv.slug}`} key={srv.id}>
             <span className="service-number">{srv.sortOrder.toString().padStart(2, '0')}</span>
             <div>
               <h3>{srv.title}</h3>
               <p>{srv.shortDescription}</p>
             </div>
             <ArrowRight className="service-arrow" size={21} />
-          </a>
+          </Link>
         ))}
       </div>
     </section>

@@ -1,4 +1,4 @@
-﻿import { notFound } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { MapPin, ArrowLeft, ArrowRight } from 'lucide-react'
 import { getLocationBySlug, getLocations } from '@/lib/data/db'
@@ -81,7 +81,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
             <p className="eyebrow">Areas</p>
             <h2>Explore {location.name}</h2>
             <div className="location-list" style={{ marginTop: '2rem' }}>
-              {location.children.map((child) => (
+              {location.children.map((child: any) => (
                 <Link href={`/locations/${child.slug}`} key={child.id}>
                   <MapPin size={17} />
                   {child.name}

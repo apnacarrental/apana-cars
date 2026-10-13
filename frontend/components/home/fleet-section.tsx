@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getFeaturedCars } from '@/lib/data/db'
 import { getSafeImageUrl } from '@/lib/utils/image'
@@ -16,9 +17,9 @@ export async function FleetSection() {
           <p className="eyebrow">The Apna fleet</p>
           <h2>Find your <em>perfect</em> drive.</h2>
         </div>
-        <a className="text-button" href="#book">
+        <Link className="text-button" href="/fleet">
           View all cars <ArrowRight size={17} />
-        </a>
+        </Link>
       </div>
       <div className="fleet-grid">
         {cars.map((car) => {
@@ -44,9 +45,9 @@ export async function FleetSection() {
                 <span className="fleet-meta">{meta}</span>
                 <div className="fleet-bottom">
                   <strong>{getCarStartingPricePerKm(car)}</strong>
-                  <a href="#book">
+                  <Link href={`/fleet/${car.slug}`}>
                     Book now <ArrowRight size={15} />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>

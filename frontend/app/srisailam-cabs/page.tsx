@@ -19,6 +19,13 @@ import {
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { FaqAccordion } from '@/components/ui/faq-accordion'
+import { HighwayStreamCanvas } from '@/components/motion/highway-stream-canvas'
+import { TiltCard3D } from '@/components/motion/tilt-card-3d'
+import { OutstationCockpitHud } from '@/components/motion/outstation-cockpit-hud'
+import { AnimatedHighwayJourney } from '@/components/motion/animated-highway-journey'
+import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
+import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
+import { OutstationHeroCta } from '@/components/motion/outstation-hero-cta'
 
 export const metadata: Metadata = {
   title: 'Hyderabad to Srisailam Cab Service | Round Trip Car Rental | Apna Cars',
@@ -172,7 +179,7 @@ const VEHICLES = [
     category: 'Executive Sedan',
     seating: '4+1 seats',
     luggage: '2 bags',
-    image: '/images/srisailam/swift-dzire.png', // Our high-end black executive sedan (hero-car.png)
+    image: '/images/srisailam/swift-dzire.png',
     description: 'Fuel-efficient, comfortable, and economical choice for couples and small families visiting the shrine.',
   },
   {
@@ -180,7 +187,7 @@ const VEHICLES = [
     category: 'Spacious Sedan',
     seating: '4+1 seats',
     luggage: '3 bags',
-    image: '/images/srisailam/toyota-etios.png', // Our cinematic highway outstation sedan (journey-road.png)
+    image: '/images/srisailam/toyota-etios.png',
     description: 'Renowned for rear seat legroom, generous boot space, and smooth highway stability on long drives.',
   },
   {
@@ -188,7 +195,7 @@ const VEHICLES = [
     category: 'Comfortable MUV',
     seating: '6+1 seats',
     luggage: '3–4 bags',
-    image: '/images/srisailam/maruti-ertiga.jpg', // Clean silver front perspective
+    image: '/images/srisailam/maruti-ertiga.jpg',
     description: 'The preferred family vehicle balancing comfortable 3-row seating, great AC airflow, and value pricing.',
   },
   {
@@ -196,7 +203,7 @@ const VEHICLES = [
     category: 'Premium MPV',
     seating: '7+1 seats',
     luggage: '4–5 bags',
-    image: '/images/srisailam/toyota-innova.png', // Our signature luxury architectural SUV (fleet-suv.png)
+    image: '/images/srisailam/toyota-innova.png',
     description: 'Legendary Indian highway cruiser offering exceptional ride quality and supreme suspension over hill roads.',
   },
   {
@@ -204,7 +211,7 @@ const VEHICLES = [
     category: 'Luxury MPV',
     seating: '7+1 seats',
     luggage: '5 bags',
-    image: '/images/srisailam/innova-crysta.jpg', // Clean overcast road shot of Innova Crysta
+    image: '/images/srisailam/innova-crysta.jpg',
     description: 'Plush captain seating, high ground clearance, silent cabin, and unmatched prestige for pilgrimage travel.',
   },
   {
@@ -215,6 +222,33 @@ const VEHICLES = [
     image: '/images/srisailam/tempo-traveller.jpg',
     description: 'Custom-configured luxury coaches with pushback seats, individual AC vents, and high roof for family groups.',
   },
+]
+
+const SRISAILAM_MILESTONES = [
+  {
+    number: '01',
+    title: 'ORR to NH 765',
+    description: 'Smooth four-lane expressway departure via Tukkuguda heading towards Kalwakurthy.',
+    highlight: '60 km fast transit'
+  },
+  {
+    number: '02',
+    title: 'Dindi Reservoir Stopover',
+    description: 'Scenic water catchment viewpoint and traditional South Indian breakfast halt en route.',
+    highlight: 'Breakfast & Tea Halt'
+  },
+  {
+    number: '03',
+    title: 'Mannanur Forest Checkpost',
+    description: 'Entry into the dense Nallamala Tiger Reserve with mist-covered ghat curves and wildlife zones.',
+    highlight: 'Day transit 6AM–9PM'
+  },
+  {
+    number: '04',
+    title: 'Srisailam Dam & Temple Town',
+    description: 'Sweeping canyon panoramas descending across Krishna river into Mallikarjuna temple.',
+    highlight: 'Jyotirlinga Darshan'
+  }
 ]
 
 const FAQS = [
@@ -300,7 +334,7 @@ export default function SrisailamCabsPage() {
   }
 
   return (
-    <>
+    <BookingModalProvider>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -313,8 +347,8 @@ export default function SrisailamCabsPage() {
       <Header />
 
       <main id="srisailam-cabs">
-        {/* HERO SECTION — Matching Apna Cars exact signature hero styling */}
-        <section className="hero">
+        {/* HERO SECTION — Cinematic with Highway Stream Canvas */}
+        <section className="hero relative overflow-hidden">
           <Image
             src="/images/srisailam/hero.jpg"
             alt="Hyderabad to Srisailam cab service with views of Srisailam temple and Nallamala forest"
@@ -324,8 +358,15 @@ export default function SrisailamCabsPage() {
             className="hero-image"
           />
           <div className="hero-overlay" />
-          <div className="hero-content">
-            <p className="eyebrow light">Outstation &bull; Temple Pilgrimage</p>
+          
+          {/* Ambient 60fps Highway Light Particles Stream */}
+          <HighwayStreamCanvas density={55} speedMultiplier={1.1} />
+
+          <div className="hero-content relative z-10">
+            <p className="eyebrow light flex items-center gap-2">
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Outstation &bull; Temple Pilgrimage</span>
+            </p>
             <h1>
               Hyderabad to<br />
               <span>Srisailam cabs.</span>
@@ -334,23 +375,12 @@ export default function SrisailamCabsPage() {
               A serene pilgrimage to Mallikarjuna Jyotirlinga and Bhramaramba Shakti Peetham. 
               Doorstep pickup, verified ghat drivers, sanitised cars, and transparent pricing.
             </p>
-            <div className="hero-buttons">
-              <a 
-                className="button button-light" 
-                href={defaultWhatsAppUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Book on WhatsApp <ArrowRight size={17} />
-              </a>
-              <a 
-                className="text-button light" 
-                href={`tel:${contactPhone}`}
-              >
-                Call {displayPhone} <Phone size={16} />
-              </a>
-            </div>
+            <OutstationHeroCta 
+              contactPhone={contactPhone} 
+              displayPhone={displayPhone} 
+            />
           </div>
+
           <div className="hero-note">
             <span>01</span>
             <span>Pilgrimage &bull; ~215 km</span>
@@ -358,31 +388,31 @@ export default function SrisailamCabsPage() {
           </div>
         </section>
 
-        {/* TRUST BAR — Matching Apna Cars exact trust-bar styling */}
-        <section className="trust-bar">
+        {/* TRUST BAR — 4 Interactive Columns with 3D Micro-Hover */}
+        <section className="trust-bar bg-[var(--paper)]">
           <div className="trust-item">
-            <ShieldCheck size={20} />
+            <ShieldCheck size={20} className="text-neutral-900" />
             <div>
               <strong>Ghat-trained drivers</strong>
               <span>Safe hill curves & forest drive</span>
             </div>
           </div>
           <div className="trust-item">
-            <Car size={20} />
+            <Car size={20} className="text-neutral-900" />
             <div>
               <strong>Well-maintained fleet</strong>
               <span>Clean AC sedans, MUVs & vans</span>
             </div>
           </div>
           <div className="trust-item">
-            <Clock size={20} />
+            <Clock size={20} className="text-neutral-900" />
             <div>
               <strong>Punctual doorstep pickup</strong>
               <span>Early 4 AM door pickups on time</span>
             </div>
           </div>
           <div className="trust-item">
-            <Compass size={20} />
+            <Compass size={20} className="text-neutral-900" />
             <div>
               <strong>Flexible itinerary</strong>
               <span>Custom halts for darshan & food</span>
@@ -390,7 +420,7 @@ export default function SrisailamCabsPage() {
           </div>
         </section>
 
-        {/* TOUR PACKAGES — Matching Apna Cars editorial grid style */}
+        {/* TOUR PACKAGES — 3D Tilt Experience */}
         <section id="packages" className="section">
           <div className="section-head">
             <div>
@@ -402,94 +432,78 @@ export default function SrisailamCabsPage() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {TOUR_PACKAGES.map((pkg) => (
-              <article 
-                key={pkg.id} 
-                style={{ 
-                  background: 'var(--white)', 
-                  border: '1px solid var(--line)', 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <div>
-                  <div style={{ position: 'relative', minHeight: '260px', background: '#ddd' }}>
-                    <Image
-                      src={pkg.image}
-                      alt={pkg.title}
-                      fill
-                      sizes="(max-width: 800px) 100vw, 50vw"
-                      style={{ objectFit: 'cover' }}
-                    />
-                    <span 
-                      style={{ 
-                        position: 'absolute', 
-                        top: '16px', 
-                        right: '16px', 
-                        background: 'var(--ink)', 
-                        color: 'var(--white)', 
-                        padding: '6px 12px', 
-                        fontSize: '10px', 
-                        letterSpacing: '.12em', 
-                        textTransform: 'uppercase',
-                        fontWeight: 700
-                      }}
-                    >
-                      {pkg.badge}
-                    </span>
-                  </div>
-
-                  <div style={{ padding: '28px' }}>
-                    <div style={{ display: 'flex', gap: '18px', color: 'var(--soft)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: '14px' }}>
-                      <span>{pkg.duration}</span>
-                      <span>&bull;</span>
-                      <span>{pkg.distance}</span>
-                    </div>
-
-                    <h3 style={{ margin: '0 0 14px', fontSize: '24px', fontWeight: 500, letterSpacing: '-.03em' }}>
-                      {pkg.title}
-                    </h3>
-                    
-                    <p style={{ color: 'var(--soft)', fontSize: '14px', lineHeight: 1.7, margin: '0 0 24px' }}>
-                      {pkg.summary}
-                    </p>
-
-                    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '20px' }}>
-                      <p className="eyebrow" style={{ marginBottom: '12px' }}>Trip Highlights</p>
-                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', color: 'var(--soft)' }}>
-                        {pkg.highlights.map((h, i) => (
-                          <li key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                            <span style={{ color: 'var(--ink)', fontWeight: 700 }}>&mdash;</span>
-                            <span>{h}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ padding: '24px 28px', borderTop: '1px solid var(--line)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <TiltCard3D key={pkg.id} maxTilt={6} className="h-full">
+                <article 
+                  className="fleet-card flex h-full flex-col justify-between overflow-hidden bg-white border border-[var(--line)] shadow-sm hover:shadow-xl transition-shadow"
+                >
                   <div>
-                    <span style={{ display: 'block', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--soft)' }}>Package fare</span>
-                    <strong style={{ fontSize: '16px' }}>{pkg.priceText}</strong>
+                    <div className="fleet-photo relative min-h-[260px] overflow-hidden bg-neutral-200">
+                      <Image
+                        src={pkg.image}
+                        alt={pkg.title}
+                        fill
+                        sizes="(max-width: 800px) 100vw, 50vw"
+                        className="transition-transform duration-700 hover:scale-105 object-cover"
+                      />
+                      <span 
+                        className="absolute right-4 top-4 z-10 rounded-full bg-neutral-900 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white"
+                      >
+                        {pkg.badge}
+                      </span>
+                    </div>
+
+                    <div className="p-7">
+                      <div className="flex gap-4 text-xs font-bold uppercase tracking-wider text-[var(--soft)] mb-3">
+                        <span>{pkg.duration}</span>
+                        <span>&bull;</span>
+                        <span>{pkg.distance}</span>
+                      </div>
+
+                      <h3 className="text-2xl font-medium tracking-tight mb-3">
+                        {pkg.title}
+                      </h3>
+                      
+                      <p className="text-sm text-[var(--soft)] leading-relaxed mb-6">
+                        {pkg.summary}
+                      </p>
+
+                      <div className="border-t border-[var(--line)] pt-5">
+                        <p className="eyebrow mb-3">Trip Highlights</p>
+                        <ul className="space-y-2 text-xs text-[var(--soft)]">
+                          {pkg.highlights.map((h, i) => (
+                            <li key={i} className="flex gap-2.5 items-start">
+                              <span className="font-bold text-neutral-900">&mdash;</span>
+                              <span>{h}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                  <a
-                    className="button button-dark"
-                    href={`https://wa.me/919988123444?text=${encodeURIComponent(pkg.quoteMsg)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Get a quote <ArrowRight size={15} />
-                  </a>
-                </div>
-              </article>
+
+                  <div className="p-6 pt-5 border-t border-[var(--line)] flex justify-between items-center bg-neutral-50/50">
+                    <div>
+                      <span className="block text-[10px] uppercase tracking-wider text-[var(--soft)]">Package fare</span>
+                      <strong className="text-base font-semibold">{pkg.priceText}</strong>
+                    </div>
+                    <a
+                      className="button button-dark"
+                      href={`https://wa.me/919988123444?text=${encodeURIComponent(pkg.quoteMsg)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Get a quote <ArrowRight size={15} />
+                    </a>
+                  </div>
+                </article>
+              </TiltCard3D>
             ))}
           </div>
         </section>
 
-        {/* AVAILABLE VEHICLES — Matching Apna Cars exact .fleet-card and .fleet-grid styles */}
+        {/* AVAILABLE VEHICLES — 3D Tilt Fleet Cards */}
         <section id="vehicles" className="section fleet">
           <div className="section-head">
             <div>
@@ -503,39 +517,45 @@ export default function SrisailamCabsPage() {
 
           <div className="fleet-grid">
             {VEHICLES.map((v) => (
-              <article className="fleet-card" key={v.name}>
-                <div className="fleet-photo">
-                  <Image
-                    src={v.image}
-                    alt={`${v.name} cab for Srisailam`}
-                    fill
-                    sizes="(max-width: 800px) 100vw, 33vw"
-                  />
-                </div>
-                <div className="fleet-info">
-                  <p className="eyebrow">{v.category}</p>
-                  <h3>{v.name}</h3>
-                  <span className="fleet-meta">{v.seating} &bull; {v.luggage}</span>
-                  <p style={{ fontSize: '13px', color: 'var(--soft)', margin: '0 0 18px', lineHeight: 1.6 }}>
-                    {v.description}
-                  </p>
-                  <div className="fleet-bottom">
-                    <strong>Price on request</strong>
-                    <a 
-                      href={`https://wa.me/919988123444?text=${encodeURIComponent(`Hi Apna Cars, please provide a quote for ${v.name} (${v.seating}) for Hyderabad to Srisailam.`)}`}
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                    >
-                      Inquire <ArrowRight size={15} />
-                    </a>
+              <TiltCard3D key={v.name} maxTilt={6} className="h-full">
+                <article className="fleet-card flex h-full flex-col justify-between overflow-hidden bg-[var(--paper)] border border-[var(--line)]">
+                  <div className="fleet-photo relative min-h-[260px] overflow-hidden bg-neutral-200">
+                    <Image
+                      src={v.image}
+                      alt={`${v.name} cab for Srisailam`}
+                      fill
+                      sizes="(max-width: 800px) 100vw, 33vw"
+                      className="transition-transform duration-700 hover:scale-105 object-cover"
+                    />
                   </div>
-                </div>
-              </article>
+                  <div className="fleet-info flex flex-1 flex-col justify-between p-6">
+                    <div>
+                      <p className="eyebrow">{v.category}</p>
+                      <h3 className="text-xl font-medium">{v.name}</h3>
+                      <span className="fleet-meta block my-3 text-xs text-[var(--soft)]">{v.seating} &bull; {v.luggage}</span>
+                      <p className="text-xs text-[var(--soft)] leading-relaxed mb-4">
+                        {v.description}
+                      </p>
+                    </div>
+                    <div className="fleet-bottom pt-4 border-t border-[var(--line)] flex items-center justify-between">
+                      <strong className="text-xs">Price on request</strong>
+                      <a 
+                        href={`https://wa.me/919988123444?text=${encodeURIComponent(`Hi Apna Cars, please provide a quote for ${v.name} (${v.seating}) for Hyderabad to Srisailam.`)}`}
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-black"
+                      >
+                        Inquire <ArrowRight size={15} />
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </TiltCard3D>
             ))}
           </div>
         </section>
 
-        {/* PLACES TO VISIT — Elegant service-grid styled sightseeing section */}
+        {/* PLACES TO VISIT — 3D Sightseeing Grid */}
         <section className="section">
           <div className="section-head">
             <div>
@@ -549,28 +569,31 @@ export default function SrisailamCabsPage() {
 
           <div className="fleet-grid">
             {PLACES_TO_VISIT.map((place) => (
-              <article className="fleet-card" key={place.id} style={{ background: 'var(--white)' }}>
-                <div className="fleet-photo" style={{ minHeight: '220px' }}>
-                  <Image
-                    src={place.image}
-                    alt={place.name}
-                    fill
-                    sizes="(max-width: 800px) 100vw, 33vw"
-                  />
-                </div>
-                <div className="fleet-info">
-                  <p className="eyebrow">{place.num} &bull; {place.subtitle}</p>
-                  <h3>{place.name}</h3>
-                  <p style={{ fontSize: '13px', color: 'var(--soft)', margin: '14px 0 0', lineHeight: 1.6 }}>
-                    {place.desc}
-                  </p>
-                </div>
-              </article>
+              <TiltCard3D key={place.id} maxTilt={6} className="h-full">
+                <article className="fleet-card flex h-full flex-col justify-between overflow-hidden bg-white border border-[var(--line)]">
+                  <div className="fleet-photo relative min-h-[220px] overflow-hidden bg-neutral-100">
+                    <Image
+                      src={place.image}
+                      alt={place.name}
+                      fill
+                      sizes="(max-width: 800px) 100vw, 33vw"
+                      className="transition-transform duration-700 hover:scale-105 object-cover"
+                    />
+                  </div>
+                  <div className="fleet-info p-6">
+                    <p className="eyebrow">{place.num} &bull; {place.subtitle}</p>
+                    <h3 className="text-xl font-medium">{place.name}</h3>
+                    <p className="text-xs text-[var(--soft)] leading-relaxed mt-3">
+                      {place.desc}
+                    </p>
+                  </div>
+                </article>
+              </TiltCard3D>
             ))}
           </div>
         </section>
 
-        {/* TRIP SPECS & DARK SECTION — Matching Apna Cars exact .dark-section theme */}
+        {/* TRIP SPECS & DARK SECTION */}
         <section className="dark-section">
           <div className="section dark-inner">
             <p className="eyebrow light">Trip reference</p>
@@ -601,7 +624,7 @@ export default function SrisailamCabsPage() {
           </div>
         </section>
 
-        {/* INCLUSIONS & EXCLUSIONS — Clean corporate grid design */}
+        {/* INCLUSIONS & EXCLUSIONS */}
         <section className="corporate section">
           <div>
             <p className="eyebrow">Clear pricing</p>
@@ -646,50 +669,21 @@ export default function SrisailamCabsPage() {
           </div>
         </section>
 
-        {/* ROUTE HIGHLIGHTS — Matching Apna Cars process steps */}
-        <section className="section process">
-          <p className="eyebrow">Highway guide</p>
-          <h2>Route from Hyderabad <em>to Srisailam.</em></h2>
-          <div className="steps">
-            <div className="step">
-              <span>01</span>
-              <div>
-                <h3>ORR to NH 765</h3>
-                <p>Smooth four-lane expressway via Tukkuguda heading towards Kalwakurthy.</p>
-              </div>
-            </div>
-            <div className="step">
-              <span>02</span>
-              <div>
-                <h3>Dindi Reservoir</h3>
-                <p>Scenic water catchment stopover and breakfast halt en route.</p>
-              </div>
-            </div>
-            <div className="step">
-              <span>03</span>
-              <div>
-                <h3>Mannanur Checkpost</h3>
-                <p>Entry into the dense Nallamala forest with mist-covered ghat curves.</p>
-              </div>
-            </div>
-            <div className="step">
-              <span>04</span>
-              <div>
-                <h3>Srisailam Dam Ghats</h3>
-                <p>Sweeping valley panoramas descending to the Krishna river and temple town.</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* ROUTE HIGHLIGHTS — Animated Highway Journey Timeline */}
+        <AnimatedHighwayJourney
+          milestones={SRISAILAM_MILESTONES}
+          eyebrow="Highway guide"
+          heading="Route from Hyderabad to Srisailam"
+        />
 
-        {/* FAQS — Using exact Apna Cars FAQ Accordion */}
+        {/* FAQS */}
         <section className="section faq">
           <p className="eyebrow">Need to know</p>
           <h2>Frequently asked <em>questions.</em></h2>
           <FaqAccordion items={FAQS} />
         </section>
 
-        {/* FINAL CTA — Exact Apna Cars final-cta styling */}
+        {/* FINAL CTA */}
         <section className="final-cta">
           <Image 
             src="/images/srisailam/hero.jpg" 
@@ -722,7 +716,20 @@ export default function SrisailamCabsPage() {
         </section>
       </main>
 
+      {/* Floating Automotive Cockpit HUD */}
+      <OutstationCockpitHud 
+        defaultDestination="Srisailam"
+        phone={contactPhone}
+        displayPhone={displayPhone}
+      />
+
+      {/* Persistent Floating Call & WhatsApp Widgets */}
+      <FloatingActionButtons
+        phone={contactPhone}
+        displayPhone={displayPhone}
+      />
+
       <Footer />
-    </>
+    </BookingModalProvider>
   )
 }

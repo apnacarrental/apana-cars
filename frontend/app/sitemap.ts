@@ -1,4 +1,4 @@
-﻿import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next'
 import { getCars, getLocations, getServices, getPublishedBlogs, getRoutes } from '@/lib/data/db'
 import { getBaseUrl } from '@/lib/seo'
 import prisma from '@/lib/prisma'
@@ -13,6 +13,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Base routes
   const routes = [
     '',
+    '/airport-cabs',
+    '/hourly-cabs',
+    '/sightseeing-cabs',
+    '/outstation-cabs',
+    '/srisailam-cabs',
+    '/force-urbania-rent-in-hyderabad',
     '/fleet',
     '/locations',
     '/services',

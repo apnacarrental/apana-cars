@@ -5,6 +5,7 @@ import { BookingSection } from '@/components/home/booking-section'
 import { TrustBar } from '@/components/home/trust-bar'
 import { AboutSection } from '@/components/home/about-section'
 import { ServicesSection } from '@/components/home/services-section'
+import { HomeCabPackages } from '@/components/home/home-cab-packages'
 import { FleetSection } from '@/components/home/fleet-section'
 import { BenefitsSection } from '@/components/home/benefits-section'
 import { ProcessSection } from '@/components/home/process-section'
@@ -32,6 +33,7 @@ export default function Page() {
         <TrustBar />
         <AboutSection />
         <ServicesSection />
+        <HomeCabPackages />
         <FleetSection />
         <BenefitsSection />
         <ProcessSection />

@@ -19,6 +19,15 @@ export function Footer() {
             <Link href="/locations">Locations</Link>
           </div>
           <div>
+            <h3>Cab Packages</h3>
+            <Link href="/airport-cabs">Airport Cabs</Link>
+            <Link href="/hourly-cabs">Hourly Car Rental</Link>
+            <Link href="/sightseeing-cabs">Sightseeing Cabs</Link>
+            <Link href="/outstation-cabs">Outstation Cabs</Link>
+            <Link href="/srisailam-cabs">Srisailam Tour</Link>
+            <Link href="/force-urbania-rent-in-hyderabad">Force Urbania</Link>
+          </div>
+          <div>
             <h3>Get in touch</h3>
             <a href="tel:+919988123444" style={{ fontWeight: 600 }}>099881 23444</a>
             <a href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', fontWeight: 600 }}>Chat on WhatsApp</a>

@@ -3,7 +3,7 @@ import { PrismaClient, LocationType, Transmission, FuelType } from '@prisma/clie
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('Seeding Apna Cars database...')
+  console.log('Seeding Apna Cars database with complete fleet, locations, and comprehensive SEO...')
 
   // 1. Seed Brands
   const maruti = await prisma.brand.upsert({
@@ -67,7 +67,7 @@ async function main() {
     }
   })
 
-  // 3. Seed Cars with Full Specifications, Fuel Rates per KM, and SEO
+  // 3. Seed Cars with 100% Comprehensive SEO Metadata
   const carData = [
     {
       name: 'Swift Dzire Sedan',
@@ -89,10 +89,13 @@ async function main() {
         title: 'Swift Dzire Sedan Cab Rental in Hyderabad | Apna Cars',
         description: 'Book Swift Dzire sedan cab in Hyderabad for airport transfers, local city rides, and outstation trips. Affordable per km rates starting at ₹14/km.',
         canonical_url: 'https://apnacars.com/fleet/sedan',
+        robots_index: true,
+        robots_follow: true,
         focus_keyword: 'swift dzire car rental hyderabad',
-        secondary_keywords: ['sedan cab hyderabad', 'dzire taxi hire', 'airport sedan cab'],
+        secondary_keywords: ['sedan cab hyderabad', 'dzire taxi hire', 'airport sedan cab', 'hyderabad city taxi'],
         og_title: 'Rent Swift Dzire Sedan in Hyderabad | Affordable ₹14/km',
-        og_description: 'Best rates for Swift Dzire sedan car rentals in Hyderabad with professional chauffeurs.'
+        og_description: 'Best rates for Swift Dzire sedan car rentals in Hyderabad with professional chauffeurs and spotless cars.',
+        og_image_id: 'https://apnacars.com/images/hero-car.png'
       }
     },
     {
@@ -115,10 +118,13 @@ async function main() {
         title: 'Maruti Ertiga Cab Rental Hyderabad | 6 Seater Car Hire',
         description: 'Hire 6-seater Maruti Ertiga in Hyderabad for family trips, airport pickup/drop, and outstation travel. Affordable rates starting at ₹18/km.',
         canonical_url: 'https://apnacars.com/fleet/ertiga',
+        robots_index: true,
+        robots_follow: true,
         focus_keyword: 'ertiga car rental hyderabad',
-        secondary_keywords: ['6 seater cab hyderabad', 'ertiga taxi hire', 'outstation ertiga cab'],
+        secondary_keywords: ['6 seater cab hyderabad', 'ertiga taxi hire', 'outstation ertiga cab', 'family muv rental'],
         og_title: 'Rent Maruti Ertiga in Hyderabad | 6-Seater Family MUV',
-        og_description: 'Book Maruti Ertiga for Hyderabad local and outstation trips with verified drivers.'
+        og_description: 'Book Maruti Ertiga for Hyderabad local and outstation trips with verified drivers and ample luggage room.',
+        og_image_id: 'https://apnacars.com/images/fleet-suv.png'
       }
     },
     {
@@ -140,10 +146,13 @@ async function main() {
         title: 'Innova Crysta Car Rental Hyderabad | 7 Seater Luxury SUV',
         description: 'Rent Toyota Innova Crysta in Hyderabad with experienced driver for outstation, airport, and luxury travel. Starting at ₹22/km.',
         canonical_url: 'https://apnacars.com/fleet/innova-crysta',
+        robots_index: true,
+        robots_follow: true,
         focus_keyword: 'innova crysta car rental hyderabad',
-        secondary_keywords: ['innova hire hyderabad', '7 seater luxury taxi', 'outstation innova cab'],
+        secondary_keywords: ['innova hire hyderabad', '7 seater luxury taxi', 'outstation innova cab', 'executive car hire'],
         og_title: 'Toyota Innova Crysta Rental in Hyderabad | Premium 7-Seater',
-        og_description: 'Book Toyota Innova Crysta for outstation pilgrimages and executive travel from Hyderabad.'
+        og_description: 'Book Toyota Innova Crysta for outstation pilgrimages and executive travel from Hyderabad.',
+        og_image_id: 'https://apnacars.com/images/fleet-suv.png'
       }
     },
     {
@@ -165,10 +174,13 @@ async function main() {
         title: 'Force Urbania 12 Seater Rent in Hyderabad | Luxury Van Hire',
         description: 'Rent brand new 12 seater Force Urbania in Hyderabad for corporate events, family getaways, and outstation pilgrimages. Premium luxury van at ₹34/km.',
         canonical_url: 'https://apnacars.com/fleet/force-urbania-12-seater',
+        robots_index: true,
+        robots_follow: true,
         focus_keyword: 'force urbania 12 seater rent hyderabad',
-        secondary_keywords: ['urbania rental hyderabad', '12 seater luxury van hire', 'tempo traveller alternative'],
+        secondary_keywords: ['urbania rental hyderabad', '12 seater luxury van hire', 'tempo traveller alternative', 'corporate van rental'],
         og_title: 'Force Urbania 12-Seater Luxury Van on Rent in Hyderabad',
-        og_description: 'Luxury 12-seater Force Urbania rental in Hyderabad with executive pushback seats.'
+        og_description: 'Luxury 12-seater Force Urbania rental in Hyderabad with executive pushback seats.',
+        og_image_id: 'https://apnacars.com/images/urbania/urbania-hero.jpg'
       }
     },
     {
@@ -190,10 +202,13 @@ async function main() {
         title: 'Force Urbania 16 Seater on Rent in Hyderabad | Luxury Traveller',
         description: 'Hire 16-seater Force Urbania luxury van in Hyderabad. Best rates for corporate outings, weddings, and group pilgrimage tours at ₹42/km.',
         canonical_url: 'https://apnacars.com/fleet/force-urbania-16-seater',
+        robots_index: true,
+        robots_follow: true,
         focus_keyword: 'force urbania 16 seater rent in hyderabad',
-        secondary_keywords: ['16 seater luxury tempo traveller', 'urbania van hire hyderabad', 'group tour bus hyderabad'],
+        secondary_keywords: ['16 seater luxury tempo traveller', 'urbania van hire hyderabad', 'group tour bus hyderabad', 'wedding car rental'],
         og_title: '16-Seater Force Urbania Luxury Van Hire in Hyderabad',
-        og_description: 'Book 16-seater Force Urbania van for wedding guest transfers and group vacations.'
+        og_description: 'Book 16-seater Force Urbania van for wedding guest transfers and group vacations.',
+        og_image_id: 'https://apnacars.com/images/urbania/urbania-17-seater.jpg'
       }
     },
     {
@@ -215,10 +230,13 @@ async function main() {
         title: '12 Seater Tempo Traveller for Rent in Hyderabad | Apna Cars',
         description: 'Rent 12-seater Maharaja Tempo Traveller in Hyderabad for Srisailam, Tirupati, and local sightseeing. Verified chauffeurs at ₹26/km.',
         canonical_url: 'https://apnacars.com/fleet/tempo-traveller-12-seater',
+        robots_index: true,
+        robots_follow: true,
         focus_keyword: 'tempo traveller 12 seater hyderabad',
-        secondary_keywords: ['12 seater tempo rental', 'hyderabad to srisailam tempo traveller', 'maharaja seats tempo'],
+        secondary_keywords: ['12 seater tempo rental', 'hyderabad to srisailam tempo traveller', 'maharaja seats tempo', 'group pilgrimage bus'],
         og_title: '12 Seater Tempo Traveller on Rent in Hyderabad',
-        og_description: 'Affordable 12-seater Tempo Traveller rentals in Hyderabad with Maharaja seats.'
+        og_description: 'Affordable 12-seater Tempo Traveller rentals in Hyderabad with Maharaja seats.',
+        og_image_id: 'https://apnacars.com/images/journey-road.png'
       }
     },
     {
@@ -240,10 +258,13 @@ async function main() {
         title: '16 Seater Tempo Traveller for Rent in Hyderabad | Apna Cars',
         description: 'Hire 16-seater Tempo Traveller in Hyderabad with pushback seats and AC. Best rates for group outstation tours and pilgrimages at ₹30/km.',
         canonical_url: 'https://apnacars.com/fleet/tempo-traveller-16-seater',
+        robots_index: true,
+        robots_follow: true,
         focus_keyword: '16 seater tempo traveller hyderabad',
-        secondary_keywords: ['16 seater tempo hire', 'outstation tempo traveller hyderabad', 'corporate tempo rental'],
+        secondary_keywords: ['16 seater tempo hire', 'outstation tempo traveller hyderabad', 'corporate tempo rental', 'shirdi yatra bus'],
         og_title: '16-Seater Tempo Traveller Rental in Hyderabad',
-        og_description: 'Reliable 16-seater Tempo Traveller in Hyderabad for group pilgrimage and tour packages.'
+        og_description: 'Reliable 16-seater Tempo Traveller in Hyderabad for group pilgrimage and tour packages.',
+        og_image_id: 'https://apnacars.com/images/journey-road.png'
       }
     }
   ]
@@ -260,7 +281,7 @@ async function main() {
       }
     })
 
-    // Attach image if not already attached
+    // Attach image
     await prisma.carImage.upsert({
       where: {
         carId_mediaId: {
@@ -277,7 +298,7 @@ async function main() {
     })
   }
 
-  // 4. Seed Routes & Packages
+  // 4. Seed Routes & Packages with Full SEO Metadata
   const routesData = [
     {
       origin: 'Hyderabad',
@@ -294,7 +315,14 @@ async function main() {
       seoMetadata: {
         title: 'Hyderabad to Srisailam Cab Packages | Same Day & 2-Day Tours',
         description: 'Book Hyderabad to Srisailam cab with Apna Cars. Clean Sedans, Innova Crysta, and Tempo Travellers. Doorstep pickup and punctual service.',
-        canonical_url: 'https://apnacars.com/srisailam-cabs'
+        canonical_url: 'https://apnacars.com/srisailam-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hyderabad to srisailam cab package',
+        secondary_keywords: ['srisailam car rental', 'mallikarjuna darshan taxi', 'srisailam tempo traveller hire'],
+        og_title: 'Hyderabad to Srisailam Temple Cab Package | Apna Cars',
+        og_description: 'Affordable roundtrip taxi packages to Srisailam Mallikarjuna temple with verified hill drivers.',
+        og_image_id: 'https://apnacars.com/images/srisailam/hero.jpg'
       }
     },
     {
@@ -312,7 +340,14 @@ async function main() {
       seoMetadata: {
         title: 'Hyderabad to Tirupati Cab Service | Roundtrip Car Rental',
         description: 'Rent Innova Crysta, Ertiga, or Tempo Traveller for Hyderabad to Tirupati Balaji pilgrimage. Affordable rates and safe night driving.',
-        canonical_url: 'https://apnacars.com/outstation-cabs'
+        canonical_url: 'https://apnacars.com/outstation-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hyderabad to tirupati cab service',
+        secondary_keywords: ['tirupati outstation car rental', 'tirumala balaji taxi hyderabad', 'innova crysta tirupati'],
+        og_title: 'Hyderabad to Tirupati Balaji Cab Service',
+        og_description: 'Comfortable family and group cabs from Hyderabad to Tirupati with experienced highway drivers.',
+        og_image_id: 'https://apnacars.com/images/outstation/tirupati.jpg'
       }
     },
     {
@@ -330,7 +365,14 @@ async function main() {
       seoMetadata: {
         title: 'Hyderabad to Vijayawada Taxi Service | One Way & Return Cabs',
         description: 'Book Hyderabad to Vijayawada taxi at competitive per km rates. Verified chauffeurs and instant confirmation.',
-        canonical_url: 'https://apnacars.com/outstation-cabs'
+        canonical_url: 'https://apnacars.com/outstation-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hyderabad to vijayawada taxi service',
+        secondary_keywords: ['vijayawada one way cab', 'hyderabad vijayawada highway taxi', 'kanaka durga temple taxi'],
+        og_title: 'Hyderabad to Vijayawada Taxi Service | One Way & Return Cabs',
+        og_description: 'Book fast and safe highway cabs from Hyderabad to Vijayawada on NH65.',
+        og_image_id: 'https://apnacars.com/images/outstation/vijayawada.jpg'
       }
     },
     {
@@ -348,7 +390,14 @@ async function main() {
       seoMetadata: {
         title: 'Hyderabad City Sightseeing Cabs | 8hr 80km Full Day Packages',
         description: 'Hire local sightseeing taxi in Hyderabad. Visit Charminar, Golconda Fort, and Ramoji Film City in comfort.',
-        canonical_url: 'https://apnacars.com/sightseeing-cabs'
+        canonical_url: 'https://apnacars.com/sightseeing-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hyderabad sightseeing cabs',
+        secondary_keywords: ['hyderabad city tour taxi', 'ramoji film city cab hire', 'charminar golconda car rental'],
+        og_title: 'Hyderabad Local Sightseeing Tour Cabs | Apna Cars',
+        og_description: 'Full-day 8hr/80km and 12hr/120km Hyderabad city tour taxi packages with English/Hindi/Telugu speaking chauffeurs.',
+        og_image_id: 'https://apnacars.com/images/sightseeing/hyderabad-hero.jpg'
       }
     },
     {
@@ -366,7 +415,14 @@ async function main() {
       seoMetadata: {
         title: 'Hyderabad Airport Cab Service | RGIA Pickup & Drop Cabs',
         description: 'Book 24/7 airport taxi in Hyderabad. Transparent fixed pricing, zero cancellation fees, and flight tracking.',
-        canonical_url: 'https://apnacars.com/airport-cabs'
+        canonical_url: 'https://apnacars.com/airport-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hyderabad airport cab service',
+        secondary_keywords: ['rgia airport taxi', 'shamshabad airport cab booking', 'hyderabad airport drop cab'],
+        og_title: 'Hyderabad RGIA Airport Cab Service | On-Time Pickup & Drop',
+        og_description: '24/7 airport transfers to Shamshabad RGIA with live flight delay monitoring and zero surge pricing.',
+        og_image_id: 'https://apnacars.com/images/airport/hero.jpg'
       }
     }
   ]
@@ -379,7 +435,7 @@ async function main() {
     })
   }
 
-  // 5. Seed Services
+  // 5. Seed Services with 100% Comprehensive SEO Metadata
   const servicesData = [
     {
       title: 'Airport Transfers',
@@ -390,7 +446,15 @@ async function main() {
       sortOrder: 1,
       seoMetadata: {
         title: 'Airport Taxi Hyderabad | RGIA Airport Cabs',
-        description: 'Book reliable airport cabs in Hyderabad starting at ₹999 with zero surge and flight tracking.'
+        description: 'Book reliable airport cabs in Hyderabad starting at ₹999 with zero surge and flight tracking.',
+        canonical_url: 'https://apnacars.com/airport-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'airport taxi hyderabad',
+        secondary_keywords: ['rgia cabs', 'hyderabad airport pickup taxi', 'shamshabad airport drop'],
+        og_title: 'Airport Taxi Hyderabad | 24/7 RGIA Airport Cabs',
+        og_description: 'Punctual airport transfers with zero peak surge pricing and doorstep pickup across Hyderabad.',
+        og_image_id: 'https://apnacars.com/images/airport/hero.jpg'
       }
     },
     {
@@ -402,7 +466,15 @@ async function main() {
       sortOrder: 2,
       seoMetadata: {
         title: 'Hourly Car Rental Hyderabad | 4hr, 8hr, 12hr Packages',
-        description: 'Rent a car with chauffeur by the hour in Hyderabad. Flexible packages for corporate and personal use.'
+        description: 'Rent a car with chauffeur by the hour in Hyderabad. Flexible packages for corporate and personal use.',
+        canonical_url: 'https://apnacars.com/hourly-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hourly car rental hyderabad',
+        secondary_keywords: ['rent car by the hour', 'local cab package hyderabad', '8hr 80km car rental'],
+        og_title: 'Hourly Car Rental Hyderabad | Flexible Chauffeur Packages',
+        og_description: 'Keep a car and driver at your disposal with easy hourly packages starting at ₹1200.',
+        og_image_id: 'https://apnacars.com/images/hero-car.png'
       }
     },
     {
@@ -414,7 +486,15 @@ async function main() {
       sortOrder: 3,
       seoMetadata: {
         title: 'Hyderabad Sightseeing Cabs | Full Day City Tour Taxi',
-        description: 'Explore the City of Pearls with professional tour chauffeurs. Transparent rates and customized itineraries.'
+        description: 'Explore the City of Pearls with professional tour chauffeurs. Transparent rates and customized itineraries.',
+        canonical_url: 'https://apnacars.com/sightseeing-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hyderabad sightseeing cabs',
+        secondary_keywords: ['hyderabad day tour cab', 'charminar golconda car tour', 'ramoji film city taxi'],
+        og_title: 'Hyderabad City Sightseeing Cabs | Heritage & Culture Tours',
+        og_description: 'Explore Charminar, Golconda Fort, and Ramoji Film City in air-conditioned comfort.',
+        og_image_id: 'https://apnacars.com/images/sightseeing/hyderabad-hero.jpg'
       }
     },
     {
@@ -426,7 +506,15 @@ async function main() {
       sortOrder: 4,
       seoMetadata: {
         title: 'Outstation Cabs Hyderabad | Roundtrip & One Way Taxi',
-        description: 'Book outstation cabs from Hyderabad at competitive per km rates. Verified chauffeurs and 24/7 customer support.'
+        description: 'Book outstation cabs from Hyderabad at competitive per km rates. Verified chauffeurs and 24/7 customer support.',
+        canonical_url: 'https://apnacars.com/outstation-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'outstation cabs hyderabad',
+        secondary_keywords: ['roundtrip taxi hyderabad', 'one way drop cab', 'interstate car rental hyderabad'],
+        og_title: 'Outstation Cabs from Hyderabad | Best Per-KM Rates',
+        og_description: 'Reliable highway cabs with verified drivers for Tirupati, Srisailam, Vijayawada, and beyond.',
+        og_image_id: 'https://apnacars.com/images/outstation/tirupati.jpg'
       }
     },
     {
@@ -438,7 +526,15 @@ async function main() {
       sortOrder: 5,
       seoMetadata: {
         title: 'Hyderabad to Srisailam Cab Package | Darshan Car Hire',
-        description: 'Book special Srisailam pilgrimage cabs from Hyderabad with doorstep pickup and verified chauffeurs.'
+        description: 'Book special Srisailam pilgrimage cabs from Hyderabad with doorstep pickup and verified chauffeurs.',
+        canonical_url: 'https://apnacars.com/srisailam-cabs',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hyderabad to srisailam cab package',
+        secondary_keywords: ['srisailam temple car rental', 'mallikarjuna jyotirlinga taxi', 'srisailam 2 day cab package'],
+        og_title: 'Hyderabad to Srisailam Pilgrimage Cab Packages',
+        og_description: 'Special 1-day and 2-day darshan tours to Srisailam with seasoned ghat section drivers.',
+        og_image_id: 'https://apnacars.com/images/srisailam/hero.jpg'
       }
     },
     {
@@ -450,7 +546,15 @@ async function main() {
       sortOrder: 6,
       seoMetadata: {
         title: 'Force Urbania on Rent in Hyderabad | 12 & 16 Seater Luxury Vans',
-        description: 'Hire Force Urbania in Hyderabad for wedding guest transfers, corporate travel, and group tours.'
+        description: 'Hire Force Urbania in Hyderabad for wedding guest transfers, corporate travel, and group tours.',
+        canonical_url: 'https://apnacars.com/force-urbania-rent-in-hyderabad',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'force urbania on rent in hyderabad',
+        secondary_keywords: ['12 seater urbania hire', '16 seater luxury van hyderabad', 'corporate tempo traveller alternative'],
+        og_title: 'Force Urbania on Rent in Hyderabad | 12 & 16 Seater Luxury Vans',
+        og_description: 'Premium Force Urbania luxury vans with executive reclining pushback seats, dual AC, and USB sockets.',
+        og_image_id: 'https://apnacars.com/images/urbania/urbania-hero.jpg'
       }
     }
   ]
@@ -463,7 +567,190 @@ async function main() {
     })
   }
 
-  // 6. Seed Authentic FAQs
+  // 6. Seed Static Pages SEO into PageSeo Table
+  const staticPagesSeo = [
+    {
+      path: '/',
+      title: 'Apna Car Rental Hyderabad | Best Cabs, Self Drive & Fleet',
+      description: 'Premium self-drive cars, chauffeur services, airport transfers, and outstation rentals across Hyderabad with transparent per-km fuel pricing.',
+      canonicalUrl: 'https://apnacars.com/',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'car rental hyderabad',
+      secondaryKeywords: 'cab service hyderabad, self drive cars hyderabad, outstation cabs, airport drop hyderabad',
+      ogTitle: 'Apna Car Rental | Your journey. Your car. Your way.',
+      ogDescription: 'Experience spotless cars, verified chauffeurs, and transparent fuel pricing across Hyderabad and Telangana.',
+      ogImageId: 'https://apnacars.com/images/hero-car.png'
+    },
+    {
+      path: '/fleet',
+      title: 'Car Rental Fleet in Hyderabad | Sedans, SUVs & Urbania Vans',
+      description: 'Explore Apna Cars full fleet: Swift Dzire, Maruti Ertiga, Toyota Innova Crysta, Force Urbania 12 & 16 Seater, and Tempo Travellers.',
+      canonicalUrl: 'https://apnacars.com/fleet',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'car rental fleet hyderabad',
+      secondaryKeywords: 'innova crysta hire, ertiga rental hyderabad, urbania van hire, tempo traveller booking',
+      ogTitle: 'Apna Cars Fleet | Sedans, Luxury SUVs & Force Urbania Vans',
+      ogDescription: 'Choose from Swift Dzire, Innova Crysta, Ertiga, and Force Urbania vans with transparent per km rates.',
+      ogImageId: 'https://apnacars.com/images/fleet-suv.png'
+    },
+    {
+      path: '/about',
+      title: 'About Apna Car Rental | Hyderabad Premier Cab & Rental Service',
+      description: 'Learn about Apna Car Rental mission, values, and commitment to safe, punctual, and transparent travel across Hyderabad.',
+      canonicalUrl: 'https://apnacars.com/about',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'about apna car rental',
+      secondaryKeywords: 'trusted cab company hyderabad, car hire agency telangana, reliable taxi operator',
+      ogTitle: 'About Apna Car Rental | More than a rental, freedom to move',
+      ogDescription: 'Learn why thousands of travelers and corporate teams trust Apna Car Rental for every journey.',
+      ogImageId: 'https://apnacars.com/images/journey-road.png'
+    },
+    {
+      path: '/contact',
+      title: 'Contact Apna Car Rental | 24/7 Customer Support & Hotline',
+      description: 'Get in touch with Apna Car Rental for instant bookings, inquiries, corporate partnerships, and airport emergency assistance in Hyderabad.',
+      canonicalUrl: 'https://apnacars.com/contact',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'contact apna car rental',
+      secondaryKeywords: 'car rental customer care hyderabad, cab booking phone number, apna cars contact',
+      ogTitle: 'Contact Apna Car Rental Hyderabad | 24/7 Helpline',
+      ogDescription: 'Call or WhatsApp us at 099881 23444 for instant bookings and immediate dispatch.',
+      ogImageId: 'https://apnacars.com/images/hero-car.png'
+    },
+    {
+      path: '/faq',
+      title: 'Frequently Asked Questions (FAQ) | Apna Car Rental',
+      description: 'Find answers about per-km rates, airport pickup procedures, outstation allowances, tolls, cancellation policies, and payment terms.',
+      canonicalUrl: 'https://apnacars.com/faq',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'car rental faq hyderabad',
+      secondaryKeywords: 'cab fare calculation, airport toll questions, outstation driver allowance rules',
+      ogTitle: 'Frequently Asked Questions | Apna Car Rental Hyderabad',
+      ogDescription: 'Clear answers to all your questions about car rentals, driver allowances, and transparent rates.',
+      ogImageId: 'https://apnacars.com/images/hero-car.png'
+    },
+    {
+      path: '/airport-cabs',
+      title: 'Hyderabad RGIA Airport Cabs | 24/7 Fixed Fare Airport Taxi',
+      description: 'Book reliable Rajiv Gandhi International Airport cabs in Hyderabad with zero surge pricing, free flight delay tracking, and doorstep pickup.',
+      canonicalUrl: 'https://apnacars.com/airport-cabs',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'hyderabad airport cabs',
+      secondaryKeywords: 'rgia shamshabad taxi, airport pickup hyderabad, outstation airport cab',
+      ogTitle: 'Hyderabad RGIA Airport Cabs | 24/7 Fixed Price Taxi Service',
+      ogDescription: 'Zero surge rates, flight delay monitoring, and sanitized cars for Shamshabad airport transfers.',
+      ogImageId: 'https://apnacars.com/images/airport/hero.jpg'
+    },
+    {
+      path: '/hourly-cabs',
+      title: 'Hourly Car Rental in Hyderabad | 4hr, 8hr, 12hr Packages',
+      description: 'Rent chauffeur-driven cars by the hour in Hyderabad. Flexible packages for business meetings, shopping, and local city commutes.',
+      canonicalUrl: 'https://apnacars.com/hourly-cabs',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'hourly car rental hyderabad',
+      secondaryKeywords: 'car hire by the hour, 8 hour 80 km cab hyderabad, full day local taxi',
+      ogTitle: 'Hourly Car Rental in Hyderabad | Flexible Chauffeur Packages',
+      ogDescription: 'Keep a car and driver at your disposal with easy hourly packages starting at ₹1200.',
+      ogImageId: 'https://apnacars.com/images/hero-car.png'
+    },
+    {
+      path: '/sightseeing-cabs',
+      title: 'Hyderabad City Sightseeing Cabs | Full Day City Tour Packages',
+      description: 'Customizable city sightseeing taxi tours covering Charminar, Golconda Fort, Ramoji Film City, Salar Jung Museum, and Birla Mandir.',
+      canonicalUrl: 'https://apnacars.com/sightseeing-cabs',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'hyderabad sightseeing cabs',
+      secondaryKeywords: 'hyderabad day tour cab, charminar tour taxi, ramoji film city car package',
+      ogTitle: 'Hyderabad City Sightseeing Cabs | Heritage & Culture Tours',
+      ogDescription: 'Explore the best of Hyderabad in air-conditioned comfort with professional tour chauffeurs.',
+      ogImageId: 'https://apnacars.com/images/sightseeing/hyderabad-hero.jpg'
+    },
+    {
+      path: '/outstation-cabs',
+      title: 'Outstation Cabs from Hyderabad | Roundtrip & One-Way Taxi',
+      description: 'Book comfortable outstation cabs from Hyderabad to Srisailam, Tirupati, Vijayawada, Bangalore, and Shirdi with experienced highway drivers.',
+      canonicalUrl: 'https://apnacars.com/outstation-cabs',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'outstation cabs hyderabad',
+      secondaryKeywords: 'interstate car rental, roundtrip taxi service, one way outstation drop',
+      ogTitle: 'Outstation Cabs from Hyderabad | Best Per-KM Rates',
+      ogDescription: 'Travel outstation from Hyderabad with certified highway drivers, spotless cars, and honest per-km rates.',
+      ogImageId: 'https://apnacars.com/images/outstation/tirupati.jpg'
+    },
+    {
+      path: '/srisailam-cabs',
+      title: 'Hyderabad to Srisailam Cab Packages | Same Day & 2-Day Tours',
+      description: 'Special pilgrimage taxi packages to Srisailam Mallikarjuna Jyotirlinga and Bhramaramba Devi Temple with experienced ghat section drivers.',
+      canonicalUrl: 'https://apnacars.com/srisailam-cabs',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'hyderabad to srisailam cab packages',
+      secondaryKeywords: 'srisailam car rental, mallikarjuna temple darshan cab, srisailam tempo traveller',
+      ogTitle: 'Hyderabad to Srisailam Temple Cab Packages | Same Day & 2-Day',
+      ogDescription: 'Doorstep pickup in Hyderabad, experienced Nallamala forest drivers, and flexible darshan timings.',
+      ogImageId: 'https://apnacars.com/images/srisailam/hero.jpg'
+    },
+    {
+      path: '/force-urbania-rent-in-hyderabad',
+      title: 'Force Urbania on Rent in Hyderabad | 12 & 16 Seater Luxury Vans',
+      description: 'Hire ultra-luxury Force Urbania 12-seater and 16-seater vans in Hyderabad for weddings, corporate offsites, and group pilgrimages.',
+      canonicalUrl: 'https://apnacars.com/force-urbania-rent-in-hyderabad',
+      robotsIndex: true,
+      robotsFollow: true,
+      focusKeyword: 'force urbania rent in hyderabad',
+      secondaryKeywords: 'urbania 12 seater rental, urbania 16 seater hire, luxury tempo traveller hyderabad',
+      ogTitle: 'Force Urbania on Rent in Hyderabad | 12 & 16 Seater Luxury Vans',
+      ogDescription: 'Experience luxury group travel in Hyderabad with individual pushback seats, high roof, and dual AC.',
+      ogImageId: 'https://apnacars.com/images/urbania/urbania-hero.jpg'
+    }
+  ]
+
+  for (const pageSeo of staticPagesSeo) {
+    await prisma.pageSeo.upsert({
+      where: { path: pageSeo.path },
+      update: pageSeo,
+      create: pageSeo
+    })
+  }
+
+  // 7. Seed Global SEO Settings
+  const existingGlobalSeo = await prisma.seoSettings.findFirst({ orderBy: { createdAt: 'desc' } })
+  if (!existingGlobalSeo) {
+    await prisma.seoSettings.create({
+      data: {
+        siteName: 'Apna Car Rental',
+        homepageTitle: 'Apna Car Rental | Your journey. Your car. Your way.',
+        homepageDescription: 'Premium self-drive cars, chauffeur services, airport transfers, and outstation rentals across Hyderabad with transparent per-km fuel pricing.',
+        organizationName: 'Apna Car Rental Private Limited',
+        canonicalBaseUrl: 'https://apnacars.com',
+        defaultRobotsIndex: true,
+        defaultRobotsFollow: true,
+        defaultOgImageId: 'https://apnacars.com/images/hero-car.png'
+      }
+    })
+  } else {
+    await prisma.seoSettings.update({
+      where: { id: existingGlobalSeo.id },
+      data: {
+        siteName: 'Apna Car Rental',
+        homepageTitle: 'Apna Car Rental | Your journey. Your car. Your way.',
+        homepageDescription: 'Premium self-drive cars, chauffeur services, airport transfers, and outstation rentals across Hyderabad with transparent per-km fuel pricing.',
+        canonicalBaseUrl: 'https://apnacars.com',
+        defaultOgImageId: 'https://apnacars.com/images/hero-car.png'
+      }
+    })
+  }
+
+  // 8. Seed Authentic FAQs
   const faqsData = [
     {
       question: 'How are outstation cab fares calculated?',
@@ -503,7 +790,7 @@ async function main() {
     await prisma.fAQ.create({ data: f })
   }
 
-  // 7. Seed Testimonials
+  // 9. Seed Testimonials
   const testimonialsData = [
     {
       customerName: 'Raghavendra Rao',
@@ -536,7 +823,7 @@ async function main() {
     await prisma.testimonial.create({ data: t })
   }
 
-  console.log('Seeding completed successfully!')
+  console.log('Seeding completed successfully with 100% comprehensive SEO!')
 }
 
 main()

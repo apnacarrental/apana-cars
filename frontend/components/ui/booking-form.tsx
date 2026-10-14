@@ -28,9 +28,9 @@ export function BookingForm() {
 
   return (
     <form className="booking-card" action={formAction}>
-      <div className="booking-heading">
-        <p className="eyebrow">Quick Booking</p>
-        <h2>Where to next?</h2>
+      <div className="booking-heading" style={{ gridColumn: '1 / -1', marginBottom: '8px' }}>
+        <p className="eyebrow" style={{ marginBottom: '6px' }}>Quick Booking</p>
+        <h2 style={{ fontSize: '1.65rem', fontWeight: 600, letterSpacing: '-0.03em' }}>Where to next?</h2>
       </div>
 
       {state.error && (
@@ -50,7 +50,7 @@ export function BookingForm() {
       
       <label>
         Phone / WhatsApp *
-        <input type="tel" name="phone" required placeholder="099881 23444" autoComplete="tel" />
+        <input type="tel" name="phone" required placeholder="XXXXX-XXXXX" autoComplete="tel" />
         {state.fieldErrors?.phone && <span className="text-xs text-red-500">{state.fieldErrors.phone[0]}</span>}
       </label>
 
@@ -61,10 +61,15 @@ export function BookingForm() {
 
       <label>
         Vehicle / Trip
-        <input name="carType" placeholder="e.g. Sedan, SUV, or Outstation" />
+        <input name="carType" placeholder="e.g. Sedan, SUV, Outstation" />
       </label>
 
-      <button className="button button-dark" type="submit" disabled={isPending}>
+      <button 
+        className="button button-dark" 
+        type="submit" 
+        disabled={isPending}
+        style={{ whiteSpace: 'nowrap', minHeight: '50px', padding: '14px 26px', cursor: 'pointer' }}
+      >
         {isPending ? 'Sending...' : 'Book Now'} <ArrowRight size={16} />
       </button>
     </form>

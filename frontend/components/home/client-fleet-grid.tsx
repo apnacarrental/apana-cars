@@ -78,10 +78,11 @@ export function ClientFleetGrid({ cars }: ClientFleetGridProps) {
 
                 <Link 
                   href={`/fleet/${car.slug}`} 
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-neutral-900 text-white text-xs font-semibold uppercase tracking-wider hover:bg-black active:scale-95 transition-all shadow-sm group-hover:shadow"
+                  style={{ color: '#ffffff', backgroundColor: '#111111' }}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg !text-white text-xs font-semibold uppercase tracking-wider hover:bg-black active:scale-95 transition-all shadow-sm group-hover:shadow"
                 >
-                  <span>Book</span>
-                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                  <span style={{ color: '#ffffff' }} className="!text-white">Book</span>
+                  <ArrowRight size={14} style={{ color: '#ffffff' }} className="!text-white transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
             </div>

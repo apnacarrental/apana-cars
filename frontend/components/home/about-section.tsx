@@ -39,7 +39,7 @@ export function AboutSection() {
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-neutral-800">Hyderabad&apos;s Trusted Fleet</p>
-              <p className="text-[11px] text-neutral-500">Self-drive independence & verified chauffeur expertise</p>
+              <p className="text-[11px] text-neutral-500">Premium cab fleet & verified professional chauffeur expertise</p>
             </div>
           </div>
         </motion.div>
@@ -53,8 +53,8 @@ export function AboutSection() {
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <p className="eyebrow">About Apna Car Rental</p>
-        <h2>More than a rental.<br /><em>It&apos;s your freedom to move.</em></h2>
+        <p className="eyebrow">About Apna Cars</p>
+        <h2>More than just a ride.<br /><em>It&apos;s your freedom to travel.</em></h2>
         <p>
           We make getting around Hyderabad and interstate Telangana feel seamless. With meticulously maintained cars, guaranteed transparent per-km fuel options, and 24/7 human dispatch support, Apna is the dependable partner for city trips, airport runs, family vacations, and corporate travel.
         </p>

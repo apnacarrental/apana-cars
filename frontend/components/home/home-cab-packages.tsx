@@ -59,7 +59,7 @@ const CAB_PACKAGES: CabPackageItem[] = [
   },
   {
     id: 'hourly',
-    title: 'Hourly Car Rental',
+    title: 'Hourly Cabs',
     subtitle: 'City Travel by the Hour',
     category: 'Hourly',
     badge: '8h / 80km & 12h / 120km',

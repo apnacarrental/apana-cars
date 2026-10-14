@@ -149,7 +149,7 @@ export const FALLBACK_FAQS = [
 export const FALLBACK_LOCATIONS = [
   { id: 'loc-1', name: 'RGIA Airport (Shamshabad)', slug: 'shamshabad-airport', type: 'AIRPORT', description: 'Hyderabad Rajiv Gandhi International Airport car rental and taxi hub.', isActive: true, parent: null, children: [], faqs: [] },
   { id: 'loc-2', name: 'Gachibowli & Financial District', slug: 'gachibowli', type: 'AREA', description: 'Financial District and IT corridor car rental hub.', isActive: true, parent: null, children: [], faqs: [] },
-  { id: 'loc-3', name: 'Hitec City / Madhapur', slug: 'hitec-city', type: 'AREA', description: 'Cyberabad IT hub cab services and self-drive rentals.', isActive: true, parent: null, children: [], faqs: [] },
+  { id: 'loc-3', name: 'Hitec City / Madhapur', slug: 'hitec-city', type: 'AREA', description: 'Cyberabad IT hub cab services and chauffeur-driven cabs.', isActive: true, parent: null, children: [], faqs: [] },
   { id: 'loc-4', name: 'Jubilee Hills & Banjara Hills', slug: 'jubilee-hills', type: 'AREA', description: 'Luxury car rentals and premium chauffeur services in Jubilee Hills.', isActive: true, parent: null, children: [], faqs: [] },
   { id: 'loc-5', name: 'Secunderabad & Uppal', slug: 'secunderabad', type: 'CITY', description: 'Secunderabad railway station and Uppal junction taxi services.', isActive: true, parent: null, children: [], faqs: [] },
   { id: 'loc-6', name: 'Kukatpally & Miyapur', slug: 'kukatpally', type: 'AREA', description: 'Kukatpally Housing Board and Miyapur metro car rental services.', isActive: true, parent: null, children: [], faqs: [] },
@@ -315,22 +315,60 @@ export const getRouteBySlug = cache(async (slug: string) => {
   return null;
 })
 
+export const FALLBACK_BLOGS = [
+  {
+    id: 'blog-1',
+    title: 'Hyderabad to Srisailam Highway Travel Guide & Ghat Road Timings',
+    slug: 'hyderabad-to-srisailam-travel-guide',
+    excerpt: 'Everything you need to know about traveling from Hyderabad to Srisailam Mallikarjuna Swamy Temple—including Nallamala forest checkpost timings, ghat section tips, toll plazas, and best cab options.',
+    content: '<h2>The Spiritual Journey to Mallikarjuna Jyotirlinga</h2><p>Located roughly 215 kilometers south of Hyderabad amidst the picturesque Nallamala Tiger Reserve hills, the Sri Bhramaramba Mallikarjuna Swamy Temple in Srisailam is one of the most revered pilgrimage destinations in India.</p><h3>Route & Highway Conditions</h3><p>The journey from Hyderabad to Srisailam follows NH 765 via Dindi, Kalwakurthy, and Munnanur. The highway is largely a smooth paved road before ascending into the verdant Nallamala Ghats.</p><h3>Critical Ghat Road & Forest Checkpost Timings</h3><p>The Nallamala Tiger Reserve forest gates operate between 6:00 AM and 9:00 PM with night curfew from 9:00 PM to 6:00 AM.</p>',
+    status: 'PUBLISHED',
+    publishedAt: new Date('2026-10-10'),
+    createdAt: new Date('2026-10-10'),
+    category: { name: 'Pilgrimage Guides', slug: 'pilgrimage-guides' },
+  },
+  {
+    id: 'blog-2',
+    title: 'Top 8 Must-Visit Sightseeing Places in Hyderabad for a 1-Day Cab Tour',
+    slug: 'top-places-to-visit-in-hyderabad-1-day-tour',
+    excerpt: 'How to explore Charminar, Golconda Fort, Chowmahalla Palace, Salar Jung Museum, and Hussain Sagar Lake seamlessly in a private air-conditioned cab without traffic stress.',
+    content: '<h2>Maximizing 1 Day in the City of Pearls</h2><p>Hyderabad blends four centuries of heritage with modern cosmopolitan life. For families and business travelers, hiring a private cab is the smartest way to see the top monuments comfortably.</p><h3>Curated 1-Day Itinerary</h3><p>Start at Golconda Fort, visit Qutb Shahi Tombs, enjoy Hyderabadi Biryani, tour Chowmahalla Palace, explore Charminar, and conclude at Hussain Sagar Lake.</p>',
+    status: 'PUBLISHED',
+    publishedAt: new Date('2026-10-12'),
+    createdAt: new Date('2026-10-12'),
+    category: { name: 'Sightseeing & Heritage', slug: 'sightseeing-tours' },
+  },
+  {
+    id: 'blog-3',
+    title: 'RGIA Shamshabad Airport Cab Guide: How to Avoid Surge Pricing & Delays',
+    slug: 'hyderabad-rgia-airport-cab-guide-no-surge',
+    excerpt: 'Plan your airport transfers to and from Rajiv Gandhi International Airport with zero surge pricing, verified chauffeurs, 24/7 flight delay tracking, and doorstep pickup across Cyberabad.',
+    content: '<h2>Punctual Airport Transfers in Hyderabad</h2><p>Rajiv Gandhi International Airport (RGIA) in Shamshabad is located between 28 km to 45 km from Hitec City, Gachibowli, and Secunderabad.</p><h3>Why Pre-Book with Apna Cars?</h3><p>Flat transparent pricing, live flight delay tracking, and verified chauffeurs with heavy luggage assistance.</p>',
+    status: 'PUBLISHED',
+    publishedAt: new Date('2026-10-14'),
+    createdAt: new Date('2026-10-14'),
+    category: { name: 'Airport & Business Travel', slug: 'airport-travel' },
+  },
+]
+
 export const getPublishedBlogs = cache(async () => {
   try {
-    return await prisma.blog.findMany({
+    const blogs = await prisma.blog.findMany({
       where: { status: 'PUBLISHED' },
       orderBy: { createdAt: 'desc' },
       include: { category: true }
     });
+    if (blogs && blogs.length > 0) return blogs;
   } catch (e) {
-    return [];
+    console.warn('getPublishedBlogs db error, using fallback:', e);
   }
+  return FALLBACK_BLOGS as any[];
 })
 
 export const getBlogBySlug = cache(async (slug: string) => {
   const decoded = decodeURIComponent(slug);
   try {
-    return await prisma.blog.findFirst({
+    const blog = await prisma.blog.findFirst({
       where: {
         OR: [
           { slug, status: 'PUBLISHED' },
@@ -339,9 +377,11 @@ export const getBlogBySlug = cache(async (slug: string) => {
       },
       include: { category: true }
     });
+    if (blog) return blog;
   } catch (e) {
-    return null;
+    console.warn('getBlogBySlug db error, using fallback:', e);
   }
+  return (FALLBACK_BLOGS.find(b => b.slug === slug || b.slug === decoded) as any) || null;
 })
 
 export async function getTestimonials() {

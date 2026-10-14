@@ -13,6 +13,7 @@ import { ProcessSection } from '@/components/home/process-section'
 import { CorporateSection } from '@/components/home/corporate-section'
 import { LocationsSection } from '@/components/home/locations-section'
 import { TestimonialsSection } from '@/components/home/testimonials-section'
+import { HyderabadTravelGuideCards } from '@/components/home/hyderabad-travel-guide-cards'
 import { FaqSection } from '@/components/home/faq-section'
 import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
@@ -20,8 +21,8 @@ import { buildMetadata, getBaseUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 
 export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
-  fallbackTitle: 'Apna Car Rental | Your journey. Your car. Your way.',
-  fallbackDescription: 'Premium self-drive cars, chauffeur services, airport transfers, and outstation rentals across Hyderabad and beyond.',
+  fallbackTitle: 'Apna Cars | Hyderabad Cab Services & Chauffeur Travel',
+  fallbackDescription: 'Premium chauffeur-driven cabs, airport transfers, sightseeing tours, and outstation rentals across Hyderabad and beyond.',
   path: '/',
 }) }
 
@@ -36,6 +37,7 @@ export default function Page() {
         <AboutSection />
         <ServicesSection />
         <PopularSightseeingSection />
+        <HyderabadTravelGuideCards />
         <HomeCabPackages />
         <FleetSection />
         <BenefitsSection />
@@ -53,7 +55,7 @@ export default function Page() {
           __html: JSON.stringify({ 
             '@context': 'https://schema.org', 
             '@type': 'AutoRental', 
-            name: 'Apna Car Rental', 
+            name: 'Apna Cars', 
             url: getBaseUrl(), 
             telephone: '+91 99881 23444', 
             address: {

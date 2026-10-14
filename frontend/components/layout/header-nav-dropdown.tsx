@@ -109,6 +109,14 @@ export function HeaderNavDropdown({
         </Link>
       ))}
 
+      {/* Visible Blog Link */}
+      <Link
+        href="/blog"
+        className="hover:opacity-70 transition-opacity py-2 whitespace-nowrap"
+      >
+        Blog
+      </Link>
+
       {/* "More" Dropdown (Fleet, Services, Routes, Locations, About, Contact) */}
       <div 
         ref={dropdownRef} 

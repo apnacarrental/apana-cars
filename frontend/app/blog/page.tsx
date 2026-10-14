@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getPublishedBlogs } from '@/lib/data/db'
 import { Header } from '@/components/layout/header'
@@ -9,8 +9,8 @@ import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
 export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
-  fallbackTitle: 'Blog | Apna Car Rental',
-  fallbackDescription: 'Read the latest travel tips and updates from Apna Car Rental.',
+  fallbackTitle: 'Travel Blog & Hyderabad Road Trip Guides | Apna Cars',
+  fallbackDescription: 'Read the latest Hyderabad sightseeing guides, Srisailam pilgrimage tips, airport transfer advice, and highway travel updates from Apna Cars.',
   path: '/blog'
 }) }
 
@@ -22,19 +22,55 @@ export default async function BlogPage() {
       <Header />
       <main>
         <section className="section" style={{ paddingTop: '160px' }}>
-          <p className="eyebrow">Journal</p>
-          <h1>The Apna <em>Blog.</em></h1>
+          <p className="eyebrow">Hyderabad Travel Journal</p>
+          <h1>The Apna <em>Journal.</em></h1>
+          <p className="text-neutral-600 max-w-2xl mt-4 text-base">
+            Expert highway itineraries, local sightseeing circuits, pilgrimage darshan tips, and airport transfer guides for Hyderabad and Telangana travelers.
+          </p>
           
           {blogs && blogs.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem', marginTop: '3rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem', marginTop: '3.5rem' }}>
               {blogs.map((post) => (
-                <article key={post.id} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
-                  {post.category && <p className="eyebrow" style={{ marginBottom: 0 }}>{post.category.name}</p>}
-                  <h3 style={{ fontSize: '1.5rem', margin: 0 }}>{post.title}</h3>
-                  <p style={{ color: '#666' }}>{post.excerpt}</p>
-                  <Link href={`/blog/${post.slug}`} className="text-button" style={{ marginTop: 'auto', paddingTop: '1rem' }}>
-                    Read more <ArrowRight size={15} />
-                  </Link>
+                <article 
+                  key={post.id} 
+                  className="group flex flex-col justify-between p-6 bg-white rounded-2xl border border-neutral-200 hover:border-neutral-300 hover:shadow-xl transition-all duration-300"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      {post.category ? (
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200/60">
+                          {post.category.name}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600">
+                          Guide
+                        </span>
+                      )}
+                      <time className="text-xs text-neutral-400 font-medium">
+                        {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently'}
+                      </time>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-neutral-900 group-hover:text-black line-clamp-2 leading-snug mb-3">
+                      <Link href={`/blog/${post.slug}`} className="hover:underline">
+                        {post.title}
+                      </Link>
+                    </h3>
+
+                    <p className="text-sm text-neutral-600 line-clamp-3 leading-relaxed mb-6">
+                      {post.excerpt}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-neutral-100 flex items-center justify-between mt-auto">
+                    <span className="text-xs font-semibold text-neutral-400">5 min read</span>
+                    <Link 
+                      href={`/blog/${post.slug}`} 
+                      className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 group-hover:translate-x-1 transition-transform"
+                    >
+                      Read Guide <ArrowRight size={14} />
+                    </Link>
+                  </div>
                 </article>
               ))}
             </div>

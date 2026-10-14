@@ -1,4 +1,4 @@
-﻿import { Analytics } from '@vercel/analytics/next'
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
@@ -8,8 +8,8 @@ import GoogleAnalytics from '@/components/analytics/google-analytics'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
-  title: 'Apna Car Rental | Your journey. Your car. Your way.',
-  description: 'Premium self-drive cars, chauffeur services, airport transfers, and outstation rentals across Hyderabad and beyond.',
+  title: 'Apna Cars | Premium Cab Services & Chauffeur Travel in Hyderabad',
+  description: 'Premium chauffeur-driven cabs, airport transfers, sightseeing tours, and outstation rentals across Hyderabad and beyond.',
   generator: 'v0.app',
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,

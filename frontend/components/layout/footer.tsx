@@ -17,11 +17,12 @@ export function Footer() {
             <Link href="/services">Services</Link>
             <Link href="/fleet">Our fleet</Link>
             <Link href="/locations">Locations</Link>
+            <Link href="/blog">Travel Blog</Link>
           </div>
           <div>
             <h3>Cab Packages</h3>
             <Link href="/airport-cabs">Airport Cabs</Link>
-            <Link href="/hourly-cabs">Hourly Car Rental</Link>
+            <Link href="/hourly-cabs">Hourly Cabs</Link>
             <Link href="/sightseeing-cabs">Sightseeing Cabs</Link>
             <Link href="/outstation-cabs">Outstation Cabs</Link>
             <Link href="/srisailam-cabs">Srisailam Tour</Link>
@@ -38,12 +39,12 @@ export function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>&copy; {new Date().getFullYear()} Apna Car Rental. All rights reserved.</span>
+          <span>&copy; {new Date().getFullYear()} Apna Cars. All rights reserved.</span>
           <span>Privacy &middot; Terms &middot; Cancellation</span>
         </div>
       </footer>
       <div className="floating">
-        <a href="tel:+919988123444" aria-label="Call Apna Car Rental">
+        <a href="tel:+919988123444" aria-label="Call Apna Cars">
           <Phone size={17} /> Call
         </a>
         <a href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" style={{ color: '#25D366' }}>

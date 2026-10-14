@@ -1,4 +1,4 @@
-﻿import { notFound } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { getBlogBySlug, getPublishedBlogs } from '@/lib/data/db'
@@ -60,8 +60,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             </h1>
             
             <div style={{ display: 'flex', gap: '1rem', color: '#666', marginTop: '1.5rem', paddingBottom: '2rem', borderBottom: '1px solid #eee' }}>
-              
-              <span>â€¢</span>
+              <span>&bull;</span>
               <time dateTime={post.publishedAt?.toISOString() || post.createdAt.toISOString()}>
                 {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Recently'}
               </time>

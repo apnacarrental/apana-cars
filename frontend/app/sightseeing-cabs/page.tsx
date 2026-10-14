@@ -33,7 +33,8 @@ import { AnimatedHighwayJourney } from '@/components/motion/animated-highway-jou
 import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { SightseeingHeroCta } from '@/components/motion/sightseeing-hero-cta'
-import { SightseeingPackageCards, SightseeingPackageItem } from '@/components/motion/sightseeing-package-cards'
+import { SightseeingPackageCards } from '@/components/motion/sightseeing-package-cards'
+import { SIGHTSEEING_PACKAGES } from '@/lib/data/sightseeing'
 import { HourlyVehicleGrid, VehicleItem } from '@/components/motion/hourly-vehicle-grid'
 
 export const metadata: Metadata = {
@@ -59,92 +60,6 @@ export const metadata: Metadata = {
     type: 'website',
   },
 }
-
-const SIGHTSEEING_PACKAGES: SightseeingPackageItem[] = [
-  {
-    id: 'pkg-hyderabad-city',
-    title: 'Hyderabad City Sightseeing',
-    subtitle: 'Classic Heritage & Monuments Day Tour',
-    badge: 'Popular City Tour',
-    circuitType: 'Heritage & Culture',
-    image: '/images/sightseeing/city-tour.jpg',
-    description: 'Explore the royal Nizami heritage and vibrant landmarks of Hyderabad in a relaxed day tour with private doorstep pickup and drop.',
-    places: [
-      'Charminar',
-      'Salar Jung Museum',
-      'Chowmahalla Palace',
-      'Nehru Zoological Park',
-      'Golconda Fort',
-      'Birla Mandir',
-      'Hussain Sagar Lake',
-      'NTR Gardens'
-    ],
-    priceDisplay: 'Price on Request',
-  },
-  {
-    id: 'pkg-ramoji-sanghi',
-    title: 'Ramoji Film City + Sanghi Temple',
-    subtitle: 'Cinema Wonderland & Serene Hilltop Darshan',
-    badge: 'Entertainment & Divine',
-    circuitType: 'Full Day Outing',
-    image: '/images/sightseeing/ramoji.jpg',
-    description: 'Spend an unforgettable full day at the world’s largest integrated film studio complex followed by the serene evening ambience of Sanghi Temple.',
-    places: [
-      'Ramoji Film City',
-      'Sanghi Temple',
-      'Studio Live Sets',
-      'Action Shows & Gardens'
-    ],
-    priceDisplay: 'Price on Request',
-  },
-  {
-    id: 'pkg-statue-equality',
-    title: 'Statue of Equality + Temple Circuit',
-    subtitle: 'Spiritual Grandeur & Ancient Shrines',
-    badge: 'Pilgrimage Circuit',
-    circuitType: 'Spiritual Day Tour',
-    image: '/images/sightseeing/temple-circuit.jpg',
-    description: 'Witness the magnificent 216-foot Statue of Equality honoring Sri Ramanujacharya, along with sacred shrines across western and central Hyderabad.',
-    places: [
-      'Statue of Equality (Muchintal)',
-      'Chilukuri Balaji Temple',
-      'Puri Jagannath Temple (Banjara Hills)',
-      'Peddamma Thalli Temple (Jubilee Hills)'
-    ],
-    priceDisplay: 'Price on Request',
-  },
-  {
-    id: 'pkg-yadagirigutta-circuit',
-    title: 'Yadagirigutta + Swarnagiri + Surendrapuri',
-    subtitle: 'Architectural Wonders & Divine Shrines',
-    badge: 'Sacred Architecture',
-    circuitType: 'Highway Circuit',
-    image: '/images/sightseeing/yadagirigutta.jpg',
-    description: 'A captivating journey east of Hyderabad visiting the newly renovated Yadadri Lakshmi Narasimha temple, the grand Swarnagiri shrine, and the Surendrapuri mythological museum.',
-    places: [
-      'Yadagirigutta (Sri Lakshmi Narasimha Swamy)',
-      'Swarnagiri Temple (Manepally Hills)',
-      'Surendrapuri Mythological Theme Park',
-      'Golden Shiva Lingam Temple'
-    ],
-    priceDisplay: 'Price on Request',
-  },
-  {
-    id: 'pkg-dakshin-badrinath',
-    title: 'Dakshin Badrinath + Wargal Saraswati',
-    subtitle: 'Peaceful North Telangana Temple Corridor',
-    badge: 'Wisdom & Solitude',
-    circuitType: 'Pilgrimage Corridor',
-    image: '/images/sightseeing/dakshin-badrinath.jpg',
-    description: 'Immerse yourself in divine vibrations at the beautiful replica of Badrinath temple near Medchal and seek the blessings of Goddess Saraswati atop the rocky hillocks of Wargal.',
-    places: [
-      'Dakshin Badrinath Temple (Medchal Corridor)',
-      'Wargal Sri Vidya Saraswati Temple',
-      'Scenic Hillock Viewpoints'
-    ],
-    priceDisplay: 'Price on Request',
-  },
-]
 
 const FLEET_VEHICLES: VehicleItem[] = [
   {

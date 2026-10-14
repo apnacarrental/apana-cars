@@ -5,6 +5,7 @@ import { BookingSection } from '@/components/home/booking-section'
 import { TrustBar } from '@/components/home/trust-bar'
 import { AboutSection } from '@/components/home/about-section'
 import { ServicesSection } from '@/components/home/services-section'
+import { PopularSightseeingSection } from '@/components/home/popular-sightseeing-section'
 import { HomeCabPackages } from '@/components/home/home-cab-packages'
 import { FleetSection } from '@/components/home/fleet-section'
 import { BenefitsSection } from '@/components/home/benefits-section'
@@ -14,6 +15,7 @@ import { LocationsSection } from '@/components/home/locations-section'
 import { TestimonialsSection } from '@/components/home/testimonials-section'
 import { FaqSection } from '@/components/home/faq-section'
 import { FinalCtaSection } from '@/components/home/final-cta-section'
+import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { buildMetadata, getBaseUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 
@@ -25,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> { return await build
 
 export default function Page() {
   return (
-    <>
+    <BookingModalProvider>
       <Header />
       <main id="home">
         <HeroSection />
@@ -33,6 +35,7 @@ export default function Page() {
         <TrustBar />
         <AboutSection />
         <ServicesSection />
+        <PopularSightseeingSection />
         <HomeCabPackages />
         <FleetSection />
         <BenefitsSection />
@@ -65,7 +68,7 @@ export default function Page() {
           }) 
         }} 
       />
-    </>
+    </BookingModalProvider>
   )
 }
 

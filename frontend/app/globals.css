@@ -41,3 +41,13 @@ a { color: inherit; text-decoration: none; }
 .benefit:hover { background: rgba(255,255,255,0.02); }
 .step { transition: transform 0.3s ease; }
 .step:hover { transform: translateX(4px); }
+
+/* Sightseeing place badge interactive animations */
+.place-badge {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  will-change: transform;
+}
+.place-badge:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}

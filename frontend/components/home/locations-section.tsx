@@ -1,5 +1,6 @@
 import { MapPin, ArrowRight } from 'lucide-react'
 import { getLocations } from '@/lib/data/db'
+import Link from 'next/link'
 
 export async function LocationsSection() {
   const locations = await getLocations()
@@ -12,11 +13,11 @@ export async function LocationsSection() {
       <h2>Serving journeys across<br /><em>the city &amp; beyond.</em></h2>
       <div className="location-list">
         {locations.map((loc) => (
-          <a href="#book" key={loc.id}>
+          <Link href={`/locations/${loc.slug}`} key={loc.id}>
             <MapPin size={17} />
             {loc.name}
             <ArrowRight size={15} />
-          </a>
+          </Link>
         ))}
       </div>
     </section>

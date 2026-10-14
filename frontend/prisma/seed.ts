@@ -823,6 +823,219 @@ async function main() {
     await prisma.testimonial.create({ data: t })
   }
 
+  // 9. Seed Authentic Locations with 100% SEO metadata
+  const hyderabad = await prisma.location.upsert({
+    where: { slug: 'hyderabad' },
+    update: {
+      name: 'Hyderabad',
+      type: LocationType.CITY,
+      description: 'Capital city of Telangana, cyber hub, and the primary base for Apna Car Rental operations.',
+      content: 'Apna Cars provides reliable chauffeur-driven and self-drive car rentals across Hyderabad, Cyberabad, and Secunderabad. We offer 24/7 service with zero surge pricing.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Car Rental & Cab Services in Hyderabad | Apna Cars',
+        description: 'Rent premium chauffeur-driven and outstation cars in Hyderabad with transparent per km pricing and zero surge rates.',
+        canonical_url: 'https://apnacars.com/locations/hyderabad',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'car rental hyderabad',
+        secondary_keywords: ['cab service hyderabad', 'hyderabad car hire', 'outstation cabs hyderabad'],
+        og_title: 'Car Rental & Cab Services in Hyderabad | Apna Cars',
+        og_description: 'Rent premium chauffeur-driven and outstation cars in Hyderabad with transparent per km pricing.'
+      }
+    },
+    create: {
+      name: 'Hyderabad',
+      slug: 'hyderabad',
+      type: LocationType.CITY,
+      description: 'Capital city of Telangana, cyber hub, and the primary base for Apna Car Rental operations.',
+      content: 'Apna Cars provides reliable chauffeur-driven and self-drive car rentals across Hyderabad, Cyberabad, and Secunderabad. We offer 24/7 service with zero surge pricing.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Car Rental & Cab Services in Hyderabad | Apna Cars',
+        description: 'Rent premium chauffeur-driven and outstation cars in Hyderabad with transparent per km pricing and zero surge rates.',
+        canonical_url: 'https://apnacars.com/locations/hyderabad',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'car rental hyderabad',
+        secondary_keywords: ['cab service hyderabad', 'hyderabad car hire', 'outstation cabs hyderabad'],
+        og_title: 'Car Rental & Cab Services in Hyderabad | Apna Cars',
+        og_description: 'Rent premium chauffeur-driven and outstation cars in Hyderabad with transparent per km pricing.'
+      }
+    }
+  })
+
+  const locationsData = [
+    {
+      name: 'RGIA Airport (Shamshabad)',
+      slug: 'shamshabad-airport',
+      type: LocationType.AIRPORT,
+      parentId: hyderabad.id,
+      description: 'Hyderabad Rajiv Gandhi International Airport car rental and 24/7 taxi hub with flight tracking.',
+      content: 'Pre-book your Rajiv Gandhi International Airport (RGIA) cab in Shamshabad with Apna Cars. On-time terminal pickups, luggage assistance, zero parking surge, and clean AC sedans and SUVs.',
+      isActive: true,
+      seoMetadata: {
+        title: 'RGIA Airport Shamshabad Cab & Car Rental | Apna Cars',
+        description: '24/7 airport pickup and drop taxi at Rajiv Gandhi International Airport (RGIA) Hyderabad. Flat transparent pricing with live flight tracking.',
+        canonical_url: 'https://apnacars.com/locations/shamshabad-airport',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hyderabad airport cab',
+        secondary_keywords: ['rgia airport taxi', 'shamshabad car rental', 'airport drop hyderabad'],
+        og_title: 'RGIA Airport Shamshabad Cab & Car Rental | Apna Cars',
+        og_description: '24/7 airport pickup and drop taxi at Rajiv Gandhi International Airport (RGIA) Hyderabad.'
+      }
+    },
+    {
+      name: 'Gachibowli & Financial District',
+      slug: 'gachibowli',
+      type: LocationType.AREA,
+      parentId: hyderabad.id,
+      description: 'Financial District, Nanakramguda, and Gachibowli IT corridor car rental hub.',
+      content: 'Reliable car hire and executive cab services in Gachibowli and Financial District. Ideal for corporate daily commutes, airport transfers via Outer Ring Road (ORR), and weekend getaways.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Car Rental in Gachibowli & Financial District | Apna Cars',
+        description: 'Book corporate cabs and airport transfers in Gachibowli, Financial District, and Nanakramguda. Punctual service with top-rated drivers.',
+        canonical_url: 'https://apnacars.com/locations/gachibowli',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'car rental gachibowli',
+        secondary_keywords: ['financial district cabs', 'gachibowli airport taxi', 'nanakramguda car hire'],
+        og_title: 'Car Rental in Gachibowli & Financial District | Apna Cars',
+        og_description: 'Book corporate cabs and airport transfers in Gachibowli, Financial District, and Nanakramguda.'
+      }
+    },
+    {
+      name: 'Hitec City / Madhapur',
+      slug: 'hitec-city',
+      type: LocationType.AREA,
+      parentId: hyderabad.id,
+      description: 'Cyberabad IT hub cab services and chauffeur-driven car rentals.',
+      content: 'Serving Mindspace, Cyber Towers, Inorbit Mall, and Madhapur with fast 15-minute cab dispatch. Perfect for tech employees, client delegations, and city travel.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Hitec City & Madhapur Cab Rental Services | Apna Cars',
+        description: 'Rent cars in Hitec City and Madhapur for local meetings, daily rentals, and airport drops. Modern fleet of Sedans, Innova Crysta, and Urbania.',
+        canonical_url: 'https://apnacars.com/locations/hitec-city',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'hitec city car rental',
+        secondary_keywords: ['madhapur cab booking', 'cyberabad taxi service', 'inorbit mall car hire'],
+        og_title: 'Hitec City & Madhapur Cab Rental Services | Apna Cars',
+        og_description: 'Rent cars in Hitec City and Madhapur for local meetings, daily rentals, and airport drops.'
+      }
+    },
+    {
+      name: 'Jubilee Hills & Banjara Hills',
+      slug: 'jubilee-hills',
+      type: LocationType.AREA,
+      parentId: hyderabad.id,
+      description: 'Luxury car rentals and premium chauffeur services in Jubilee Hills and Banjara Hills.',
+      content: 'Experience first-class car rental in Jubilee Hills Road No. 36, Film Nagar, and Banjara Hills Road No. 1 & 12. Premium luxury sedans and spacious SUVs for weddings and VIP travel.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Luxury Car Rental in Jubilee Hills & Banjara Hills | Apna Cars',
+        description: 'Chauffeur-driven luxury car hire in Jubilee Hills and Banjara Hills. Premium Fortuner, Innova Crysta, and Force Urbania vans.',
+        canonical_url: 'https://apnacars.com/locations/jubilee-hills',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'luxury car rental jubilee hills',
+        secondary_keywords: ['banjara hills cab service', 'vip car hire hyderabad', 'wedding car rental jubilee hills'],
+        og_title: 'Luxury Car Rental in Jubilee Hills & Banjara Hills | Apna Cars',
+        og_description: 'Chauffeur-driven luxury car hire in Jubilee Hills and Banjara Hills.'
+      }
+    },
+    {
+      name: 'Secunderabad & Uppal',
+      slug: 'secunderabad',
+      type: LocationType.AREA,
+      parentId: hyderabad.id,
+      description: 'Secunderabad railway station and Uppal junction taxi services.',
+      content: 'Seamless cab pickups from Secunderabad Railway Station, Paradise Circle, ECIL, and Uppal Rajiv Gandhi Stadium. 24/7 availability for local and outstation trips.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Secunderabad & Uppal Taxi Service | Apna Cars',
+        description: 'Prompt railway station pickups and outstation cabs from Secunderabad and Uppal. Guaranteed on-time arrival with zero cancellation.',
+        canonical_url: 'https://apnacars.com/locations/secunderabad',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'secunderabad railway station cab',
+        secondary_keywords: ['uppal car rental', 'secunderabad taxi booking', 'ecil outstation cabs'],
+        og_title: 'Secunderabad & Uppal Taxi Service | Apna Cars',
+        og_description: 'Prompt railway station pickups and outstation cabs from Secunderabad and Uppal.'
+      }
+    },
+    {
+      name: 'Kukatpally & Miyapur',
+      slug: 'kukatpally',
+      type: LocationType.AREA,
+      parentId: hyderabad.id,
+      description: 'Kukatpally Housing Board and Miyapur metro car rental services.',
+      content: 'Serving residential and commercial centers across KPHB Colony, Forum Sujana Mall, JNTU, and Miyapur. Economical per km rates for city errands and outstation family trips.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Car Rental in Kukatpally & Miyapur | Apna Cars',
+        description: 'Reliable cab hire in Kukatpally (KPHB), JNTU, and Miyapur for family outings, airport drops, and outstation trips.',
+        canonical_url: 'https://apnacars.com/locations/kukatpally',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'kukatpally car rental',
+        secondary_keywords: ['kphb cab service', 'miyapur taxi hire', 'jntu car rental'],
+        og_title: 'Car Rental in Kukatpally & Miyapur | Apna Cars',
+        og_description: 'Reliable cab hire in Kukatpally (KPHB), JNTU, and Miyapur for family outings, airport drops, and outstation trips.'
+      }
+    },
+    {
+      name: 'Begumpet & Somajiguda',
+      slug: 'begumpet',
+      type: LocationType.AREA,
+      parentId: hyderabad.id,
+      description: 'Old airport road and central Hyderabad car hire.',
+      content: 'Central Hyderabad car hire covering lifestyle hubs, hospitals, consulates, and business centers along Begumpet, Somajiguda, and Ameerpet.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Car Rental in Begumpet & Somajiguda | Apna Cars',
+        description: 'Chauffeur-driven cab rentals in Begumpet, Somajiguda, and Raj Bhavan Road. Fast pickup for business and hospital visits.',
+        canonical_url: 'https://apnacars.com/locations/begumpet',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'begumpet car rental',
+        secondary_keywords: ['somajiguda taxi service', 'ameerpet cabs', 'central hyderabad car hire'],
+        og_title: 'Car Rental in Begumpet & Somajiguda | Apna Cars',
+        og_description: 'Chauffeur-driven cab rentals in Begumpet, Somajiguda, and Raj Bhavan Road.'
+      }
+    },
+    {
+      name: 'Srisailam Highway Route',
+      slug: 'srisailam-route',
+      type: LocationType.DESTINATION,
+      parentId: hyderabad.id,
+      description: 'Srisailam pilgrimage highway cab rentals via NH 765 & ORR Exit 14.',
+      content: 'Specialized pilgrimage packages to Sri Bhramaramba Mallikarjuna Jyotirlinga Temple. Experienced ghat-road drivers, clean AC vehicles, and doorstep pickup across Hyderabad.',
+      isActive: true,
+      seoMetadata: {
+        title: 'Srisailam Highway Route Cab Packages | Apna Cars',
+        description: 'Dedicated car rental and cab packages for Srisailam Temple pilgrimage from Hyderabad. 1-day and 2-day darshan tours available.',
+        canonical_url: 'https://apnacars.com/locations/srisailam-route',
+        robots_index: true,
+        robots_follow: true,
+        focus_keyword: 'srisailam cab packages',
+        secondary_keywords: ['hyderabad to srisailam taxi', 'mallikarjuna darshan cab', 'srisailam tempo traveller hire'],
+        og_title: 'Srisailam Highway Route Cab Packages | Apna Cars',
+        og_description: 'Dedicated car rental and cab packages for Srisailam Temple pilgrimage from Hyderabad.'
+      }
+    }
+  ]
+
+  for (const loc of locationsData) {
+    await prisma.location.upsert({
+      where: { slug: loc.slug },
+      update: loc,
+      create: loc
+    })
+  }
+
   console.log('Seeding completed successfully with 100% comprehensive SEO!')
 }
 

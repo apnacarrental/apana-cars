@@ -12,6 +12,10 @@ import { InternalLinks } from '@/components/seo/internal-links'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+export const revalidate = 0
+
 export async function generateStaticParams() {
   const locations = await getLocations()
   return locations.map((loc) => ({

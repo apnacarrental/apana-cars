@@ -1,149 +1,197 @@
-﻿'use server'
+'use server'
 
 import { requireAdmin } from '@/lib/admin-auth'
-import { fetchBackendApi } from '@/lib/backend-api'
+import prisma from '@/lib/prisma'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 const Schema = z.object({
-  title: z.string().min(1, "Title is required"),
-  slug: z.string().min(1, "Slug is required"),
-  origin: z.string().min(1, "Origin is required"),
-  destination: z.string().min(1, "Destination is required"),
+  origin: z.string().min(1, 'Origin is required'),
+  destination: z.string().min(1, 'Destination is required'),
+  slug: z.string().min(1, 'Slug is required'),
+  title: z.string().min(1, 'Title is required'),
+  distance: z.number().nullable().optional(),
+  duration: z.string().nullable().optional(),
+  startingPrice: z.number().nullable().optional(),
+  content: z.string().nullable().optional(),
+  inclusions: z.array(z.string()).default([]),
+  exclusions: z.array(z.string()).default([]),
   isActive: z.boolean(),
 })
 
-export type ActionResponse = { success: false; error: string } | undefined;
+export type ActionResponse = { success: false; error: string } | undefined
 
-async function handleApiError(res: Response): Promise<ActionResponse> {
-  if (!res.ok) {
-    let errorMsg = `API Error: ${res.statusText}`;
-    try {
-      const data = await res.json();
-      if (data.message) errorMsg = data.message;
-      else if (data.error) errorMsg = data.error;
-    } catch (e) {}
-    return { success: false, error: errorMsg };
-  }
-  return undefined;
+function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '')
+}
+
+function parseList(input: FormDataEntryValue | null): string[] {
+  if (!input || typeof input !== 'string') return []
+  return input
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean)
 }
 
 export async function createRoute(formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
+  const rawTitle = (formData.get('title') as string)?.trim() || ''
+  const origin = (formData.get('origin') as string)?.trim() || ''
+  const destination = (formData.get('destination') as string)?.trim() || ''
+  const rawSlug = (formData.get('slug') as string) || `${origin}-to-${destination}`
+  const slug = slugify(rawSlug)
+
+  const distanceRaw = formData.get('distance') as string | null
+  const startingPriceRaw = formData.get('startingPrice') as string | null
+
   const data = {
-    title: formData.get('title') as string,
-    slug: formData.get('slug') as string,
-    origin: formData.get('origin') as string,
-    destination: formData.get('destination') as string,
+    origin,
+    destination,
+    slug,
+    title: rawTitle,
+    distance: distanceRaw && !isNaN(parseFloat(distanceRaw)) ? parseFloat(distanceRaw) : null,
+    duration: (formData.get('duration') as string)?.trim() || null,
+    startingPrice: startingPriceRaw && !isNaN(parseFloat(startingPriceRaw)) ? parseFloat(startingPriceRaw) : null,
+    content: (formData.get('content') as string)?.trim() || null,
+    inclusions: parseList(formData.get('inclusions')),
+    exclusions: parseList(formData.get('exclusions')),
     isActive: formData.get('isActive') === 'on',
   }
 
   const parsed = Schema.safeParse(data)
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0].message };
+    return { success: false, error: parsed.error.issues[0].message }
   }
 
-  if (parsed.data.origin.trim().toLowerCase() === parsed.data.destination.trim().toLowerCase()) {
-    return { success: false, error: 'Origin and destination cannot be the same location.' };
-  }
-
-  let res: Response;
   try {
-    res = await fetchBackendApi('/api/v1/admin/routes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(parsed.data),
+    const existing = await prisma.route.findUnique({
+      where: { slug: parsed.data.slug }
+    })
+    if (existing) {
+      return { success: false, error: `A route with slug "${parsed.data.slug}" already exists.` }
+    }
+
+    await prisma.route.create({
+      data: parsed.data
     })
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error creating route:', err)
+    return { success: false, error: err.message || 'Failed to create route.' }
   }
 
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/routes')
   revalidatePath('/admin/routes')
+  revalidatePath(`/routes/${parsed.data.slug}`)
+  revalidatePath('/')
   redirect('/admin/routes')
 }
 
 export async function updateRoute(id: string, formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
+  const rawTitle = (formData.get('title') as string)?.trim() || ''
+  const origin = (formData.get('origin') as string)?.trim() || ''
+  const destination = (formData.get('destination') as string)?.trim() || ''
+  const rawSlug = (formData.get('slug') as string) || `${origin}-to-${destination}`
+  const slug = slugify(rawSlug)
+
+  const distanceRaw = formData.get('distance') as string | null
+  const startingPriceRaw = formData.get('startingPrice') as string | null
+
   const data = {
-    title: formData.get('title') as string,
-    slug: formData.get('slug') as string,
-    origin: formData.get('origin') as string,
-    destination: formData.get('destination') as string,
+    origin,
+    destination,
+    slug,
+    title: rawTitle,
+    distance: distanceRaw && !isNaN(parseFloat(distanceRaw)) ? parseFloat(distanceRaw) : null,
+    duration: (formData.get('duration') as string)?.trim() || null,
+    startingPrice: startingPriceRaw && !isNaN(parseFloat(startingPriceRaw)) ? parseFloat(startingPriceRaw) : null,
+    content: (formData.get('content') as string)?.trim() || null,
+    inclusions: parseList(formData.get('inclusions')),
+    exclusions: parseList(formData.get('exclusions')),
     isActive: formData.get('isActive') === 'on',
   }
 
   const parsed = Schema.safeParse(data)
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0].message };
+    return { success: false, error: parsed.error.issues[0].message }
   }
 
-  if (parsed.data.origin.trim().toLowerCase() === parsed.data.destination.trim().toLowerCase()) {
-    return { success: false, error: 'Origin and destination cannot be the same location.' };
-  }
-
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/routes/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(parsed.data),
+    const existing = await prisma.route.findFirst({
+      where: {
+        slug: parsed.data.slug,
+        NOT: { id }
+      }
     })
+    if (existing) {
+      return { success: false, error: `Another route with slug "${parsed.data.slug}" already exists.` }
+    }
+
+    const previous = await prisma.route.findUnique({ where: { id }, select: { slug: true } })
+
+    await prisma.route.update({
+      where: { id },
+      data: parsed.data
+    })
+
+    if (previous?.slug && previous.slug !== parsed.data.slug) {
+      revalidatePath(`/routes/${previous.slug}`)
+    }
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error updating route:', err)
+    return { success: false, error: err.message || 'Failed to update route.' }
   }
 
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/routes')
-  revalidatePath(`/routes/${parsed.data.slug}`)
   revalidatePath('/admin/routes')
+  revalidatePath(`/admin/routes/${id}/edit`)
+  revalidatePath(`/routes/${parsed.data.slug}`)
+  revalidatePath('/')
   redirect('/admin/routes')
 }
 
 export async function deactivateRoute(id: string): Promise<ActionResponse> {
   await requireAdmin()
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/routes/${id}/deactivate`, {
-      method: 'PATCH',
+    const r = await prisma.route.update({
+      where: { id },
+      data: { isActive: false }
     })
+
+    revalidatePath('/admin/routes')
+    if (r?.slug) revalidatePath(`/routes/${r.slug}`)
+    revalidatePath('/')
+    return undefined
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error deactivating route:', err)
+    return { success: false, error: err.message || 'Failed to deactivate route.' }
   }
-
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/routes')
-  revalidatePath('/admin/routes')
-  return undefined;
 }
 
 export async function deleteRoute(id: string): Promise<ActionResponse> {
   await requireAdmin()
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/routes/${id}`, {
-      method: 'DELETE',
+    const r = await prisma.route.delete({
+      where: { id }
     })
+
+    revalidatePath('/admin/routes')
+    if (r?.slug) revalidatePath(`/routes/${r.slug}`)
+    revalidatePath('/')
+    return undefined
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error deleting route:', err)
+    return { success: false, error: err.message || 'Failed to delete route.' }
   }
-
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/routes')
-  revalidatePath('/admin/routes')
-  return undefined;
 }

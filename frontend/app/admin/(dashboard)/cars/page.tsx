@@ -46,7 +46,7 @@ export default async function AdminCarsPage() {
           </Link>
           <Link 
             href="/admin/cars/new" 
-            className="inline-flex items-center gap-2 bg-black text-white px-4 py-2.5 rounded-lg hover:bg-gray-800 text-sm font-semibold select-none shadow-sm transition"
+            className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 text-sm font-semibold select-none shadow-sm transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span>Add New Car</span>

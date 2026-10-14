@@ -29,3 +29,5 @@ drift.sql
 manual_sync.sql
 query.sql
 verify_db.ts
+
+artifacts/

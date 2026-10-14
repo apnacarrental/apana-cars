@@ -1,67 +1,50 @@
-﻿'use server'
+'use server'
 
 import { requireAdmin } from '@/lib/admin-auth'
-import { fetchBackendApi } from '@/lib/backend-api'
+import prisma from '@/lib/prisma'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 const Schema = z.object({
-  customerName: z.string().min(1, "Customer name is required"),
-  review: z.string().min(1, "Review is required"),
-  rating: z.number().int().min(1, "Rating must be at least 1").max(5, "Rating cannot exceed 5").default(5),
+  customerName: z.string().min(1, 'Customer name is required'),
+  rating: z.number().int().min(1).max(5),
+  review: z.string().min(1, 'Review text is required'),
   locationContext: z.string().optional().nullable(),
-  sortOrder: z.number().int().default(0),
   isActive: z.boolean(),
+  sortOrder: z.number().int(),
 })
 
-export type ActionResponse = { success: false; error: string } | undefined;
-
-async function handleApiError(res: Response): Promise<ActionResponse> {
-  if (!res.ok) {
-    let errorMsg = `API Error: ${res.statusText}`;
-    try {
-      const data = await res.json();
-      if (data.message) errorMsg = data.message;
-      else if (data.error) errorMsg = data.error;
-    } catch (e) {}
-    return { success: false, error: errorMsg };
-  }
-  return undefined;
-}
+export type ActionResponse = { success: false; error: string } | undefined
 
 export async function createTestimonial(formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
   const data = {
-    customerName: (formData.get('customerName') as string)?.trim(),
-    review: (formData.get('review') as string)?.trim(),
-    locationContext: (formData.get('locationContext') as string)?.trim() || null,
+    customerName: (formData.get('customerName') as string)?.trim() || '',
     rating: parseInt((formData.get('rating') as string) || '5'),
-    sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
+    review: (formData.get('review') as string)?.trim() || '',
+    locationContext: (formData.get('locationContext') as string)?.trim() || null,
     isActive: formData.get('isActive') === 'on',
+    sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
   }
 
   const parsed = Schema.safeParse(data)
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0].message };
+    return { success: false, error: parsed.error.issues[0].message }
   }
 
-  let res: Response;
   try {
-    res = await fetchBackendApi('/api/v1/admin/testimonials', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(parsed.data),
+    await prisma.testimonial.create({
+      data: parsed.data
     })
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error creating testimonial:', err)
+    return { success: false, error: err.message || 'Failed to create testimonial.' }
   }
 
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
   revalidatePath('/admin/testimonials')
+  revalidatePath('/')
   redirect('/admin/testimonials')
 }
 
@@ -69,71 +52,66 @@ export async function updateTestimonial(id: string, formData: FormData): Promise
   await requireAdmin()
 
   const data = {
-    customerName: (formData.get('customerName') as string)?.trim(),
-    review: (formData.get('review') as string)?.trim(),
-    locationContext: (formData.get('locationContext') as string)?.trim() || null,
+    customerName: (formData.get('customerName') as string)?.trim() || '',
     rating: parseInt((formData.get('rating') as string) || '5'),
-    sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
+    review: (formData.get('review') as string)?.trim() || '',
+    locationContext: (formData.get('locationContext') as string)?.trim() || null,
     isActive: formData.get('isActive') === 'on',
+    sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
   }
 
   const parsed = Schema.safeParse(data)
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0].message };
+    return { success: false, error: parsed.error.issues[0].message }
   }
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/testimonials/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(parsed.data),
+    await prisma.testimonial.update({
+      where: { id },
+      data: parsed.data
     })
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error updating testimonial:', err)
+    return { success: false, error: err.message || 'Failed to update testimonial.' }
   }
 
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
   revalidatePath('/admin/testimonials')
+  revalidatePath(`/admin/testimonials/${id}/edit`)
+  revalidatePath('/')
   redirect('/admin/testimonials')
 }
 
 export async function deactivateTestimonial(id: string): Promise<ActionResponse> {
   await requireAdmin()
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/testimonials/${id}/deactivate`, {
-      method: 'PATCH',
+    await prisma.testimonial.update({
+      where: { id },
+      data: { isActive: false }
     })
+
+    revalidatePath('/admin/testimonials')
+    revalidatePath('/')
+    return undefined
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error deactivating testimonial:', err)
+    return { success: false, error: err.message || 'Failed to deactivate testimonial.' }
   }
-
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/admin/testimonials')
-  return undefined;
 }
 
 export async function deleteTestimonial(id: string): Promise<ActionResponse> {
   await requireAdmin()
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/testimonials/${id}`, {
-      method: 'DELETE',
+    await prisma.testimonial.delete({
+      where: { id }
     })
+
+    revalidatePath('/admin/testimonials')
+    revalidatePath('/')
+    return undefined
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error deleting testimonial:', err)
+    return { success: false, error: err.message || 'Failed to delete testimonial.' }
   }
-
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/admin/testimonials')
-  return undefined;
 }

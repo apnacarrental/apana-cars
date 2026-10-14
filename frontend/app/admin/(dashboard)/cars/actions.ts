@@ -1,7 +1,7 @@
 'use server'
 
 import { requireAdmin } from '@/lib/admin-auth'
-import { fetchBackendApi } from '@/lib/backend-api'
+import prisma from '@/lib/prisma'
 import { uploadToCloudinary, deleteFromCloudinary } from '@/lib/cloudinary'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
@@ -9,38 +9,25 @@ import { redirect } from 'next/navigation'
 import { Transmission, FuelType } from '@prisma/client'
 
 const CarSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  slug: z.string().min(1, "Slug is required"),
-  brandId: z.string().uuid("Invalid Brand ID"),
+  name: z.string().min(1, 'Name is required'),
+  slug: z.string().min(1, 'Slug is required'),
+  brandId: z.string().uuid('Invalid Brand ID'),
   shortDescription: z.string().optional().nullable(),
   content: z.string().optional().nullable(),
-  seats: z.number().int().min(1, "At least 1 seat required").default(4),
-  luggage: z.number().int().min(0, "Luggage cannot be negative").default(2),
+  seats: z.number().int().min(1, 'At least 1 seat required').default(4),
+  luggage: z.number().int().min(0, 'Luggage cannot be negative').default(2),
   transmission: z.nativeEnum(Transmission).default(Transmission.AUTOMATIC),
   fuelType: z.nativeEnum(FuelType).default(FuelType.PETROL),
-  pricePerDay: z.number().min(0, "Price per day must be non-negative").default(1000),
-  petrolPricePerKm: z.number().min(0, "Price must be non-negative").optional().nullable(),
-  dieselPricePerKm: z.number().min(0, "Price must be non-negative").optional().nullable(),
-  electricPricePerKm: z.number().min(0, "Price must be non-negative").optional().nullable(),
-  hybridPricePerKm: z.number().min(0, "Price must be non-negative").optional().nullable(),
+  pricePerDay: z.number().min(0, 'Price per day must be non-negative').default(1000),
+  petrolPricePerKm: z.number().min(0, 'Price must be non-negative').optional().nullable(),
+  dieselPricePerKm: z.number().min(0, 'Price must be non-negative').optional().nullable(),
+  electricPricePerKm: z.number().min(0, 'Price must be non-negative').optional().nullable(),
+  hybridPricePerKm: z.number().min(0, 'Price must be non-negative').optional().nullable(),
   isActive: z.boolean().default(false),
   sortOrder: z.number().int().default(0),
 })
 
-export type ActionResponse = { success: false; error: string } | undefined;
-
-async function handleApiError(res: Response): Promise<ActionResponse> {
-  if (!res.ok) {
-    let errorMsg = `API Error: ${res.statusText}`;
-    try {
-      const data = await res.json();
-      if (data.message) errorMsg = data.message;
-      else if (data.error) errorMsg = data.error;
-    } catch (e) {}
-    return { success: false, error: errorMsg };
-  }
-  return undefined;
-}
+export type ActionResponse = { success: false; error: string } | undefined
 
 function slugify(text: string): string {
   return text
@@ -55,17 +42,21 @@ function slugify(text: string): string {
 }
 
 function parseOptionalFloat(val: FormDataEntryValue | null): number | null {
-  if (!val || typeof val !== 'string' || val.trim() === '') return null;
-  const num = parseFloat(val.trim());
-  return isNaN(num) ? null : num;
+  if (!val || typeof val !== 'string' || val.trim() === '') return null
+  const num = parseFloat(val.trim())
+  return isNaN(num) ? null : num
 }
 
 export async function createCar(formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
+  const rawName = (formData.get('name') as string)?.trim() || ''
+  const rawSlug = (formData.get('slug') as string) || rawName
+  const slug = slugify(rawSlug)
+
   const data = {
-    name: formData.get('name') as string,
-    slug: slugify((formData.get('slug') as string) || (formData.get('name') as string) || ''),
+    name: rawName,
+    slug,
     brandId: formData.get('brandId') as string,
     shortDescription: (formData.get('shortDescription') as string)?.trim() || null,
     content: (formData.get('description') as string)?.trim() || null,
@@ -84,24 +75,25 @@ export async function createCar(formData: FormData): Promise<ActionResponse> {
 
   const parsed = CarSchema.safeParse(data)
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0].message };
+    return { success: false, error: parsed.error.issues[0].message }
   }
 
-  let res: Response;
+  let newCar: any
   try {
-    res = await fetchBackendApi('/api/v1/admin/cars', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(parsed.data),
+    const existing = await prisma.car.findUnique({
+      where: { slug: parsed.data.slug }
+    })
+    if (existing) {
+      return { success: false, error: `A vehicle with slug "${parsed.data.slug}" already exists.` }
+    }
+
+    newCar = await prisma.car.create({
+      data: parsed.data
     })
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error creating car:', err)
+    return { success: false, error: err.message || 'Failed to create vehicle.' }
   }
-
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  const newCar = await res.json().catch(() => null)
 
   // Direct image upload support during car creation
   const imageFile = formData.get('carImage') as File | null
@@ -111,40 +103,43 @@ export async function createCar(formData: FormData): Promise<ActionResponse> {
       const buffer = Buffer.from(arrayBuffer)
       const uploadRes = await uploadToCloudinary(buffer, imageFile.type)
 
-      const mediaRes = await fetchBackendApi('/api/v1/admin/media', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const media = await prisma.media.create({
+        data: {
           publicId: uploadRes.public_id,
           secureUrl: uploadRes.secure_url,
           altText: `${parsed.data.name} Car Photo`,
-        }),
+        }
       })
 
-      if (mediaRes.ok) {
-        const media = await mediaRes.json()
-        await fetchBackendApi(`/api/v1/admin/cars/${newCar.id}/images`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mediaId: media.id, sortOrder: 0 }),
-        })
-      }
+      await prisma.carImage.create({
+        data: {
+          carId: newCar.id,
+          mediaId: media.id,
+          sortOrder: 0
+        }
+      })
     } catch (uploadErr) {
       console.warn('Direct image upload warning during createCar:', uploadErr)
     }
   }
 
   revalidatePath('/fleet')
+  revalidatePath(`/fleet/${parsed.data.slug}`)
   revalidatePath('/admin/cars')
+  revalidatePath('/')
   redirect('/admin/cars')
 }
 
 export async function updateCar(id: string, formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
+  const rawName = (formData.get('name') as string)?.trim() || ''
+  const rawSlug = (formData.get('slug') as string) || rawName
+  const slug = slugify(rawSlug)
+
   const data = {
-    name: formData.get('name') as string,
-    slug: slugify((formData.get('slug') as string) || (formData.get('name') as string) || ''),
+    name: rawName,
+    slug,
     brandId: formData.get('brandId') as string,
     shortDescription: (formData.get('shortDescription') as string)?.trim() || null,
     content: (formData.get('description') as string)?.trim() || null,
@@ -163,96 +158,107 @@ export async function updateCar(id: string, formData: FormData): Promise<ActionR
 
   const parsed = CarSchema.safeParse(data)
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0].message };
+    return { success: false, error: parsed.error.issues[0].message }
   }
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/cars/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(parsed.data),
+    const existing = await prisma.car.findFirst({
+      where: {
+        slug: parsed.data.slug,
+        NOT: { id }
+      }
     })
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
-  }
+    if (existing) {
+      return { success: false, error: `Another vehicle with slug "${parsed.data.slug}" already exists.` }
+    }
 
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
+    const previous = await prisma.car.findUnique({ where: { id }, select: { slug: true } })
+
+    await prisma.car.update({
+      where: { id },
+      data: parsed.data
+    })
+
+    if (previous?.slug && previous.slug !== parsed.data.slug) {
+      revalidatePath(`/fleet/${previous.slug}`)
+    }
+  } catch (err: any) {
+    console.error('Error updating car:', err)
+    return { success: false, error: err.message || 'Failed to update vehicle.' }
+  }
 
   revalidatePath('/fleet')
   revalidatePath(`/fleet/${parsed.data.slug}`)
   revalidatePath('/admin/cars')
+  revalidatePath('/')
   redirect('/admin/cars')
 }
 
 export async function deactivateCar(id: string): Promise<ActionResponse> {
   await requireAdmin()
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/cars/${id}/deactivate`, {
-      method: 'PATCH',
+    const car = await prisma.car.update({
+      where: { id },
+      data: { isActive: false }
     })
+
+    revalidatePath('/fleet')
+    if (car?.slug) revalidatePath(`/fleet/${car.slug}`)
+    revalidatePath('/admin/cars')
+    revalidatePath('/')
+    return undefined
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error deactivating car:', err)
+    return { success: false, error: err.message || 'Failed to deactivate car.' }
   }
-
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/fleet')
-  revalidatePath('/admin/cars')
-  return undefined;
 }
 
 export async function deleteCar(id: string): Promise<ActionResponse> {
   await requireAdmin()
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/cars/${id}`, {
-      method: 'DELETE',
+    // Remove car image relations first
+    await prisma.carImage.deleteMany({
+      where: { carId: id }
     })
+
+    const car = await prisma.car.delete({
+      where: { id }
+    })
+
+    revalidatePath('/fleet')
+    if (car?.slug) revalidatePath(`/fleet/${car.slug}`)
+    revalidatePath('/admin/cars')
+    revalidatePath('/')
+    return undefined
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error deleting car:', err)
+    return { success: false, error: err.message || 'Failed to delete car.' }
   }
-
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/fleet')
-  revalidatePath('/admin/cars')
-  return undefined;
 }
 
 export async function attachMediaToCar(carId: string, mediaId: string): Promise<{ error?: string; success?: boolean }> {
   await requireAdmin()
 
   try {
-    const res = await fetchBackendApi(`/api/v1/admin/cars/${carId}/images`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mediaId, sortOrder: 0 }),
+    const existing = await prisma.carImage.findUnique({
+      where: { carId_mediaId: { carId, mediaId } }
     })
-
-    if (!res.ok) {
-      let errorMsg = 'Failed to attach media';
-      try {
-        const data = await res.json();
-        if (data.message) errorMsg = data.message;
-        else if (data.error) errorMsg = data.error;
-      } catch (e) {}
-      return { error: errorMsg };
+    if (!existing) {
+      await prisma.carImage.create({
+        data: { carId, mediaId, sortOrder: 0 }
+      })
     }
 
-    const data = await res.json();
+    const car = await prisma.car.findUnique({ where: { id: carId }, select: { slug: true } })
     revalidatePath('/fleet')
-    if (data.carSlug) revalidatePath(`/fleet/${data.carSlug}`)
+    if (car?.slug) revalidatePath(`/fleet/${car.slug}`)
     revalidatePath(`/admin/cars/${carId}/edit`)
     return { success: true }
   } catch (err: any) {
-    return { error: err.message || 'Network error or backend unavailable' }
+    console.error('Error attaching media:', err)
+    return { error: err.message || 'Failed to attach image to vehicle' }
   }
 }
 
@@ -260,27 +266,18 @@ export async function removeMediaFromCar(carId: string, mediaId: string): Promis
   await requireAdmin()
 
   try {
-    const res = await fetchBackendApi(`/api/v1/admin/cars/${carId}/images/${mediaId}`, {
-      method: 'DELETE',
+    await prisma.carImage.deleteMany({
+      where: { carId, mediaId }
     })
 
-    if (!res.ok) {
-      let errorMsg = 'Failed to remove media';
-      try {
-        const data = await res.json();
-        if (data.message) errorMsg = data.message;
-        else if (data.error) errorMsg = data.error;
-      } catch (e) {}
-      return { error: errorMsg };
-    }
-
-    const data = await res.json().catch(() => ({}));
+    const car = await prisma.car.findUnique({ where: { id: carId }, select: { slug: true } })
     revalidatePath('/fleet')
-    if (data?.carSlug) revalidatePath(`/fleet/${data.carSlug}`)
+    if (car?.slug) revalidatePath(`/fleet/${car.slug}`)
     revalidatePath(`/admin/cars/${carId}/edit`)
     return { success: true }
   } catch (err: any) {
-    return { error: err.message || 'Network error or backend unavailable' }
+    console.error('Error removing media:', err)
+    return { error: err.message || 'Failed to remove media from vehicle' }
   }
 }
 
@@ -305,51 +302,23 @@ export async function uploadAndAttachCarImage(carId: string, formData: FormData)
   try {
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
-
     const uploadRes = await uploadToCloudinary(buffer, file.type)
 
-    const mediaRes = await fetchBackendApi('/api/v1/admin/media', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const media = await prisma.media.create({
+      data: {
         publicId: uploadRes.public_id,
         secureUrl: uploadRes.secure_url,
         altText: altText || null,
-      }),
+      }
     })
 
-    if (!mediaRes.ok) {
-      await deleteFromCloudinary(uploadRes.public_id).catch(() => {})
-      let errText = 'Failed to create media record';
-      try {
-        const d = await mediaRes.json();
-        if (d.message) errText = d.message;
-        else if (d.error) errText = d.error;
-      } catch (e) {}
-      return { error: errText };
-    }
-
-    const media = await mediaRes.json()
-
-    const attachRes = await fetchBackendApi(`/api/v1/admin/cars/${carId}/images`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mediaId: media.id, sortOrder: 0 }),
+    await prisma.carImage.create({
+      data: { carId, mediaId: media.id, sortOrder: 0 }
     })
 
-    if (!attachRes.ok) {
-      let errText = 'Failed to link image to car';
-      try {
-        const d = await attachRes.json();
-        if (d.message) errText = d.message;
-        else if (d.error) errText = d.error;
-      } catch (e) {}
-      return { error: errText };
-    }
-
-    const data = await attachRes.json()
+    const car = await prisma.car.findUnique({ where: { id: carId }, select: { slug: true } })
     revalidatePath('/fleet')
-    if (data?.carSlug) revalidatePath(`/fleet/${data.carSlug}`)
+    if (car?.slug) revalidatePath(`/fleet/${car.slug}`)
     revalidatePath(`/admin/cars/${carId}/edit`)
     return { success: true }
   } catch (err: any) {

@@ -1,135 +1,161 @@
-﻿'use server'
+'use server'
 
 import { requireAdmin } from '@/lib/admin-auth'
-import { fetchBackendApi } from '@/lib/backend-api'
+import prisma from '@/lib/prisma'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { sanitizeHtml } from '@/lib/sanitize'
+import { BlogStatus } from '@prisma/client'
 
-const BlogSchema = z.object({
-  title: z.string().min(2, "Title must be at least 2 characters"),
-  slug: z.string().min(2, "Slug must be at least 2 characters"),
+const Schema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  slug: z.string().min(1, 'Slug is required'),
   excerpt: z.string().optional().nullable(),
   content: z.string().optional().nullable(),
-  status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']).default('DRAFT'),
-  categoryId: z.string().uuid("Invalid categoryId format").optional().nullable(),
+  status: z.nativeEnum(BlogStatus),
+  categoryId: z.string().uuid().optional().nullable(),
+  publishedAt: z.date().optional().nullable(),
 })
 
-export type ActionResponse = { success: false; error: string } | undefined;
+export type ActionResponse = { success: false; error: string } | undefined
 
-async function handleApiError(res: Response): Promise<ActionResponse> {
-  if (!res.ok) {
-    let errorMsg = `API Error: ${res.statusText}`;
-    try {
-      const data = await res.json();
-      if (data.message) errorMsg = data.message;
-      else if (data.error) errorMsg = data.error;
-    } catch (e) {}
-    return { success: false, error: errorMsg };
-  }
-  return undefined;
+function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '')
+}
+
+function parseOptionalId(val: FormDataEntryValue | null): string | null {
+  if (!val || typeof val !== 'string' || val.trim() === '' || val === 'none') return null
+  return val.trim()
 }
 
 export async function createBlog(formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
+  const rawTitle = (formData.get('title') as string)?.trim() || ''
+  const rawSlug = (formData.get('slug') as string) || rawTitle
+  const slug = slugify(rawSlug)
+
+  const status = ((formData.get('status') as string)?.toUpperCase() as BlogStatus) || BlogStatus.DRAFT
+
   const data = {
-    title: (formData.get('title') as string)?.trim(),
-    slug: (formData.get('slug') as string)?.trim(),
+    title: rawTitle,
+    slug,
     excerpt: (formData.get('excerpt') as string)?.trim() || null,
-    content: (formData.get('content') as string) || null,
-    status: (formData.get('status') as any) || 'DRAFT',
-    categoryId: formData.get('categoryId') ? (formData.get('categoryId') as string) : null,
+    content: (formData.get('content') as string)?.trim() || null,
+    status,
+    categoryId: parseOptionalId(formData.get('categoryId')),
+    publishedAt: status === BlogStatus.PUBLISHED ? new Date() : null,
   }
 
-  const parsed = BlogSchema.safeParse(data)
+  const parsed = Schema.safeParse(data)
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0].message };
+    return { success: false, error: parsed.error.issues[0].message }
   }
 
-  const payload = { ...parsed.data };
-  if (payload.content) {
-    payload.content = sanitizeHtml(payload.content);
-  }
-
-  let res: Response;
   try {
-    res = await fetchBackendApi('/api/v1/admin/blogs', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    const existing = await prisma.blog.findUnique({
+      where: { slug: parsed.data.slug }
+    })
+    if (existing) {
+      return { success: false, error: `A blog post with slug "${parsed.data.slug}" already exists.` }
+    }
+
+    await prisma.blog.create({
+      data: parsed.data
     })
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error creating blog:', err)
+    return { success: false, error: err.message || 'Failed to create blog post.' }
   }
 
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/blog')
   revalidatePath('/admin/blogs')
+  revalidatePath('/blog')
+  revalidatePath(`/blog/${parsed.data.slug}`)
+  revalidatePath('/')
   redirect('/admin/blogs')
 }
 
 export async function updateBlog(id: string, formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
+  const rawTitle = (formData.get('title') as string)?.trim() || ''
+  const rawSlug = (formData.get('slug') as string) || rawTitle
+  const slug = slugify(rawSlug)
+
+  const status = ((formData.get('status') as string)?.toUpperCase() as BlogStatus) || BlogStatus.DRAFT
+
   const data = {
-    title: (formData.get('title') as string)?.trim(),
-    slug: (formData.get('slug') as string)?.trim(),
+    title: rawTitle,
+    slug,
     excerpt: (formData.get('excerpt') as string)?.trim() || null,
-    content: (formData.get('content') as string) || null,
-    status: (formData.get('status') as any) || 'DRAFT',
-    categoryId: formData.get('categoryId') ? (formData.get('categoryId') as string) : null,
+    content: (formData.get('content') as string)?.trim() || null,
+    status,
+    categoryId: parseOptionalId(formData.get('categoryId')),
+    publishedAt: status === BlogStatus.PUBLISHED ? new Date() : null,
   }
 
-  const parsed = BlogSchema.safeParse(data)
+  const parsed = Schema.safeParse(data)
   if (!parsed.success) {
-    return { success: false, error: parsed.error.issues[0].message };
+    return { success: false, error: parsed.error.issues[0].message }
   }
 
-  const payload = { ...parsed.data };
-  if (payload.content) {
-    payload.content = sanitizeHtml(payload.content);
-  }
-
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/blogs/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    const existing = await prisma.blog.findFirst({
+      where: {
+        slug: parsed.data.slug,
+        NOT: { id }
+      }
     })
+    if (existing) {
+      return { success: false, error: `Another blog post with slug "${parsed.data.slug}" already exists.` }
+    }
+
+    const previous = await prisma.blog.findUnique({ where: { id }, select: { slug: true } })
+
+    await prisma.blog.update({
+      where: { id },
+      data: parsed.data
+    })
+
+    if (previous?.slug && previous.slug !== parsed.data.slug) {
+      revalidatePath(`/blog/${previous.slug}`)
+    }
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error updating blog:', err)
+    return { success: false, error: err.message || 'Failed to update blog post.' }
   }
 
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
+  revalidatePath('/admin/blogs')
+  revalidatePath(`/admin/blogs/${id}/edit`)
   revalidatePath('/blog')
   revalidatePath(`/blog/${parsed.data.slug}`)
-  revalidatePath('/admin/blogs')
+  revalidatePath('/')
   redirect('/admin/blogs')
 }
 
 export async function deleteBlog(id: string): Promise<ActionResponse> {
   await requireAdmin()
 
-  let res: Response;
   try {
-    res = await fetchBackendApi(`/api/v1/admin/blogs/${id}`, {
-      method: 'DELETE',
+    const b = await prisma.blog.delete({
+      where: { id }
     })
+
+    revalidatePath('/admin/blogs')
+    revalidatePath('/blog')
+    if (b?.slug) revalidatePath(`/blog/${b.slug}`)
+    revalidatePath('/')
+    return undefined
   } catch (err: any) {
-    return { success: false, error: err.message || 'Network error or backend unavailable' };
+    console.error('Error deleting blog:', err)
+    return { success: false, error: err.message || 'Failed to delete blog post.' }
   }
-
-  const errorObj = await handleApiError(res)
-  if (errorObj) return errorObj;
-
-  revalidatePath('/blog')
-  revalidatePath('/admin/blogs')
-  return undefined;
 }

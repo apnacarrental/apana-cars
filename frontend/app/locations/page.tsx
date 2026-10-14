@@ -1,4 +1,4 @@
-﻿import { MapPin, ArrowRight } from 'lucide-react'
+import { MapPin, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { getLocations } from '@/lib/data/db'
 import { Header } from '@/components/layout/header'
@@ -8,11 +8,16 @@ import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
-export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
-  fallbackTitle: 'Locations | Apna Car Rental',
-  fallbackDescription: 'Find Apna Car Rental in a city near you.',
-  path: '/locations'
-}) }
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+export async function generateMetadata(): Promise<Metadata> { 
+  return await buildMetadata({
+    fallbackTitle: 'Car Rental Locations in Hyderabad & Outstation | Apna Cars',
+    fallbackDescription: 'Explore our 24/7 car rental pickup hubs across Hyderabad, RGIA Airport Shamshabad, Hitec City, Gachibowli, Secunderabad, and Srisailam.',
+    path: '/locations'
+  }) 
+}
 
 export default async function LocationsPage() {
   const locations = await getLocations()
@@ -45,4 +50,3 @@ export default async function LocationsPage() {
     </>
   )
 }
-

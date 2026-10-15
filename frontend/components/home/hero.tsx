@@ -38,9 +38,21 @@ export function HeroSection() {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mb-8">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mb-5 md:mb-8">
             Comfortable, safe and reliable chauffeur-driven cars for local travel, airport transfers, outstation trips, corporate bookings, weddings and more.
           </p>
+
+          {/* Mobile View Hero Image - Charminar & Fleet */}
+          <div className="block md:hidden my-4 relative w-full aspect-[649/285] rounded-xl overflow-hidden shadow-xs border border-slate-200/80 bg-white/60">
+            <Image
+              src="/images/hero_charminar_perfect.png"
+              alt="Apna Car Rental Fleet at Charminar Hyderabad"
+              fill
+              priority
+              className="object-contain"
+              sizes="100vw"
+            />
+          </div>
 
           {/* 4 Trust Badges in a Row matching reference */}
           <motion.div

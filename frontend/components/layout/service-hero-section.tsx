@@ -63,13 +63,25 @@ export function ServiceHeroSection({
             </h1>
 
             {/* Subtitle */}
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mb-6">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mb-4">
               {subtitle}
             </p>
 
+            {/* Mobile View Hero Image - Charminar & Fleet */}
+            <div className="block md:hidden my-4 relative w-full aspect-[649/285] rounded-xl overflow-hidden shadow-xs border border-slate-200/80 bg-white/60">
+              <Image
+                src="/images/hero_charminar_perfect.png"
+                alt="Apna Car Rental Fleet at Charminar Hyderabad"
+                fill
+                priority
+                className="object-contain"
+                sizes="100vw"
+              />
+            </div>
+
             {/* Optional extra action / pill selectors */}
             {extraAction && (
-              <div className="mb-6">
+              <div className="mb-4">
                 {extraAction}
               </div>
             )}

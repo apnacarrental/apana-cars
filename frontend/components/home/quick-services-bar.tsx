@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { 
   Car, 
@@ -55,13 +55,9 @@ function getServiceIcon(slug: string, title: string) {
 
 export function QuickServicesBar({ services }: QuickServicesBarProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -340 : 340
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
-    }
-  }
+  const isHoveredRef = useRef(false)
+  const isInteractingRef = useRef(false)
+  const resumeTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   // Use admin database services, with fallback
   const displayServices = services && services.length > 0 ? services : [
@@ -74,8 +70,72 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
     { id: '7', title: 'On-Demand Driver', slug: 'contact', shortDescription: 'Temporary & Permanent' },
   ]
 
+  const pauseAutoScroll = (duration = 3500) => {
+    isInteractingRef.current = true
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current)
+    resumeTimerRef.current = setTimeout(() => {
+      isInteractingRef.current = false
+    }, duration)
+  }
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      pauseAutoScroll(4000)
+      const el = scrollRef.current
+      const halfWidth = el.scrollWidth / 2
+
+      if (direction === 'left' && el.scrollLeft <= 10 && halfWidth > 0) {
+        el.scrollLeft += halfWidth
+      }
+
+      const scrollAmount = direction === 'left' ? -420 : 420
+      el.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+    }
+  }
+
+  // Smooth continuous auto-scrolling loop with increased speed
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    // Honor users who prefer reduced motion
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return
+    }
+
+    let animationId: number
+    const speed = 2.0 // Brisk, active auto-scrolling speed (2.5x previous rate)
+
+    const tick = () => {
+      if (el && !isHoveredRef.current && !isInteractingRef.current) {
+        const halfWidth = el.scrollWidth / 2
+        if (halfWidth > 0) {
+          if (el.scrollLeft >= halfWidth) {
+            el.scrollLeft -= halfWidth
+          } else {
+            el.scrollLeft += speed
+          }
+        }
+      }
+      animationId = requestAnimationFrame(tick)
+    }
+
+    animationId = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(animationId)
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current)
+    }
+  }, [displayServices])
+
   return (
-    <section className="bg-white/95 backdrop-blur-md sticky top-[68px] min-[801px]:top-[78px] z-30 border-y border-slate-200/90 py-2.5 sm:py-3 shadow-xs relative transition-all duration-200">
+    <section 
+      aria-label="Quick Cab Services Bar"
+      className="bg-white/95 backdrop-blur-md sticky top-[68px] min-[801px]:top-[78px] z-30 border-y border-slate-200/90 py-2.5 sm:py-3 shadow-xs relative transition-all duration-200"
+      onMouseEnter={() => { isHoveredRef.current = true }}
+      onMouseLeave={() => { isHoveredRef.current = false }}
+      onTouchStart={() => pauseAutoScroll(4000)}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Left Scroll Button */}
         <button
@@ -87,60 +147,65 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
           <ChevronLeft size={16} />
         </button>
 
-        {/* Scrollable Container of Admin Services */}
+        {/* Scrollable Container with duplicated items for seamless infinite loop */}
         <div
           ref={scrollRef}
           className="flex items-center gap-3 overflow-x-auto scroll-smooth py-1 px-1 sm:px-7 select-none"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {displayServices.map((srv) => {
-            const Icon = getServiceIcon(srv.slug, srv.title)
-            const href = DEDICATED_ROUTES.has(srv.slug) ? `/${srv.slug}` : `/services/${srv.slug}`
-            return (
+          {[0, 1].map((setIndex) => (
+            <React.Fragment key={`set-${setIndex}`}>
+              {displayServices.map((srv) => {
+                const Icon = getServiceIcon(srv.slug, srv.title)
+                const href = DEDICATED_ROUTES.has(srv.slug) ? `/${srv.slug}` : `/services/${srv.slug}`
+                return (
+                  <Link
+                    key={`${srv.id}-${setIndex}`}
+                    href={href}
+                    className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/70 hover:bg-[#FBF9F5] border border-slate-200/70 hover:border-slate-300 transition-all shrink-0 min-w-[220px] max-w-[260px] cursor-pointer"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white border border-slate-200 group-hover:bg-[#0A2540] group-hover:text-white group-hover:border-[#0A2540] flex items-center justify-center text-[#0A2540] transition-all shadow-2xs shrink-0">
+                      <Icon size={18} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <strong className="text-[12.5px] font-bold text-slate-900 group-hover:text-[#ECA00A] transition-colors block leading-tight truncate">
+                        {srv.title}
+                      </strong>
+                      <span className="text-[10px] text-slate-500 font-medium block leading-tight mt-0.5 truncate">
+                        {srv.shortDescription || 'Hyderabad Cab Service'}
+                      </span>
+                      {srv.startingPrice ? (
+                        <div className="mt-1 flex items-center gap-1">
+                          <span className="inline-flex items-center gap-1 font-mono text-[11px] font-extrabold text-[#0F172A] bg-amber-50 text-amber-900 border border-amber-200/60 px-1.5 py-0.5 rounded leading-none">
+                            ₹{Number(srv.startingPrice).toLocaleString('en-IN')}{srv.priceUnit ? <span className="font-sans font-medium text-[9.5px] text-slate-600">/ {srv.priceUnit}</span> : ''}
+                          </span>
+                        </div>
+                      ) : null}
+                    </div>
+                  </Link>
+                )
+              })}
+
+              {/* Dedicated "More Services →" Arrow Item */}
               <Link
-                key={srv.id}
-                href={href}
-                className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/70 hover:bg-[#FBF9F5] border border-slate-200/70 hover:border-slate-300 transition-all shrink-0 min-w-[220px] max-w-[260px] cursor-pointer"
+                key={`more-${setIndex}`}
+                href="/services"
+                className="group flex items-center gap-3 p-2.5 rounded-xl bg-amber-50/70 hover:bg-[#ECA00A] border border-amber-200/90 hover:border-[#ECA00A] transition-all shrink-0 min-w-[190px] cursor-pointer shadow-xs"
               >
-                <div className="w-10 h-10 rounded-full bg-white border border-slate-200 group-hover:bg-[#0A2540] group-hover:text-white group-hover:border-[#0A2540] flex items-center justify-center text-[#0A2540] transition-all shadow-2xs shrink-0">
-                  <Icon size={18} />
+                <div className="w-10 h-10 rounded-full bg-[#ECA00A] group-hover:bg-[#0A2540] text-[#0A2540] group-hover:text-white flex items-center justify-center transition-all shadow-xs shrink-0">
+                  <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <strong className="text-[12.5px] font-bold text-slate-900 group-hover:text-[#ECA00A] transition-colors block leading-tight truncate">
-                    {srv.title}
+                  <strong className="text-[12.5px] font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors block leading-tight">
+                    More Services
                   </strong>
-                  <span className="text-[10px] text-slate-500 font-medium block leading-tight mt-0.5 truncate">
-                    {srv.shortDescription || 'Hyderabad Cab Service'}
+                  <span className="text-[10px] text-amber-900/80 group-hover:text-slate-900 font-bold block leading-tight mt-0.5">
+                    Explore All Services →
                   </span>
-                  {srv.startingPrice ? (
-                    <div className="mt-1 flex items-center gap-1">
-                      <span className="inline-flex items-center gap-1 font-mono text-[11px] font-extrabold text-[#0F172A] bg-amber-50 text-amber-900 border border-amber-200/60 px-1.5 py-0.5 rounded leading-none">
-                        ₹{Number(srv.startingPrice).toLocaleString('en-IN')}{srv.priceUnit ? <span className="font-sans font-medium text-[9.5px] text-slate-600">/ {srv.priceUnit}</span> : ''}
-                      </span>
-                    </div>
-                  ) : null}
                 </div>
               </Link>
-            )
-          })}
-
-          {/* Dedicated "More Services →" Arrow Item */}
-          <Link
-            href="/services"
-            className="group flex items-center gap-3 p-2.5 rounded-xl bg-amber-50/70 hover:bg-[#ECA00A] border border-amber-200/90 hover:border-[#ECA00A] transition-all shrink-0 min-w-[190px] cursor-pointer shadow-xs"
-          >
-            <div className="w-10 h-10 rounded-full bg-[#ECA00A] group-hover:bg-[#0A2540] text-[#0A2540] group-hover:text-white flex items-center justify-center transition-all shadow-xs shrink-0">
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <strong className="text-[12.5px] font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors block leading-tight">
-                More Services
-              </strong>
-              <span className="text-[10px] text-amber-900/80 group-hover:text-slate-900 font-bold block leading-tight mt-0.5">
-                Explore All Services →
-              </span>
-            </div>
-          </Link>
+            </React.Fragment>
+          ))}
         </div>
 
         {/* Right Scroll Button */}

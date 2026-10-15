@@ -65,7 +65,10 @@ export async function createService(formData: FormData): Promise<ActionResponse>
   }
 
   revalidatePath('/admin/services')
+  revalidatePath('/services')
+  revalidatePath(`/services/${parsed.data.slug}`)
   revalidatePath(`/${parsed.data.slug}`)
+  revalidatePath('/', 'layout')
   revalidatePath('/')
   redirect('/admin/services')
 }
@@ -118,7 +121,10 @@ export async function updateService(id: string, formData: FormData): Promise<Act
 
   revalidatePath('/admin/services')
   revalidatePath(`/admin/services/${id}/edit`)
+  revalidatePath('/services')
+  revalidatePath(`/services/${parsed.data.slug}`)
   revalidatePath(`/${parsed.data.slug}`)
+  revalidatePath('/', 'layout')
   revalidatePath('/')
   redirect('/admin/services')
 }
@@ -133,7 +139,12 @@ export async function deactivateService(id: string): Promise<ActionResponse> {
     })
 
     revalidatePath('/admin/services')
-    if (srv?.slug) revalidatePath(`/${srv.slug}`)
+    revalidatePath('/services')
+    if (srv?.slug) {
+      revalidatePath(`/services/${srv.slug}`)
+      revalidatePath(`/${srv.slug}`)
+    }
+    revalidatePath('/', 'layout')
     revalidatePath('/')
     return undefined
   } catch (err: any) {
@@ -151,7 +162,12 @@ export async function deleteService(id: string): Promise<ActionResponse> {
     })
 
     revalidatePath('/admin/services')
-    if (srv?.slug) revalidatePath(`/${srv.slug}`)
+    revalidatePath('/services')
+    if (srv?.slug) {
+      revalidatePath(`/services/${srv.slug}`)
+      revalidatePath(`/${srv.slug}`)
+    }
+    revalidatePath('/', 'layout')
     revalidatePath('/')
     return undefined
   } catch (err: any) {

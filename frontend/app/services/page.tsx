@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getServices } from '@/lib/data/db'
 import { Header } from '@/components/layout/header'
@@ -7,9 +7,12 @@ import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
-  fallbackTitle: 'Our Services | Apna Car Rental',
-  fallbackDescription: 'Explore the premium car rental services we offer.',
+  fallbackTitle: 'Our Services | Apna Cars',
+  fallbackDescription: 'Explore the premium cab and travel services we offer across Hyderabad.',
   path: '/services'
 }) }
 

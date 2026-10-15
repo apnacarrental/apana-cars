@@ -20,6 +20,9 @@ import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { buildMetadata, getBaseUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
   fallbackTitle: 'Apna Cars | Hyderabad Cab Services & Chauffeur Travel',
   fallbackDescription: 'Premium chauffeur-driven cabs, airport transfers, sightseeing tours, and outstation rentals across Hyderabad and beyond.',

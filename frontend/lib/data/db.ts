@@ -228,7 +228,7 @@ export const getServices = cache(async () => {
   try {
     const services = await prisma.service.findMany({
       where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
     });
     if (services && services.length > 0) return services;
   } catch (e) {

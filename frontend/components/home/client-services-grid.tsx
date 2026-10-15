@@ -9,21 +9,32 @@ interface ClientServicesGridProps {
   services: any[]
 }
 
+const DEDICATED_ROUTES = new Set([
+  'airport-cabs',
+  'hourly-cabs',
+  'sightseeing-cabs',
+  'outstation-cabs',
+  'srisailam-cabs',
+  'force-urbania-rent-in-hyderabad'
+])
+
 export function ClientServicesGrid({ services }: ClientServicesGridProps) {
   return (
     <div className="service-grid">
-      {services.map((srv, index) => (
-        <motion.div
-          key={srv.id}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <Link 
-            className="service-card group hover:bg-neutral-50/80 p-6 rounded-lg transition-all duration-300 relative flex items-start" 
-            href={`/${srv.slug}`}
+      {services.map((srv, index) => {
+        const serviceHref = DEDICATED_ROUTES.has(srv.slug) ? `/${srv.slug}` : `/services/${srv.slug}`
+        return (
+          <motion.div
+            key={srv.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
           >
+            <Link 
+              className="service-card group hover:bg-neutral-50/80 p-6 rounded-lg transition-all duration-300 relative flex items-start" 
+              href={serviceHref}
+            >
             <span className="service-number font-mono text-sm text-neutral-400 group-hover:text-neutral-900 transition-colors">
               {srv.sortOrder ? srv.sortOrder.toString().padStart(2, '0') : (index + 1).toString().padStart(2, '0')}
             </span>
@@ -40,7 +51,7 @@ export function ClientServicesGrid({ services }: ClientServicesGridProps) {
             </div>
           </Link>
         </motion.div>
-      ))}
+      )})}
     </div>
   )
 }

@@ -232,12 +232,10 @@ let serviceColumnsEnsured = false;
 async function ensureDbColumns() {
   if (serviceColumnsEnsured) return;
   try {
-    await prisma.$executeRawUnsafe(`
-      ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "startingPrice" DOUBLE PRECISION;
-      ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "priceUnit" TEXT;
-      ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "showInQuickBar" BOOLEAN DEFAULT true;
-      ALTER TABLE "Lead" ADD COLUMN IF NOT EXISTS "passengers" TEXT;
-    `);
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "startingPrice" DOUBLE PRECISION;`).catch(() => {});
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "priceUnit" TEXT;`).catch(() => {});
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "showInQuickBar" BOOLEAN DEFAULT true;`).catch(() => {});
+    await prisma.$executeRawUnsafe(`ALTER TABLE "Lead" ADD COLUMN IF NOT EXISTS "passengers" TEXT;`).catch(() => {});
     serviceColumnsEnsured = true;
   } catch (err) {
     // safe to ignore
@@ -251,8 +249,8 @@ export const getServices = cache(async () => {
       orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
     });
     if (services && services.length > 0) return services;
-  } catch (e) {
-    console.warn('getServices db error, attempting auto-migration:', e);
+  } catch (e: any) {
+    console.warn('getServices db error, attempting auto-migration:', e?.message || e);
     await ensureDbColumns();
     try {
       const services = await prisma.service.findMany({
@@ -262,6 +260,17 @@ export const getServices = cache(async () => {
       if (services && services.length > 0) return services;
     } catch (retryErr) {
       console.warn('Retry failed, using fallback:', retryErr);
+      try {
+        const rawServices: any[] = await prisma.$queryRawUnsafe(`
+          SELECT id, title, slug, "shortDescription", "sortOrder", "startingPrice", "priceUnit", "isActive"
+          FROM "Service"
+          WHERE "isActive" = true
+          ORDER BY "sortOrder" ASC
+        `);
+        if (rawServices && rawServices.length > 0) return rawServices;
+      } catch (rawErr) {
+        // ignore
+      }
     }
   }
   return FALLBACK_SERVICES as any[];

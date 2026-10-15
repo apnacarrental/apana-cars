@@ -22,14 +22,13 @@ export default async function AdminServicesPage() {
       orderBy: { sortOrder: 'asc' }
     })
   } catch (err: any) {
-    console.error('Error querying services in admin, executing self-healing schema migration:', err)
+    console.error('Error querying services in admin, executing self-healing schema migration:', err?.message || err)
     try {
-      await prisma.$executeRawUnsafe(`
-        ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "startingPrice" DOUBLE PRECISION;
-        ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "priceUnit" TEXT;
-        ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "showInQuickBar" BOOLEAN DEFAULT true;
-        ALTER TABLE "Lead" ADD COLUMN IF NOT EXISTS "passengers" TEXT;
-      `)
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "startingPrice" DOUBLE PRECISION;`).catch(() => {})
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "priceUnit" TEXT;`).catch(() => {})
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "showInQuickBar" BOOLEAN DEFAULT true;`).catch(() => {})
+      await prisma.$executeRawUnsafe(`ALTER TABLE "Lead" ADD COLUMN IF NOT EXISTS "passengers" TEXT;`).catch(() => {})
+
       items = await prisma.service.findMany({
         orderBy: { sortOrder: 'asc' }
       })
@@ -37,7 +36,7 @@ export default async function AdminServicesPage() {
       console.error('Retry after schema fix failed, falling back to base columns:', retryErr)
       try {
         items = await prisma.$queryRawUnsafe(`
-          SELECT id, title, slug, "shortDescription", "content", "isActive", "showInQuickBar", "sortOrder", "seoMetadata"
+          SELECT id, title, slug, "shortDescription", "content", "isActive", true as "showInQuickBar", "sortOrder", "seoMetadata"
           FROM "Service"
           ORDER BY "sortOrder" ASC
         `)

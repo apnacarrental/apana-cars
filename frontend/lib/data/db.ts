@@ -355,7 +355,7 @@ export const getPublishedBlogs = cache(async () => {
   try {
     const blogs = await prisma.blog.findMany({
       where: { status: 'PUBLISHED' },
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ publishedAt: 'desc' }, { createdAt: 'desc' }],
       include: { category: true }
     });
     if (blogs && blogs.length > 0) return blogs;

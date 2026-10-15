@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEditor, EditorContent, Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -133,14 +133,17 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
 }
 
 export function RichTextEditor({ 
-  value, 
+  value = '', 
   onChange,
   name
 }: { 
-  value: string, 
+  value?: string, 
   onChange?: (html: string) => void,
   name?: string
 }) {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [contentHtml, setContentHtml] = useState(value)
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -170,10 +173,21 @@ export function RichTextEditor({
     },
     onUpdate: ({ editor }) => {
       const html = editor.getHTML()
+      setContentHtml(html)
+      if (inputRef.current) {
+        inputRef.current.value = html
+      }
       if (onChange) {
         onChange(html)
       }
     },
+  })
+
+  // Sync editor if initial value changes externally
+  useState(() => {
+    if (editor && value && value !== editor.getHTML()) {
+      editor.commands.setContent(value)
+    }
   })
 
   return (
@@ -182,8 +196,8 @@ export function RichTextEditor({
       <div className="overflow-y-auto max-h-[800px]">
         <EditorContent editor={editor} />
       </div>
-      {/* Hidden input to allow form submission to pick up the value if used inside a traditional form without JS handlers */}
-      {name && <input type="hidden" name={name} value={editor?.getHTML() || value} />}
+      {/* Hidden input to ensure form submission captures the latest editor content */}
+      {name && <input ref={inputRef} type="hidden" name={name} value={contentHtml} />}
     </div>
   )
 }

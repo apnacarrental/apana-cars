@@ -14,6 +14,7 @@ import { CorporateSection } from '@/components/home/corporate-section'
 import { LocationsSection } from '@/components/home/locations-section'
 import { TestimonialsSection } from '@/components/home/testimonials-section'
 import { HyderabadTravelGuideCards } from '@/components/home/hyderabad-travel-guide-cards'
+import { HomeBlogSection } from '@/components/home/home-blog-section'
 import { FaqSection } from '@/components/home/faq-section'
 import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
@@ -48,6 +49,7 @@ export default function Page() {
         <CorporateSection />
         <LocationsSection />
         <TestimonialsSection />
+        <HomeBlogSection />
         <FaqSection />
         <FinalCtaSection />
       </main>

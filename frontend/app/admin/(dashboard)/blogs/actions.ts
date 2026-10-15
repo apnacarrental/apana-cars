@@ -45,11 +45,22 @@ export async function createBlog(formData: FormData): Promise<ActionResponse> {
 
   const status = ((formData.get('status') as string)?.toUpperCase() as BlogStatus) || BlogStatus.DRAFT
 
+  let excerpt = (formData.get('excerpt') as string)?.trim() || null
+  const content = (formData.get('content') as string)?.trim() || null
+
+  // Auto-generate excerpt from content if excerpt is not provided
+  if (!excerpt && content) {
+    const plainText = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+    if (plainText) {
+      excerpt = plainText.length > 160 ? plainText.substring(0, 157) + '...' : plainText
+    }
+  }
+
   const data = {
     title: rawTitle,
     slug,
-    excerpt: (formData.get('excerpt') as string)?.trim() || null,
-    content: (formData.get('content') as string)?.trim() || null,
+    excerpt,
+    content,
     status,
     categoryId: parseOptionalId(formData.get('categoryId')),
     publishedAt: status === BlogStatus.PUBLISHED ? new Date() : null,
@@ -79,6 +90,7 @@ export async function createBlog(formData: FormData): Promise<ActionResponse> {
   revalidatePath('/admin/blogs')
   revalidatePath('/blog')
   revalidatePath(`/blog/${parsed.data.slug}`)
+  revalidatePath('/', 'layout')
   revalidatePath('/')
   redirect('/admin/blogs')
 }
@@ -92,11 +104,22 @@ export async function updateBlog(id: string, formData: FormData): Promise<Action
 
   const status = ((formData.get('status') as string)?.toUpperCase() as BlogStatus) || BlogStatus.DRAFT
 
+  let excerpt = (formData.get('excerpt') as string)?.trim() || null
+  const content = (formData.get('content') as string)?.trim() || null
+
+  // Auto-generate excerpt from content if excerpt is not provided
+  if (!excerpt && content) {
+    const plainText = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+    if (plainText) {
+      excerpt = plainText.length > 160 ? plainText.substring(0, 157) + '...' : plainText
+    }
+  }
+
   const data = {
     title: rawTitle,
     slug,
-    excerpt: (formData.get('excerpt') as string)?.trim() || null,
-    content: (formData.get('content') as string)?.trim() || null,
+    excerpt,
+    content,
     status,
     categoryId: parseOptionalId(formData.get('categoryId')),
     publishedAt: status === BlogStatus.PUBLISHED ? new Date() : null,
@@ -137,6 +160,7 @@ export async function updateBlog(id: string, formData: FormData): Promise<Action
   revalidatePath(`/admin/blogs/${id}/edit`)
   revalidatePath('/blog')
   revalidatePath(`/blog/${parsed.data.slug}`)
+  revalidatePath('/', 'layout')
   revalidatePath('/')
   redirect('/admin/blogs')
 }
@@ -152,6 +176,7 @@ export async function deleteBlog(id: string): Promise<ActionResponse> {
     revalidatePath('/admin/blogs')
     revalidatePath('/blog')
     if (b?.slug) revalidatePath(`/blog/${b.slug}`)
+    revalidatePath('/', 'layout')
     revalidatePath('/')
     return undefined
   } catch (err: any) {

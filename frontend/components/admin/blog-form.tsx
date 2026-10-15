@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useTransition, useState } from 'react'
 import { createBlog, updateBlog } from '@/app/admin/(dashboard)/blogs/actions'
@@ -9,11 +9,13 @@ import { AlertCircle } from 'lucide-react'
 export function BlogForm({ blog, categories }: { blog?: any, categories: any[] }) {
   const [isPending, startTransition] = useTransition()
   const [formError, setFormError] = useState<string | null>(null)
+  const [content, setContent] = useState<string>(blog?.content || '')
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setFormError(null)
     const formData = new FormData(e.currentTarget)
+    formData.set('content', content)
 
     startTransition(async () => {
       const res = blog
@@ -72,7 +74,7 @@ export function BlogForm({ blog, categories }: { blog?: any, categories: any[] }
 
         <div>
           <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">Content</label>
-          <RichTextEditor name="content" value={blog?.content || ''} />
+          <RichTextEditor name="content" value={content} onChange={setContent} />
         </div>
       </div>
 

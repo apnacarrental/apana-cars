@@ -11,6 +11,9 @@ import { buildMetadata } from '@/lib/seo'
 import { sanitizeHtml } from '@/lib/sanitize'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function generateStaticParams() {
   const blogs = await getPublishedBlogs()
   return blogs.map((b) => ({
@@ -66,13 +69,17 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               </time>
             </div>
 
-            {post.content && (
+            {post.content ? (
               <div 
                 className="prose prose-lg max-w-none mt-12 mb-12"
                 style={{ lineHeight: 1.8 }}
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
               />
-            )}
+            ) : post.excerpt ? (
+              <div className="prose prose-lg max-w-none mt-12 mb-12" style={{ lineHeight: 1.8 }}>
+                <p className="text-lg text-neutral-700 leading-relaxed">{post.excerpt}</p>
+              </div>
+            ) : null}
             <BlogPostingSchema post={post} />
           </div>
         </section>

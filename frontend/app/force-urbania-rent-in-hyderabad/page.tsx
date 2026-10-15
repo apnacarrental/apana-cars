@@ -33,6 +33,9 @@ import { TiltCard3D } from '@/components/motion/tilt-card-3d'
 import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { UrbaniaHeroCta, UrbaniaBookingCta } from '@/components/motion/urbania-hero-cta'
+import { HourlyVehicleGrid } from '@/components/motion/hourly-vehicle-grid'
+import { getCars } from '@/lib/data/db'
+import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
   title: 'Force Urbania Rental in Hyderabad | Luxury Tempo Traveller | Apna Cars',
@@ -226,7 +229,15 @@ const WHY_RENT_SECTIONS = [
   },
 ]
 
-export default function ForceUrbaniaPage() {
+export default async function ForceUrbaniaPage() {
+  const cars = await getCars()
+  const urbaniaCars = cars.filter(c => {
+    const lower = (c.name + ' ' + c.slug).toLowerCase()
+    return lower.includes('urbania') || lower.includes('tempo') || lower.includes('force') || c.seats >= 10
+  })
+  const displayCars = urbaniaCars.length > 0 ? urbaniaCars : cars
+  const fleetVehicles = mapCarsToVehicleItems(displayCars)
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -399,78 +410,7 @@ export default function ForceUrbaniaPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {URBANIA_VARIANTS.map((variant) => (
-                <TiltCard3D key={variant.id} maxTilt={5} className="h-full">
-                  <div className="fleet-card flex h-full flex-col justify-between overflow-hidden bg-[var(--paper)] border border-[var(--line)] shadow-sm hover:shadow-xl transition-all">
-                    <div>
-                      <div className="relative h-64 w-full overflow-hidden bg-neutral-900 border-b border-[var(--line)]">
-                        <Image
-                          src={variant.image}
-                          alt={variant.name}
-                          fill
-                          className="object-cover object-center transition-transform duration-700 hover:scale-105"
-                          sizes="(max-width: 1024px) 100vw, 50vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                        <div className="absolute top-4 left-4">
-                          <span className="inline-block rounded-full bg-neutral-900/90 backdrop-blur-sm px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white border border-white/20">
-                            {variant.capacity}
-                          </span>
-                        </div>
-                        <div className="absolute bottom-4 left-4 right-4 text-white">
-                          <h3 className="text-2xl font-serif font-medium text-white m-0">
-                            {variant.name}
-                          </h3>
-                          <span className="text-xs text-neutral-300 font-sans">
-                            {variant.category}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="p-6">
-                        <div className="mb-4">
-                          <span className="block text-[10px] font-bold uppercase tracking-wider text-[var(--soft)] mb-3">
-                            Key Specifications &amp; Features
-                          </span>
-                          <ul className="space-y-2.5 text-xs text-[var(--soft)] list-none p-0">
-                            {variant.features.map((feat, i) => (
-                              <li key={i} className="flex items-start gap-2.5">
-                                <Check size={14} className="shrink-0 text-emerald-600 mt-0.5" />
-                                <span>{feat}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div className="p-4 bg-white border border-[var(--line)] text-xs text-neutral-700 rounded-none mb-2">
-                          <strong className="block text-neutral-900 mb-1">Recommended for:</strong>
-                          <span>{variant.bestFor}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-6 pt-0 border-t border-[var(--line)]/60 bg-[var(--paper)] mt-auto">
-                      <div className="flex items-center justify-between pt-4 mb-4">
-                        <div>
-                          <span className="block text-[10px] uppercase tracking-wider text-[var(--soft)] font-bold">
-                            Rental Tariff
-                          </span>
-                          <div className="text-sm font-semibold text-neutral-900">
-                            Quote on Request
-                          </div>
-                        </div>
-                        <span className="text-xs text-neutral-600">
-                          {variant.luggage}
-                        </span>
-                      </div>
-
-                      <UrbaniaBookingCta label={`Book ${variant.name}`} />
-                    </div>
-                  </div>
-                </TiltCard3D>
-              ))}
-            </div>
+            <HourlyVehicleGrid vehicles={fleetVehicles} />
           </div>
         </section>
 

@@ -192,6 +192,7 @@ export const getCars = cache(async () => {
           orderBy: { sortOrder: 'asc' },
           take: 1
         },
+        categories: true,
       },
     });
     if (cars && cars.length > 0) return cars;

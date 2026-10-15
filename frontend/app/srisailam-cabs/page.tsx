@@ -27,6 +27,9 @@ import { AnimatedHighwayJourney } from '@/components/motion/animated-highway-jou
 import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { OutstationHeroCta } from '@/components/motion/outstation-hero-cta'
+import { HourlyVehicleGrid } from '@/components/motion/hourly-vehicle-grid'
+import { getCars } from '@/lib/data/db'
+import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
   title: 'Hyderabad to Srisailam Cab Service | Round Trip Car Rental | Apna Cars',
@@ -285,7 +288,10 @@ const FAQS = [
   },
 ]
 
-export default function SrisailamCabsPage() {
+export default async function SrisailamCabsPage() {
+  const cars = await getCars()
+  const fleetVehicles = mapCarsToVehicleItems(cars)
+
   const contactPhone = '+919988123444'
   const displayPhone = '099881 23444'
   const defaultWhatsAppUrl = 'https://wa.me/919988123444?text=Hi%20Apna%20Cars,%20I%20would%20like%20to%20inquire%20about%20a%20Hyderabad%20to%20Srisailam%20cab.'
@@ -492,44 +498,7 @@ export default function SrisailamCabsPage() {
             </p>
           </div>
 
-          <div className="fleet-grid">
-            {VEHICLES.map((v) => (
-              <TiltCard3D key={v.name} maxTilt={6} className="h-full">
-                <article className="fleet-card flex h-full flex-col justify-between overflow-hidden bg-[var(--paper)] border border-[var(--line)]">
-                  <div className="fleet-photo relative min-h-[260px] overflow-hidden bg-neutral-200">
-                    <Image
-                      src={v.image}
-                      alt={`${v.name} cab for Srisailam`}
-                      fill
-                      sizes="(max-width: 800px) 100vw, 33vw"
-                      className="transition-transform duration-700 hover:scale-105 object-cover"
-                    />
-                  </div>
-                  <div className="fleet-info flex flex-1 flex-col justify-between p-6">
-                    <div>
-                      <p className="eyebrow">{v.category}</p>
-                      <h3 className="text-xl font-medium">{v.name}</h3>
-                      <span className="fleet-meta block my-3 text-xs text-[var(--soft)]">{v.seating} &bull; {v.luggage}</span>
-                      <p className="text-xs text-[var(--soft)] leading-relaxed mb-4">
-                        {v.description}
-                      </p>
-                    </div>
-                    <div className="fleet-bottom pt-4 border-t border-[var(--line)] flex items-center justify-between">
-                      <strong className="text-xs">Price on request</strong>
-                      <a 
-                        href={`https://wa.me/919988123444?text=${encodeURIComponent(`Hi Apna Cars, please provide a quote for ${v.name} (${v.seating}) for Hyderabad to Srisailam.`)}`}
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-black"
-                      >
-                        Inquire <ArrowRight size={15} />
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              </TiltCard3D>
-            ))}
-          </div>
+          <HourlyVehicleGrid vehicles={fleetVehicles} />
         </section>
 
         {/* PLACES TO VISIT — 3D Sightseeing Grid */}

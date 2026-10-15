@@ -33,6 +33,9 @@ import { AnimatedHighwayJourney } from '@/components/motion/animated-highway-jou
 import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { OutstationHeroCta } from '@/components/motion/outstation-hero-cta'
+import { HourlyVehicleGrid } from '@/components/motion/hourly-vehicle-grid'
+import { getCars } from '@/lib/data/db'
+import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -555,7 +558,10 @@ const FAQS = [
   }
 ]
 
-export default function OutstationCabsPage() {
+export default async function OutstationCabsPage() {
+  const cars = await getCars()
+  const fleetVehicles = mapCarsToVehicleItems(cars)
+
   const contactPhone = '+919988123444'
   const displayPhone = '099881 23444'
   const defaultWhatsAppUrl = 'https://wa.me/919988123444?text=Hi%20Apna%20Cars,%20I%20would%20like%20to%20inquire%20about%20an%20outstation%20cab%20from%20Hyderabad.'
@@ -754,44 +760,7 @@ export default function OutstationCabsPage() {
             </p>
           </div>
 
-          <div className="fleet-grid">
-            {VEHICLE_CATEGORIES.map((cat) => (
-              <TiltCard3D key={cat.name} maxTilt={6} className="h-full">
-                <article className="fleet-card flex h-full flex-col justify-between overflow-hidden bg-[var(--paper)] border border-[var(--line)]">
-                  <div className="fleet-photo relative min-h-[260px] overflow-hidden bg-neutral-200">
-                    <Image
-                      src={cat.image}
-                      alt={cat.name}
-                      fill
-                      sizes="(max-width: 800px) 100vw, 50vw"
-                      className="transition-transform duration-700 hover:scale-105 object-cover"
-                    />
-                  </div>
-                  <div className="fleet-info flex flex-1 flex-col justify-between p-6">
-                    <div>
-                      <p className="eyebrow">{cat.models}</p>
-                      <h3 className="text-xl font-medium">{cat.name}</h3>
-                      <span className="fleet-meta block my-3 text-xs text-[var(--soft)]">{cat.seating} &bull; {cat.luggage}</span>
-                      <p className="text-xs text-[var(--soft)] leading-relaxed mb-4">
-                        {cat.bestFor}
-                      </p>
-                    </div>
-                    <div className="fleet-bottom pt-4 border-t border-[var(--line)] flex items-center justify-between">
-                      <strong className="text-xs">{cat.rateNote}</strong>
-                      <a 
-                        href={`https://wa.me/919988123444?text=${encodeURIComponent(cat.quoteText)}`}
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-black"
-                      >
-                        Request Quote <ArrowRight size={14} />
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              </TiltCard3D>
-            ))}
-          </div>
+          <HourlyVehicleGrid vehicles={fleetVehicles} />
         </section>
 
         {/* 6. WHY CHOOSE APNA CARS — Signature Dark Section */}

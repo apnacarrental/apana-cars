@@ -33,6 +33,8 @@ import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { HourlyHeroCta } from '@/components/motion/hourly-hero-cta'
 import { HourlyPackageCards, HourlyPackageItem } from '@/components/motion/hourly-package-cards'
 import { HourlyVehicleGrid, VehicleItem } from '@/components/motion/hourly-vehicle-grid'
+import { getCars } from '@/lib/data/db'
+import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
   title: 'Hourly Car Rental in Hyderabad | Local Cabs by the Hour | Apna Cars',
@@ -227,7 +229,10 @@ const FAQS = [
   }
 ]
 
-export default function HourlyCabsPage() {
+export default async function HourlyCabsPage() {
+  const cars = await getCars()
+  const hourlyVehicles = cars && cars.length > 0 ? mapCarsToVehicleItems(cars) : HOURLY_VEHICLES
+
   const contactPhone = '+919988123444'
   const displayPhone = '099881 23444'
   const defaultWhatsAppUrl = 'https://wa.me/919988123444?text=Hi%20Apna%20Cars,%20I%20would%20like%20to%20inquire%20about%20an%20hourly%20rental%20package%20in%20Hyderabad.'
@@ -356,7 +361,7 @@ export default function HourlyCabsPage() {
             </p>
           </div>
 
-          <HourlyVehicleGrid vehicles={HOURLY_VEHICLES} />
+          <HourlyVehicleGrid vehicles={hourlyVehicles} />
         </section>
 
         {/* 5. HOW HOURLY CAB BOOKING WORKS */}

@@ -27,6 +27,8 @@ import { AirportHeroCta, AirportFleetCta } from '@/components/motion/airport-her
 import { HourlyVehicleGrid, VehicleItem } from '@/components/motion/hourly-vehicle-grid'
 import { AirportDestinationGrid, AirportDestinationItem } from '@/components/motion/airport-destination-grid'
 import { AirportAttractionGrid, AirportAttractionItem } from '@/components/motion/airport-attraction-grid'
+import { getCars } from '@/lib/data/db'
+import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
   title: 'Airport Cabs in Hyderabad | Airport Taxi Service | Apna Cars',
@@ -191,7 +193,10 @@ const LOCAL_ATTRACTIONS: AirportAttractionItem[] = [
   },
 ]
 
-export default function AirportCabsPage() {
+export default async function AirportCabsPage() {
+  const cars = await getCars()
+  const fleetVehicles = cars && cars.length > 0 ? mapCarsToVehicleItems(cars) : FLEET_VEHICLES
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -292,7 +297,7 @@ export default function AirportCabsPage() {
               </p>
             </div>
 
-            <HourlyVehicleGrid vehicles={FLEET_VEHICLES} />
+            <HourlyVehicleGrid vehicles={fleetVehicles} />
 
             {/* Second Book a cab CTA required after Our Fleet */}
             <AirportFleetCta />

@@ -37,6 +37,8 @@ import { SightseeingHeroCta } from '@/components/motion/sightseeing-hero-cta'
 import { SightseeingPackageCards } from '@/components/motion/sightseeing-package-cards'
 import { SIGHTSEEING_PACKAGES } from '@/lib/data/sightseeing'
 import { HourlyVehicleGrid, VehicleItem } from '@/components/motion/hourly-vehicle-grid'
+import { getCars } from '@/lib/data/db'
+import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
   title: 'Hyderabad Sightseeing Cabs | Day Tours & Heritage Packages | Apna Cars',
@@ -222,7 +224,10 @@ const FAQS = [
   },
 ]
 
-export default function SightseeingCabsPage() {
+export default async function SightseeingCabsPage() {
+  const cars = await getCars()
+  const fleetVehicles = cars && cars.length > 0 ? mapCarsToVehicleItems(cars) : FLEET_VEHICLES
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -406,7 +411,7 @@ export default function SightseeingCabsPage() {
               </div>
             </div>
 
-            <HourlyVehicleGrid vehicles={FLEET_VEHICLES} />
+            <HourlyVehicleGrid vehicles={fleetVehicles} />
           </div>
         </section>
 

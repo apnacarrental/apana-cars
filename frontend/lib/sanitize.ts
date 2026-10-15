@@ -1,34 +1,21 @@
-import DOMPurify from 'isomorphic-dompurify';
-
+/**
+ * Lightweight, zero-dependency HTML sanitizer for rich text content.
+ * Does not depend on jsdom/DOMPurify which crash in Vercel serverless functions.
+ */
 export function sanitizeHtml(dirty: string): string {
-  if (!dirty) return '';
+  if (!dirty || typeof dirty !== 'string') return ''
 
-  try {
-    return DOMPurify.sanitize(dirty, {
-      // Explicitly allow only the tags our editor uses (and structural basics)
-      ALLOWED_TAGS: [
-        'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-        'strong', 'b', 'em', 'i', 'u', 's', 'strike',
-        'ul', 'ol', 'li', 'blockquote',
-        'a', 'img', 'br', 'div', 'span'
-      ],
-      // Explicitly allow only safe attributes
-      ALLOWED_ATTR: [
-        'href', 'src', 'alt', 'title',
-        'class', 'style', 'target', 'rel'
-      ],
-      // Disallow custom data- attributes which could potentially carry XSS vectors
-      ALLOW_DATA_ATTR: false,
-      
-      // Explicitly forbid dangerous tags
-      FORBID_TAGS: [
-        'script', 'style', 'iframe', 'object', 'embed', 
-        'form', 'meta', 'link'
-      ],
-    });
-  } catch (err) {
-    console.error('DOMPurify sanitizeHtml error:', err);
-    // Return sanitized plain tags fallback if DOMPurify fails
-    return dirty.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-  }
+  return dirty
+    // Remove script tags and their contents
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    // Remove iframe tags and their contents
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    // Remove object/embed/applet tags
+    .replace(/<(object|embed|applet)\b[^<]*(?:(?!<\/\1>)<[^<]*)*<\/\1>/gi, '')
+    // Strip dangerous inline event handlers like onclick, onload, onerror
+    .replace(/\s+on\w+\s*=\s*(['"]).*?\1/gi, '')
+    .replace(/\s+on\w+\s*=\s*[^>\s]+/gi, '')
+    // Disarm javascript: and vbscript: URIs in href or src
+    .replace(/(href|src)\s*=\s*(['"])\s*(?:javascript|vbscript|data):.*?\2/gi, '$1="#"')
+    .trim()
 }

@@ -15,24 +15,34 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const resolvedParams = await params
-  const post = await getBlogBySlug(resolvedParams.slug)
+  try {
+    const resolvedParams = await params
+    const post = await getBlogBySlug(resolvedParams.slug)
 
-  if (!post) {
+    if (!post) {
+      return {}
+    }
+
+    return await buildMetadata({
+      seoMetadata: post.seoMetadata,
+      fallbackTitle: `${post.title} | Apna Cars Blog`,
+      fallbackDescription: post.excerpt || `Read ${post.title} on the Apna Cars blog.`,
+      path: `/blog/${post.slug}`,
+    })
+  } catch (err) {
+    console.error('generateMetadata error in blog detail:', err)
     return {}
   }
-
-  return await buildMetadata({
-    seoMetadata: post.seoMetadata,
-    fallbackTitle: `${post.title} | Apna Cars Blog`,
-    fallbackDescription: post.excerpt || `Read ${post.title} on the Apna Cars blog.`,
-    path: `/blog/${post.slug}`,
-  })
 }
 
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params
-  const post = await getBlogBySlug(resolvedParams.slug)
+  let post: any = null
+  try {
+    post = await getBlogBySlug(resolvedParams.slug)
+  } catch (err) {
+    console.error('getBlogBySlug error in blog detail page:', err)
+  }
 
   if (!post || post.status !== 'PUBLISHED') {
     notFound()
@@ -61,7 +71,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           <Breadcrumbs items={[
             { label: 'Home', href: '/' },
             { label: 'Blog', href: '/blog' },
-            { label: post.title, href: `/blog/${post.slug}` },
+            { label: post.title || 'Guide', href: `/blog/${post.slug}` },
           ]} />
           
           <div style={{ maxWidth: '800px', margin: '2rem auto 0' }}>
@@ -96,7 +106,3 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     </>
   )
 }
-
-
-
-

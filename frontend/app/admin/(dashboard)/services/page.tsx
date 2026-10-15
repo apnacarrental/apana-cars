@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { SeoStatusBadge } from '@/components/admin/seo-status-badge'
 import { DeactivateServiceButton } from '@/components/admin/deactivate-service-button'
 import { DeleteServiceButton } from '@/components/admin/delete-service-button'
+import { ToggleQuickBarButton } from '@/components/admin/toggle-quick-bar-button'
 import { Briefcase, Plus, ExternalLink } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -24,6 +25,7 @@ export default async function AdminServicesPage() {
       await prisma.$executeRawUnsafe(`
         ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "startingPrice" DOUBLE PRECISION;
         ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "priceUnit" TEXT;
+        ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "showInQuickBar" BOOLEAN DEFAULT true;
         ALTER TABLE "Lead" ADD COLUMN IF NOT EXISTS "passengers" TEXT;
       `)
       items = await prisma.service.findMany({
@@ -33,7 +35,7 @@ export default async function AdminServicesPage() {
       console.error('Retry after schema fix failed, falling back to base columns:', retryErr)
       try {
         items = await prisma.$queryRawUnsafe(`
-          SELECT id, title, slug, "shortDescription", "content", "isActive", "sortOrder", "seoMetadata"
+          SELECT id, title, slug, "shortDescription", "content", "isActive", "showInQuickBar", "sortOrder", "seoMetadata"
           FROM "Service"
           ORDER BY "sortOrder" ASC
         `)
@@ -73,6 +75,7 @@ export default async function AdminServicesPage() {
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Starting Price</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sort Order</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Quick Bar</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">SEO Status</th>
               <th className="px-6 py-3.5 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
             </tr>
@@ -108,6 +111,9 @@ export default async function AdminServicesPage() {
                   <span className={`px-2.5 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-full ${item.isActive ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`}>
                     {item.isActive ? 'Active' : 'Inactive'}
                   </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <ToggleQuickBarButton id={item.id} showInQuickBar={item.showInQuickBar !== false} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <SeoStatusBadge 

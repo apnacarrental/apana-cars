@@ -231,6 +231,7 @@ async function ensureDbColumns() {
     await prisma.$executeRawUnsafe(`
       ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "startingPrice" DOUBLE PRECISION;
       ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "priceUnit" TEXT;
+      ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "showInQuickBar" BOOLEAN DEFAULT true;
       ALTER TABLE "Lead" ADD COLUMN IF NOT EXISTS "passengers" TEXT;
     `);
     serviceColumnsEnsured = true;

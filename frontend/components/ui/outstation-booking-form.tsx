@@ -101,19 +101,20 @@ export function OutstationBookingForm({
         {/* Hidden Honeypot */}
         <input type="text" name="_website" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* 1. Full Name */}
           <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 flex items-center gap-1.5">
-              <User size={14} className="text-neutral-400" />
-              <span>Full Name *</span>
+            <label htmlFor="outstation-name" className="text-xs font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
+              <User size={14} className="text-neutral-600" />
+              <span>1. Full Name *</span>
             </label>
             <input
+              id="outstation-name"
               type="text"
               name="name"
               required
               placeholder="e.g. Ramesh Kumar"
-              className="w-full rounded-md border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
+              className="w-full rounded-xl border border-[var(--line)] bg-[var(--paper)] px-4 py-3 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
             />
             {state.fieldErrors?.name && (
               <span className="text-[11px] text-red-600">{state.fieldErrors.name[0]}</span>
@@ -122,106 +123,39 @@ export function OutstationBookingForm({
 
           {/* 2. Phone / WhatsApp */}
           <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 flex items-center gap-1.5">
-              <Phone size={14} className="text-neutral-400" />
-              <span>Mobile / WhatsApp *</span>
+            <label htmlFor="outstation-phone" className="text-xs font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
+              <Phone size={14} className="text-neutral-600" />
+              <span>2. Mobile / WhatsApp *</span>
             </label>
             <input
+              id="outstation-phone"
               type="tel"
               name="phone"
               required
-              placeholder="10-digit number (e.g. 9876543210)"
-              className="w-full rounded-md border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
+              placeholder="e.g. 099881 23444 or 9876543210"
+              className="w-full rounded-xl border border-[var(--line)] bg-[var(--paper)] px-4 py-3 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white font-mono"
             />
             {state.fieldErrors?.phone && (
               <span className="text-[11px] text-red-600">{state.fieldErrors.phone[0]}</span>
             )}
           </div>
-
-          {/* 3. Pickup Location */}
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 flex items-center gap-1.5">
-              <MapPin size={14} className="text-neutral-400" />
-              <span>Pickup City / Area *</span>
-            </label>
-            <input
-              type="text"
-              name="pickupCity"
-              defaultValue="Hyderabad"
-              required
-              placeholder="e.g. Gachibowli, Secunderabad, RGIA Airport"
-              className="w-full rounded-md border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
-            />
-          </div>
-
-          {/* 4. Drop Destination */}
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 flex items-center gap-1.5">
-              <MapPin size={14} className="text-neutral-400" />
-              <span>Outstation Destination *</span>
-            </label>
-            <div className="relative">
-              <input
-                type="text"
-                name="dropCity"
-                defaultValue={defaultDestination}
-                required
-                list="destination-options"
-                placeholder="Select or type city"
-                className="w-full rounded-md border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
-              />
-              <datalist id="destination-options">
-                {destinations.map((d) => (
-                  <option key={d} value={d} />
-                ))}
-              </datalist>
-            </div>
-          </div>
-
-          {/* 5. Travel Date */}
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 flex items-center gap-1.5">
-              <Calendar size={14} className="text-neutral-400" />
-              <span>Travel Date</span>
-            </label>
-            <input
-              type="date"
-              name="pickupDatetime"
-              className="w-full rounded-md border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
-            />
-          </div>
-
-          {/* 6. No. of Passengers */}
-          <div className="flex flex-col gap-2">
-            <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 flex items-center gap-1.5">
-              <Users size={14} className="text-neutral-400" />
-              <span>No. of Passengers</span>
-            </label>
-            <select
-              name="passengers"
-              className="w-full rounded-md border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
-            >
-              <option value="1-4 Passengers (Executive Sedan)">1-4 Passengers (Executive Sedan)</option>
-              <option value="5-6 Passengers (Family MUV / Ertiga)">5-6 Passengers (Family MUV / Ertiga)</option>
-              <option value="7 Passengers (Luxury SUV / Innova Crysta)">7 Passengers (Luxury SUV / Innova Crysta)</option>
-              <option value="8-12 Passengers (Force Urbania / Minivan)">8-12 Passengers (Force Urbania / Minivan)</option>
-              <option value="13-17 Passengers (Tempo Traveller / Van)">13-17 Passengers (Tempo Traveller / Van)</option>
-              <option value="18+ Passengers (Group Bus / Coach)">18+ Passengers (Group Bus / Coach)</option>
-            </select>
-          </div>
         </div>
 
-        {/* 7. Additional Notes */}
+        {/* 3. Description */}
         <div className="flex flex-col gap-2">
-          <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700">
-            Trip Details / Special Requests (Optional)
+          <label htmlFor="outstation-desc" className="text-xs font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
+            <span>3. Description (No. of passengers and where you want to go) *</span>
           </label>
           <textarea
-            name="message"
-            rows={2}
-            placeholder="e.g. 2-day round trip, temple halts required, passenger count..."
-            className="w-full rounded-md border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
+            id="outstation-desc"
+            name="description"
+            required
+            rows={3}
+            defaultValue={defaultDestination ? `Need cab to ${defaultDestination}` : ''}
+            placeholder="e.g. 5 passengers travelling to Srisailam / Vijayawada this Saturday, 2-day round trip. Need Ertiga or Crysta."
+            className="w-full rounded-xl border border-[var(--line)] bg-[var(--paper)] px-4 py-3 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white leading-relaxed"
           />
+          <p className="text-[11px] text-neutral-500">Mention passenger count, destination city, travel dates, or any special car requests.</p>
         </div>
 
         {/* Form Action Strip */}

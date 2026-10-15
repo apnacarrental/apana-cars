@@ -56,15 +56,17 @@ export async function submitLead(prevState: ActionState, formData: FormData): Pr
     const passengers = (formData.get('passengers') as string)?.trim()
     const carType = (formData.get('carType') as string)?.trim()
     const userMessage = (formData.get('message') as string)?.trim()
+    const description = (formData.get('description') as string)?.trim()
 
     const details: string[] = []
-    if (pickupCity) details.push(`Pickup: ${pickupCity}`)
-    if (dropCity) details.push(`Drop: ${dropCity}`)
-    if (passengers) details.push(`Passengers: ${passengers}`)
-    if (carType) details.push(`Vehicle: ${carType}`)
-    if (userMessage) details.push(`Notes: ${userMessage}`)
+    if (description) details.push(description)
+    if (pickupCity && !description?.includes(pickupCity)) details.push(`Pickup: ${pickupCity}`)
+    if (dropCity && !description?.includes(dropCity)) details.push(`Drop: ${dropCity}`)
+    if (passengers && !description?.includes(passengers)) details.push(`Passengers: ${passengers}`)
+    if (carType && !description?.includes(carType)) details.push(`Vehicle: ${carType}`)
+    if (userMessage && userMessage !== description) details.push(`Notes: ${userMessage}`)
 
-    const compositeMessage = details.length > 0 ? details.join('\n') : null
+    const compositeMessage = details.length > 0 ? details.join('\n') : (description || userMessage || null)
 
     const data = {
       name: (formData.get('name') as string)?.trim() || 'Direct Inquiry',
@@ -75,7 +77,7 @@ export async function submitLead(prevState: ActionState, formData: FormData): Pr
       pickupDatetime: (formData.get('pickupDatetime') as string) || '',
       service: (formData.get('service') as string) || '',
       vehicle: (formData.get('vehicle') as string) || '',
-      message: compositeMessage || userMessage || undefined,
+      message: compositeMessage || description || userMessage || undefined,
       _website: (formData.get('_website') as string) || undefined
     }
 

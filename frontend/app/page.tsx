@@ -45,9 +45,9 @@ export default async function Page() {
       <Header />
       <main id="home">
         <HeroSection />
-        <BookingSection />
         <QuickServicesBar services={services} />
         <FleetShowcaseStrip cars={cars} />
+        <BookingSection />
         <AboutSection />
         <ServicesSection />
         <PopularSightseeingSection />

@@ -80,7 +80,19 @@ export function ServiceForm({ item }: { item?: any }) {
         </div>
         <div className="flex items-center">
           <input type="checkbox" name="isActive" id="isActive" defaultChecked={item ? item.isActive : true} className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black" />
-          <label htmlFor="isActive" className="ml-2 block text-sm text-gray-900">isActive</label>
+          <label htmlFor="isActive" className="ml-2 block text-sm text-gray-900">isActive (Published on site)</label>
+        </div>
+        <div className="flex items-center">
+          <input 
+            type="checkbox" 
+            name="showInQuickBar" 
+            id="showInQuickBar" 
+            defaultChecked={item ? item.showInQuickBar !== false : true} 
+            className="h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500" 
+          />
+          <label htmlFor="showInQuickBar" className="ml-2 block text-sm font-medium text-gray-900">
+            Show in Quick Services Bar (Auto-scrolling bar below Hero)
+          </label>
         </div>
       </div>
       <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">

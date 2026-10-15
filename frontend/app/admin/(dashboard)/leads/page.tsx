@@ -78,8 +78,7 @@ export default async function AdminLeadsPage() {
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date & Time</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Customer Name</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Contact Phone</th>
-              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Passengers</th>
-              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Route / Locations</th>
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description &amp; Travel Plan</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
               <th className="px-6 py-3.5 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
             </tr>
@@ -91,25 +90,31 @@ export default async function AdminLeadsPage() {
                   {new Date(item.createdAt).toLocaleDateString()} {new Date(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </td>
                 <td className="px-6 py-4 font-semibold text-gray-900">{item.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-mono">{item.phone}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-700 font-medium">
-                  {item.passengers ? (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-900 border border-amber-200/80 font-semibold">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-mono">
+                  <a href={`tel:${item.phone}`} className="text-blue-600 hover:underline font-semibold block">
+                    {item.phone}
+                  </a>
+                  <a 
+                    href={`https://wa.me/${item.phone.replace(/[^0-9]/g, '')}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-[10px] text-emerald-700 font-bold hover:underline inline-flex items-center gap-1 mt-0.5"
+                  >
+                    <span>Chat on WhatsApp →</span>
+                  </a>
+                </td>
+                <td className="px-6 py-4 text-xs text-gray-800 max-w-xs">
+                  {item.message ? (
+                    <div className="line-clamp-2 bg-slate-50 p-2 rounded-lg border border-slate-200/60 font-medium">
+                      {item.message}
+                    </div>
+                  ) : item.passengers ? (
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-50 text-amber-900 font-semibold">
                       <Users size={12} className="text-amber-600 shrink-0" />
                       <span>{item.passengers}</span>
                     </span>
                   ) : (
-                    <span className="text-gray-400 italic">-</span>
-                  )}
-                </td>
-                <td className="px-6 py-4 text-xs text-gray-500">
-                  {item.pickupLocation || item.dropLocation ? (
-                    <div className="flex items-center gap-1 text-gray-700">
-                      <MapPin size={12} className="text-gray-400 shrink-0" />
-                      <span>{item.pickupLocation || 'Hyderabad'} → {item.dropLocation || 'City Tour'}</span>
-                    </div>
-                  ) : (
-                    <span className="text-gray-400 italic">General inquiry</span>
+                    <span className="text-gray-400 italic">No notes provided</span>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">

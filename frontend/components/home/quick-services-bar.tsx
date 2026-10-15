@@ -25,6 +25,8 @@ export interface ServiceItem {
   sortOrder?: number
   startingPrice?: number | null
   priceUnit?: string | null
+  isActive?: boolean
+  showInQuickBar?: boolean
 }
 
 interface QuickServicesBarProps {
@@ -59,8 +61,11 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
   const isInteractingRef = useRef(false)
   const resumeTimerRef = useRef<NodeJS.Timeout | null>(null)
 
+  // Filter services that are active AND toggled on for the Quick Service Bar
+  const activeQuickServices = services?.filter(s => s.isActive !== false && s.showInQuickBar !== false)
+
   // Use admin database services, with fallback
-  const displayServices = services && services.length > 0 ? services : [
+  const displayServices = (activeQuickServices && activeQuickServices.length > 0) ? activeQuickServices : [
     { id: '1', title: 'Chauffeur-Driven Taxi', slug: 'hourly-cabs', shortDescription: 'Hourly, Daily & Weekly' },
     { id: '2', title: 'Outstation Trips', slug: 'outstation-cabs', shortDescription: 'One Way & Round Trip' },
     { id: '3', title: 'Airport Transfers', slug: 'airport-cabs', shortDescription: 'Pickup & Drop' },

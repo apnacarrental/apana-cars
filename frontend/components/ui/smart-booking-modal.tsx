@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useTransition } from 'react'
-import { X, ArrowRight, ShieldCheck, MapPin, Phone, User, Calendar, Users } from 'lucide-react'
+import { X, ArrowRight, ShieldCheck, Phone, User } from 'lucide-react'
 import { submitLead } from '@/lib/actions/lead'
 import { trackEvent } from '@/lib/analytics'
 
@@ -35,9 +35,7 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
 
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
-  const [pickupDate, setPickupDate] = useState('')
-  const [destination, setDestination] = useState('')
-  const [carType, setCarType] = useState('1-4 Passengers (Executive Sedan)')
+  const [description, setDescription] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -49,8 +47,7 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
       distance: data?.distance || '',
       carType: car,
     })
-    setDestination(dest)
-    setCarType(car)
+    setDescription(dest ? `Trip to ${dest}` : '')
     setError(null)
     setIsOpen(true)
   }
@@ -104,28 +101,15 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
         const formData = new FormData()
         formData.append('name', name.trim())
         formData.append('phone', cleanPhone)
-        formData.append('pickupCity', 'Hyderabad')
-        formData.append('dropCity', destination || bookingData.destination)
-        formData.append('passengers', carType)
-        formData.append('carType', carType)
-        if (pickupDate) {
-          formData.append('pickupDatetime', pickupDate)
-        }
-        formData.append(
-          'message',
-          `Outstation Modal Lead | Route: Hyd to ${destination || bookingData.destination} | Passengers: ${carType}${
-            pickupDate ? ` | Date: ${pickupDate}` : ''
-          }`
-        )
+        formData.append('description', description.trim())
+        formData.append('message', description.trim())
 
         // 1. Submit lead to database / admin panel
         await submitLead({}, formData)
         trackEvent({ action: 'generate_lead', category: 'lead', form_type: 'smart_modal_outstation' })
 
         // 2. Build pre-filled WhatsApp message
-        const waText = `Hi Apna Cars, my name is ${name.trim()}. I would like to get a quote for an outstation cab from Hyderabad to ${
-          destination || bookingData.destination
-        }${carType ? ` (${carType})` : ''}${pickupDate ? ` on ${pickupDate}` : ''}.`
+        const waText = `Hi Apna Cars, my name is ${name.trim()}. I would like to get a quote: ${description.trim()}.`
 
         const whatsappUrl = `https://wa.me/919988123444?text=${encodeURIComponent(waText)}`
 
@@ -136,7 +120,7 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
         console.error('Lead error:', err)
         // Even if DB fails, don't block the user from reaching WhatsApp
         const waFallback = `https://wa.me/919988123444?text=${encodeURIComponent(
-          `Hi Apna Cars, I would like to get a quote for a cab to ${destination || bookingData.destination}.`
+          `Hi Apna Cars, I would like to get a quote: ${description || 'cab booking'}.`
         )}`
         setIsOpen(false)
         window.open(waFallback, '_blank')
@@ -176,7 +160,7 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
                 Quick Quotation &bull; 30-Sec Response
               </span>
               <h2 className="mt-2 text-2xl font-serif font-medium tracking-tight text-neutral-900 m-0">
-                Book Hyderabad &rarr; <span className="underline decoration-neutral-300">{destination || bookingData.destination}</span>
+                Book Hyderabad &rarr; <span className="underline decoration-neutral-300">{bookingData.destination}</span>
               </h2>
               <p className="mt-1 text-xs text-[var(--soft)] m-0">
                 Your inquiry will be logged in our dispatch desk and connected directly to our WhatsApp travel coordinator.
@@ -227,44 +211,20 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Travel Date */}
-                <div>
-                  <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-neutral-700">
-                    Travel Date
-                  </label>
-                  <div className="relative">
-                    <Calendar size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
-                    <input
-                      type="date"
-                      value={pickupDate}
-                      onChange={(e) => setPickupDate(e.target.value)}
-                      className="w-full rounded-lg border border-[var(--line)] bg-[var(--paper)] py-2.5 pl-10 pr-3 text-xs outline-none transition-colors focus:border-neutral-900 focus:bg-white"
-                    />
-                  </div>
-                </div>
-
-                {/* Passengers Selection */}
-                <div>
-                  <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-neutral-700">
-                    No. of Passengers
-                  </label>
-                  <div className="relative">
-                    <Users size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
-                    <select
-                      value={carType}
-                      onChange={(e) => setCarType(e.target.value)}
-                      className="w-full rounded-lg border border-[var(--line)] bg-[var(--paper)] py-2.5 pl-10 pr-2 text-xs outline-none transition-colors focus:border-neutral-900 focus:bg-white"
-                    >
-                      <option value="1-4 Passengers (Executive Sedan)">1-4 Passengers (Executive Sedan)</option>
-                      <option value="5-6 Passengers (Family MUV / Ertiga)">5-6 Passengers (Family MUV / Ertiga)</option>
-                      <option value="7 Passengers (Luxury SUV / Innova Crysta)">7 Passengers (Luxury SUV / Innova Crysta)</option>
-                      <option value="8-12 Passengers (Force Urbania / Minivan)">8-12 Passengers (Force Urbania / Minivan)</option>
-                      <option value="13-17 Passengers (Tempo Traveller / Van)">13-17 Passengers (Tempo Traveller / Van)</option>
-                      <option value="18+ Passengers (Group Bus / Coach)">18+ Passengers (Group Bus / Coach)</option>
-                    </select>
-                  </div>
-                </div>
+              {/* Description */}
+              <div>
+                <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-neutral-700">
+                  Trip Description (No. of passengers and where you want to go) *
+                </label>
+                <textarea
+                  required
+                  rows={3}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="e.g. 4 passengers travelling to Srisailam this weekend / Airport pickup at 6 AM"
+                  className="w-full rounded-lg border border-[var(--line)] bg-[var(--paper)] py-2.5 px-3.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white resize-y leading-relaxed"
+                />
+                <span className="text-[10.5px] text-neutral-400 mt-1 block">Mention passenger count, pickup &amp; drop destination, and dates.</span>
               </div>
 
               {/* Submit & Redirect Button */}

@@ -1,18 +1,18 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useEffect } from 'react'
 import { submitLead, ActionState } from '@/lib/actions/lead'
-import { ArrowRight, CheckCircle2 } from 'lucide-react'
-import { useEffect } from 'react'
+import { ArrowRight, CheckCircle2, User, Phone, FileText } from 'lucide-react'
 import { trackEvent } from '@/lib/analytics'
 
 export function InquiryForm({
-  locations = [],
-  services = [],
-  cars = [],
+  title = 'Direct Booking Inquiry',
+  subtitle = 'Share your travel plan with our Hyderabad central dispatch team.',
   preselectedService = '',
   preselectedCar = ''
 }: {
+  title?: string,
+  subtitle?: string,
   locations?: { id: string, name: string }[],
   services?: { id: string, title: string }[],
   cars?: { id: string, name: string }[],
@@ -41,159 +41,83 @@ export function InquiryForm({
 
   return (
     <form action={formAction} className="bg-white p-6 sm:p-8 rounded-2xl shadow-xs border border-[var(--line)] space-y-5">
-      
+      <div>
+        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
+        <p className="text-xs text-slate-500 mt-1">{subtitle}</p>
+      </div>
+
       {state.error && (
-        <div className="bg-red-50 text-red-800 p-3.5 rounded-xl text-xs border border-red-200">
+        <div className="bg-red-50 text-red-800 p-3.5 rounded-xl text-xs border border-red-200 font-medium">
           {state.error}
         </div>
       )}
 
       {/* Honeypot */}
       <input type="text" name="_website" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+      {preselectedService && <input type="hidden" name="service" value={preselectedService} />}
+      {preselectedCar && <input type="hidden" name="vehicle" value={preselectedCar} />}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-4">
+        {/* 1. Name */}
         <div>
-          <label htmlFor="name" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-            Full Name *
+          <label htmlFor="inquiry-name" className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-1.5 flex items-center gap-1.5">
+            <User size={13} className="text-[#0A2540]" />
+            <span>1. Full Name *</span>
           </label>
           <input 
             type="text" 
             name="name" 
-            id="name" 
+            id="inquiry-name" 
             required 
             placeholder="Your name"
-            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors" 
+            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:bg-white focus:border-[#0A2540] focus:outline-none transition-colors" 
           />
           {state.fieldErrors?.name && <p className="mt-1 text-xs text-red-600">{state.fieldErrors.name[0]}</p>}
         </div>
+
+        {/* 2. Phone Number */}
         <div>
-          <label htmlFor="phone" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-            Mobile / WhatsApp *
+          <label htmlFor="inquiry-phone" className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-1.5 flex items-center gap-1.5">
+            <Phone size={13} className="text-[#0A2540]" />
+            <span>2. Mobile / WhatsApp Number *</span>
           </label>
           <input 
             type="tel" 
             name="phone" 
-            id="phone" 
-            placeholder="099881 23444" 
+            id="inquiry-phone" 
+            placeholder="099881 23444 or 9876543210" 
             required 
-            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors" 
+            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:bg-white focus:border-[#0A2540] focus:outline-none transition-colors font-mono" 
           />
           {state.fieldErrors?.phone && <p className="mt-1 text-xs text-red-600">{state.fieldErrors.phone[0]}</p>}
         </div>
-      </div>
 
-      <div>
-        <label htmlFor="email" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-          Email (Optional)
-        </label>
-        <input 
-          type="email" 
-          name="email" 
-          id="email" 
-          placeholder="your.email@example.com"
-          className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors" 
-        />
-        {state.fieldErrors?.email && <p className="mt-1 text-xs text-red-600">{state.fieldErrors.email[0]}</p>}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* 3. Description */}
         <div>
-          <label htmlFor="pickupLocation" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-            Pickup City / Hub
+          <label htmlFor="inquiry-desc" className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-1.5 flex items-center gap-1.5">
+            <FileText size={13} className="text-[#0A2540]" />
+            <span>3. Description (No. of passengers and where you want to go) *</span>
           </label>
-          <select 
-            name="pickupLocation" 
-            id="pickupLocation" 
-            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors"
-          >
-            <option value="">Select location...</option>
-            {locations.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="dropLocation" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-            Drop-off Destination
-          </label>
-          <select 
-            name="dropLocation" 
-            id="dropLocation" 
-            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors"
-          >
-            <option value="">Select destination...</option>
-            {locations.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
-          </select>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="pickupDatetime" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-            Pickup Date &amp; Time
-          </label>
-          <input 
-            type="datetime-local" 
-            name="pickupDatetime" 
-            id="pickupDatetime" 
-            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors" 
+          <textarea 
+            name="description" 
+            id="inquiry-desc" 
+            rows={3} 
+            required 
+            placeholder="e.g. 6 passengers travelling to Vijayawada / Need Innova Crysta for full day city tour" 
+            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:bg-white focus:border-[#0A2540] focus:outline-none transition-colors"
           />
+          <p className="text-[11px] text-slate-400 mt-1">Include number of passengers, pickup &amp; drop destination, and dates.</p>
         </div>
-        <div>
-          <label htmlFor="passengers" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-            No. of Passengers
-          </label>
-          {preselectedCar && <input type="hidden" name="vehicle" value={preselectedCar} />}
-          <select 
-            name="passengers" 
-            id="passengers" 
-            className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors"
-          >
-            <option value="1-4 Passengers (Executive Sedan)">1-4 Passengers (Executive Sedan)</option>
-            <option value="5-6 Passengers (Family MUV / Ertiga)">5-6 Passengers (Family MUV / Ertiga)</option>
-            <option value="7 Passengers (Luxury SUV / Innova Crysta)">7 Passengers (Luxury SUV / Innova Crysta)</option>
-            <option value="8-12 Passengers (Force Urbania / Minivan)">8-12 Passengers (Force Urbania / Minivan)</option>
-            <option value="13-17 Passengers (Tempo Traveller / Van)">13-17 Passengers (Tempo Traveller / Van)</option>
-            <option value="18+ Passengers (Group Bus / Coach)">18+ Passengers (Group Bus / Coach)</option>
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="service" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-          Service Category
-        </label>
-        <select 
-          name="service" 
-          id="service" 
-          defaultValue={preselectedService} 
-          className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors"
-        >
-          <option value="">Select service...</option>
-          {services.map(s => <option key={s.id} value={s.id}>{s.title}</option>)}
-        </select>
-      </div>
-
-      <div>
-        <label htmlFor="message" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-          Special Requirements / Route Notes
-        </label>
-        <textarea 
-          name="message" 
-          id="message" 
-          rows={3} 
-          placeholder="e.g. Flight number, extra luggage space, child seat request..."
-          className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors"
-        ></textarea>
       </div>
 
       <button 
         type="submit" 
-        disabled={isPending}
-        className="w-full flex justify-center items-center gap-2 rounded-xl bg-neutral-950 px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-xs hover:bg-black focus:outline-none transition-all disabled:opacity-60 cursor-pointer"
+        disabled={isPending} 
+        className="w-full flex items-center justify-center gap-2 bg-[#ECA00A] hover:bg-[#d89006] text-[#0F172A] py-3 px-5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
       >
-        {isPending ? 'Submitting...' : 'Send Inquiry'}
-        {!isPending && <ArrowRight size={15} />}
+        <span>{isPending ? 'Sending Request...' : 'Get Instant Quote'}</span>
+        <ArrowRight size={16} />
       </button>
-
     </form>
   )
 }

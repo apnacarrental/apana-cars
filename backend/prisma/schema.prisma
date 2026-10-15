@@ -150,6 +150,7 @@ model Service {
   startingPrice    Float?
   priceUnit        String?
   isActive         Boolean @default(false)
+  showInQuickBar   Boolean @default(true)
   sortOrder        Int     @default(0)
 
   seoMetadata Json?

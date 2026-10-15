@@ -20,6 +20,7 @@ const Schema = z.object({
   priceUnit: z.string().optional().nullable(),
   sortOrder: z.number().int(),
   isActive: z.boolean(),
+  showInQuickBar: z.boolean(),
 })
 
 export type ActionResponse = { success: false; error: string } | undefined
@@ -51,6 +52,7 @@ export async function createService(formData: FormData): Promise<ActionResponse>
     priceUnit: (formData.get('priceUnit') as string)?.trim() || null,
     sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
     isActive: formData.get('isActive') === 'on',
+    showInQuickBar: formData.get('showInQuickBar') === 'on',
   }
 
   const parsed = Schema.safeParse(data)
@@ -98,6 +100,7 @@ export async function updateService(id: string, formData: FormData): Promise<Act
     priceUnit: (formData.get('priceUnit') as string)?.trim() || null,
     sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
     isActive: formData.get('isActive') === 'on',
+    showInQuickBar: formData.get('showInQuickBar') === 'on',
   }
 
   const parsed = Schema.safeParse(data)
@@ -139,6 +142,30 @@ export async function updateService(id: string, formData: FormData): Promise<Act
   revalidatePath('/', 'layout')
   revalidatePath('/')
   redirect('/admin/services')
+}
+
+export async function toggleServiceQuickBar(id: string, currentState: boolean): Promise<ActionResponse> {
+  await requireAdmin()
+
+  try {
+    const updated = await prisma.service.update({
+      where: { id },
+      data: { showInQuickBar: !currentState }
+    })
+
+    revalidatePath('/admin/services')
+    revalidatePath('/services')
+    if (updated?.slug) {
+      revalidatePath(`/services/${updated.slug}`)
+      revalidatePath(`/${updated.slug}`)
+    }
+    revalidatePath('/', 'layout')
+    revalidatePath('/')
+    return undefined
+  } catch (err: any) {
+    console.error('Error toggling service quick bar status:', err)
+    return { success: false, error: err.message || 'Failed to toggle quick bar status.' }
+  }
 }
 
 export async function deactivateService(id: string): Promise<ActionResponse> {

@@ -1,4 +1,4 @@
-﻿import { notFound } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { getServiceBySlug, getServices } from '@/lib/data/db'
@@ -9,6 +9,7 @@ import { FaqAccordion } from '@/components/ui/faq-accordion'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import { FaqSchema } from '@/components/seo/schemas'
 import { buildMetadata } from '@/lib/seo'
+import { ServiceBookingButton } from '@/components/services/service-booking-button'
 import type { Metadata } from 'next'
 
 export async function generateStaticParams() {
@@ -70,9 +71,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             )}
 
             <div style={{ marginTop: '3rem' }}>
-              <a className="button button-dark" href="/#book">
-                Book {service.title.toLowerCase()} <ArrowRight size={16} />
-              </a>
+              <ServiceBookingButton serviceTitle={service.title} />
             </div>
           </div>
         </section>

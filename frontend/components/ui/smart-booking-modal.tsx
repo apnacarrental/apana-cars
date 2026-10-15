@@ -60,6 +60,34 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
     setError(null)
   }
 
+  // Automatically trigger modal when clicking any '#book' anchor link or when URL has '#book' hash
+  React.useEffect(() => {
+    const handleHash = () => {
+      if (typeof window !== 'undefined' && window.location.hash === '#book') {
+        openBookingModal({ destination: 'Hyderabad Cab Booking' })
+      }
+    }
+
+    const handleClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement)?.closest('a')
+      if (target) {
+        const href = target.getAttribute('href')
+        if (href === '#book' || href === '/#book' || href?.endsWith('/#book')) {
+          e.preventDefault()
+          openBookingModal({ destination: 'Hyderabad Cab Booking' })
+        }
+      }
+    }
+
+    handleHash()
+    window.addEventListener('hashchange', handleHash)
+    document.addEventListener('click', handleClick)
+    return () => {
+      window.removeEventListener('hashchange', handleHash)
+      document.removeEventListener('click', handleClick)
+    }
+  }, [])
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError(null)

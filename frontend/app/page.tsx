@@ -17,7 +17,6 @@ import { HyderabadTravelGuideCards } from '@/components/home/hyderabad-travel-gu
 import { HomeBlogSection } from '@/components/home/home-blog-section'
 import { FaqSection } from '@/components/home/faq-section'
 import { FinalCtaSection } from '@/components/home/final-cta-section'
-import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { buildMetadata, getBaseUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 
@@ -32,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> { return await build
 
 export default function Page() {
   return (
-    <BookingModalProvider>
+    <>
       <Header />
       <main id="home">
         <HeroSection />
@@ -75,7 +74,7 @@ export default function Page() {
           }) 
         }} 
       />
-    </BookingModalProvider>
+    </>
   )
 }
 

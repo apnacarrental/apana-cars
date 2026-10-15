@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Phone, MessageCircle } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 interface FloatingActionButtonsProps {
   phone?: string
@@ -14,13 +15,20 @@ export function FloatingActionButtons({
   phone = '+919988123444',
   displayPhone = '099881 23444',
   whatsappNumber = '919988123444',
-  whatsappDefaultMsg = 'Hi Apna Cars, I would like to inquire about booking an outstation cab from Hyderabad.',
+  whatsappDefaultMsg = 'Hi Apna Cars, I would like to inquire about booking a cab in Hyderabad.',
 }: FloatingActionButtonsProps) {
+  const pathname = usePathname()
+
+  // Do not show floating contact buttons in the admin dashboard
+  if (pathname?.startsWith('/admin')) {
+    return null
+  }
+
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappDefaultMsg)}`
 
   return (
     <div 
-      className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 pointer-events-auto"
+      className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-3 pointer-events-auto"
       style={{ filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.25))' }}
       aria-label="Contact quick actions"
     >

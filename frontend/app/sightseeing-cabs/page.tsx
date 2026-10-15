@@ -711,9 +711,6 @@ export default function SightseeingCabsPage() {
 
         {/* Global Footer */}
         <Footer />
-
-        {/* Floating Call & WhatsApp Action Buttons */}
-        <FloatingActionButtons />
       </div>
     </BookingModalProvider>
   )

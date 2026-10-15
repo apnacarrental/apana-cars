@@ -966,12 +966,6 @@ export default function OutstationCabsPage() {
         displayPhone={displayPhone}
       />
 
-      {/* Persistent Floating Call & WhatsApp Widgets */}
-      <FloatingActionButtons
-        phone={contactPhone}
-        displayPhone={displayPhone}
-      />
-
       <Footer />
     </BookingModalProvider>
   )

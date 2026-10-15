@@ -697,9 +697,6 @@ export default function ForceUrbaniaPage() {
 
         {/* SECTION 11: FOOTER */}
         <Footer />
-
-        {/* Floating Call & WhatsApp Action Buttons */}
-        <FloatingActionButtons />
       </div>
     </BookingModalProvider>
   )

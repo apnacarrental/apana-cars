@@ -533,13 +533,6 @@ export default function HourlyCabsPage() {
         displayPhone={displayPhone}
       />
 
-      {/* Persistent Floating Call & WhatsApp Widgets */}
-      <FloatingActionButtons
-        phone={contactPhone}
-        displayPhone={displayPhone}
-        whatsappDefaultMsg="Hi Apna Cars, I would like to inquire about booking an hourly cab in Hyderabad."
-      />
-
       <Footer />
     </BookingModalProvider>
   )

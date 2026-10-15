@@ -457,9 +457,6 @@ export default function AirportCabsPage() {
 
         {/* SECTION 8: FOOTER */}
         <Footer />
-
-        {/* Floating Call & WhatsApp Action Buttons */}
-        <FloatingActionButtons />
       </div>
     </BookingModalProvider>
   )

@@ -5,6 +5,8 @@ import './globals.css'
 import { Suspense } from 'react'
 import { getBaseUrl } from '@/lib/seo'
 import GoogleAnalytics from '@/components/analytics/google-analytics'
+import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
+import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
@@ -49,7 +51,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased overflow-x-hidden">
-        {children}
+        <BookingModalProvider>
+          {children}
+          <FloatingActionButtons />
+        </BookingModalProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
         <Suspense fallback={null}><GoogleAnalytics /></Suspense>
       </body>

@@ -2,6 +2,7 @@
   "name": "apna-car-rental-monorepo",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@10.5.2",
   "scripts": {
     "dev": "pnpm --filter frontend dev",
     "dev:backend": "pnpm --filter backend dev",

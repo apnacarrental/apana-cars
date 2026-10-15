@@ -23,6 +23,8 @@ export interface ServiceItem {
   slug: string
   shortDescription?: string | null
   sortOrder?: number
+  startingPrice?: number | null
+  priceUnit?: string | null
 }
 
 interface QuickServicesBarProps {
@@ -98,7 +100,7 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
               <Link
                 key={srv.id}
                 href={href}
-                className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/70 hover:bg-[#FBF9F5] border border-slate-200/70 hover:border-slate-300 transition-all shrink-0 min-w-[210px] max-w-[240px] cursor-pointer"
+                className="group flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/70 hover:bg-[#FBF9F5] border border-slate-200/70 hover:border-slate-300 transition-all shrink-0 min-w-[220px] max-w-[260px] cursor-pointer"
               >
                 <div className="w-10 h-10 rounded-full bg-white border border-slate-200 group-hover:bg-[#0A2540] group-hover:text-white group-hover:border-[#0A2540] flex items-center justify-center text-[#0A2540] transition-all shadow-2xs shrink-0">
                   <Icon size={18} />
@@ -110,6 +112,13 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
                   <span className="text-[10px] text-slate-500 font-medium block leading-tight mt-0.5 truncate">
                     {srv.shortDescription || 'Hyderabad Cab Service'}
                   </span>
+                  {srv.startingPrice ? (
+                    <div className="mt-1 flex items-center gap-1">
+                      <span className="inline-flex items-center gap-1 font-mono text-[11px] font-extrabold text-[#0F172A] bg-amber-50 text-amber-900 border border-amber-200/60 px-1.5 py-0.5 rounded leading-none">
+                        ₹{Number(srv.startingPrice).toLocaleString('en-IN')}{srv.priceUnit ? <span className="font-sans font-medium text-[9.5px] text-slate-600">/ {srv.priceUnit}</span> : ''}
+                      </span>
+                    </div>
+                  ) : null}
                 </div>
               </Link>
             )

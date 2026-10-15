@@ -70,6 +70,14 @@ export default async function ServicesPage() {
                       </div>
                       
                       <div className="pt-4 border-t border-[var(--line)] flex items-center justify-between mt-auto">
+                        {svc.startingPrice ? (
+                          <div className="flex flex-col">
+                            <span className="text-[10px] text-neutral-400 font-semibold uppercase tracking-wider">Starting from</span>
+                            <span className="text-sm font-extrabold text-neutral-900 font-mono">
+                              ₹{Number(svc.startingPrice).toLocaleString('en-IN')}{svc.priceUnit ? <span className="font-sans font-medium text-[11px] text-neutral-500 ml-1">/ {svc.priceUnit}</span> : ''}
+                            </span>
+                          </div>
+                        ) : <span />}
                         <Link 
                           href={href} 
                           className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-[var(--brand-orange)] transition-colors group/btn py-1"

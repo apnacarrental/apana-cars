@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useTransition, useState } from 'react'
 import { createService, updateService } from '@/app/admin/(dashboard)/services/actions'
 import Link from 'next/link'
@@ -42,8 +42,37 @@ export function ServiceForm({ item }: { item?: any }) {
           <input type="text" name="slug" id="slug" defaultValue={item?.slug} required className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
         </div>
         <div>
-          <label htmlFor="shortDescription" className="block text-sm font-medium text-gray-700">shortDescription</label>
+          <label htmlFor="shortDescription" className="block text-sm font-medium text-gray-700">Short Description</label>
           <input type="text" name="shortDescription" id="shortDescription" defaultValue={item?.shortDescription} className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="startingPrice" className="block text-sm font-medium text-gray-700">
+              Starting Price (₹)
+            </label>
+            <input 
+              type="number" 
+              name="startingPrice" 
+              id="startingPrice" 
+              step="any"
+              placeholder="e.g. 1499"
+              defaultValue={item?.startingPrice ?? ''} 
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-black focus:outline-none focus:ring-1 focus:ring-black" 
+            />
+          </div>
+          <div>
+            <label htmlFor="priceUnit" className="block text-sm font-medium text-gray-700">
+              Price Unit / Note (Optional)
+            </label>
+            <input 
+              type="text" 
+              name="priceUnit" 
+              id="priceUnit" 
+              placeholder="e.g. onwards, per day, 8 hrs / 80 km"
+              defaultValue={item?.priceUnit ?? ''} 
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-black focus:outline-none focus:ring-1 focus:ring-black" 
+            />
+          </div>
         </div>
         <div>
           <label htmlFor="sortOrder" className="block text-sm font-medium text-gray-700">sortOrder</label>

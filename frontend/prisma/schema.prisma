@@ -147,6 +147,8 @@ model Service {
   slug             String  @unique
   shortDescription String?
   content          String?
+  startingPrice    Float?
+  priceUnit        String?
   isActive         Boolean @default(false)
   sortOrder        Int     @default(0)
 

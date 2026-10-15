@@ -55,9 +55,23 @@ export function ClientServicesGrid({ services }: ClientServicesGridProps) {
                 </p>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-[var(--line)] flex items-center justify-between text-xs font-bold uppercase tracking-wider text-neutral-700 group-hover:text-black">
-                <span>Explore Service</span>
-                <span className="text-[var(--brand-orange)] group-hover:translate-x-1 transition-transform">→</span>
+              <div className="pt-5 mt-6 border-t border-[var(--line)] flex items-center justify-between">
+                {srv.startingPrice ? (
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400">Starting from</span>
+                    <span className="font-mono text-sm font-extrabold text-[#0F172A]">
+                      ₹{Number(srv.startingPrice).toLocaleString('en-IN')}{srv.priceUnit ? <span className="font-sans font-medium text-[11px] text-slate-500 ml-1">/ {srv.priceUnit}</span> : ''}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-xs font-bold uppercase tracking-wider text-neutral-700 group-hover:text-black">
+                    Explore Service
+                  </span>
+                )}
+                <div className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[var(--brand-orange)] group-hover:translate-x-1 transition-transform">
+                  <span>View Details</span>
+                  <span>→</span>
+                </div>
               </div>
             </Link>
           </motion.div>

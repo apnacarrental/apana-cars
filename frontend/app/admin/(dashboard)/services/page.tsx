@@ -43,6 +43,7 @@ export default async function AdminServicesPage() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Service Title & Path</th>
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Starting Price</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Sort Order</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">SEO Status</th>
@@ -60,6 +61,20 @@ export default async function AdminServicesPage() {
                       <ExternalLink size={11} />
                     </Link>
                   </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {item.startingPrice ? (
+                    <span className="font-semibold text-gray-900 font-mono text-sm">
+                      ₹{item.startingPrice.toLocaleString('en-IN')}
+                      {item.priceUnit && (
+                        <span className="text-xs text-gray-500 font-normal ml-1">
+                          / {item.priceUnit}
+                        </span>
+                      )}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-gray-400 italic">Not set</span>
+                  )}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-600 font-mono">#{item.sortOrder}</td>
                 <td className="px-6 py-4 whitespace-nowrap">

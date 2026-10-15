@@ -6,10 +6,18 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
+const cleanNumber = (val: any) => {
+  if (val === null || val === undefined || val === '') return null
+  const num = parseFloat(String(val))
+  return isNaN(num) ? null : num
+}
+
 const Schema = z.object({
   title: z.string().min(1, 'Title is required'),
   slug: z.string().min(1, 'Slug is required'),
   shortDescription: z.string().optional().nullable(),
+  startingPrice: z.number().nullable().optional(),
+  priceUnit: z.string().optional().nullable(),
   sortOrder: z.number().int(),
   isActive: z.boolean(),
 })
@@ -39,6 +47,8 @@ export async function createService(formData: FormData): Promise<ActionResponse>
     title: rawTitle,
     slug,
     shortDescription: (formData.get('shortDescription') as string)?.trim() || null,
+    startingPrice: cleanNumber(formData.get('startingPrice')),
+    priceUnit: (formData.get('priceUnit') as string)?.trim() || null,
     sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
     isActive: formData.get('isActive') === 'on',
   }
@@ -84,6 +94,8 @@ export async function updateService(id: string, formData: FormData): Promise<Act
     title: rawTitle,
     slug,
     shortDescription: (formData.get('shortDescription') as string)?.trim() || null,
+    startingPrice: cleanNumber(formData.get('startingPrice')),
+    priceUnit: (formData.get('priceUnit') as string)?.trim() || null,
     sortOrder: parseInt((formData.get('sortOrder') as string) || '0'),
     isActive: formData.get('isActive') === 'on',
   }

@@ -124,12 +124,12 @@ export const FALLBACK_CARS = [
 ]
 
 export const FALLBACK_SERVICES = [
-  { id: 'srv-1', sortOrder: 1, title: 'Airport Transfers', shortDescription: '24/7 punctual pickups and drops to Rajiv Gandhi International Airport (RGIA)', slug: 'airport-cabs', isActive: true },
-  { id: 'srv-2', sortOrder: 2, title: 'Hourly Rentals', shortDescription: 'Flexible 4-hour, 8-hour, and 12-hour local packages for meetings and errands', slug: 'hourly-cabs', isActive: true },
-  { id: 'srv-3', sortOrder: 3, title: 'City Sightseeing', shortDescription: 'Curated day tours covering Hyderabad\'s top monuments and heritage spots', slug: 'sightseeing-cabs', isActive: true },
-  { id: 'srv-4', sortOrder: 4, title: 'Outstation Travel', shortDescription: 'One-way drops and roundtrips to Srisailam, Tirupati, Vijayawada, and Bangalore', slug: 'outstation-cabs', isActive: true },
-  { id: 'srv-5', sortOrder: 5, title: 'Srisailam Pilgrimage Packages', shortDescription: 'Dedicated 1-day and 2-day darshan tours to Srisailam Mallikarjuna Temple', slug: 'srisailam-cabs', isActive: true },
-  { id: 'srv-6', sortOrder: 6, title: 'Force Urbania Rentals', shortDescription: 'Ultra-luxury 12 and 16 seater Force Urbania vans for corporate & family tours', slug: 'force-urbania-rent-in-hyderabad', isActive: true },
+  { id: 'srv-1', sortOrder: 1, title: 'Airport Transfers', shortDescription: '24/7 punctual pickups and drops to Rajiv Gandhi International Airport (RGIA)', slug: 'airport-cabs', startingPrice: 1499, priceUnit: 'onwards', isActive: true },
+  { id: 'srv-2', sortOrder: 2, title: 'Hourly Rentals', shortDescription: 'Flexible 4-hour, 8-hour, and 12-hour local packages for meetings and errands', slug: 'hourly-cabs', startingPrice: 1800, priceUnit: '8 hrs / 80 km', isActive: true },
+  { id: 'srv-3', sortOrder: 3, title: 'City Sightseeing', shortDescription: 'Curated day tours covering Hyderabad\'s top monuments and heritage spots', slug: 'sightseeing-cabs', startingPrice: 2499, priceUnit: 'full day tour', isActive: true },
+  { id: 'srv-4', sortOrder: 4, title: 'Outstation Travel', shortDescription: 'One-way drops and roundtrips to Srisailam, Tirupati, Vijayawada, and Bangalore', slug: 'outstation-cabs', startingPrice: 2999, priceUnit: 'round trip', isActive: true },
+  { id: 'srv-5', sortOrder: 5, title: 'Srisailam Pilgrimage Packages', shortDescription: 'Dedicated 1-day and 2-day darshan tours to Srisailam Mallikarjuna Temple', slug: 'srisailam-cabs', startingPrice: 4800, priceUnit: 'darshan roundtrip', isActive: true },
+  { id: 'srv-6', sortOrder: 6, title: 'Force Urbania Rentals', shortDescription: 'Ultra-luxury 12 and 16 seater Force Urbania vans for corporate & family tours', slug: 'force-urbania-rent-in-hyderabad', startingPrice: 7500, priceUnit: 'per day', isActive: true },
 ]
 
 export const FALLBACK_TESTIMONIALS = [

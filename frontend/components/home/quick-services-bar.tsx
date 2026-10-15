@@ -66,13 +66,15 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
 
   // Use admin database services, with fallback
   const displayServices = (activeQuickServices && activeQuickServices.length > 0) ? activeQuickServices : [
-    { id: '1', title: 'Chauffeur-Driven Taxi', slug: 'hourly-cabs', shortDescription: 'Hourly, Daily & Weekly' },
-    { id: '2', title: 'Outstation Trips', slug: 'outstation-cabs', shortDescription: 'One Way & Round Trip' },
-    { id: '3', title: 'Airport Transfers', slug: 'airport-cabs', shortDescription: 'Pickup & Drop' },
-    { id: '4', title: 'Local Sightseeing', slug: 'sightseeing-cabs', shortDescription: 'Explore Hyderabad' },
-    { id: '5', title: 'Wedding Car Service', slug: 'fleet', shortDescription: 'Travel in Style' },
-    { id: '6', title: 'Corporate Travel', slug: 'services', shortDescription: 'Business & Staff Transport' },
-    { id: '7', title: 'On-Demand Driver', slug: 'contact', shortDescription: 'Temporary & Permanent' },
+    { id: '1', title: 'Airport Transfers', slug: 'airport-cabs', shortDescription: 'Pickup & Drop to RGIA', startingPrice: 1499, priceUnit: 'onwards' },
+    { id: '2', title: 'Hourly Rentals', slug: 'hourly-cabs', shortDescription: 'Hourly, Daily & Weekly Packages', startingPrice: 1800, priceUnit: '8 hrs / 80 km' },
+    { id: '3', title: 'City Sightseeing', slug: 'sightseeing-cabs', shortDescription: 'Curated Hyderabad Tours', startingPrice: 2499, priceUnit: 'full day tour' },
+    { id: '4', title: 'Outstation Travel', slug: 'outstation-cabs', shortDescription: 'One Way & Round Trip Drops', startingPrice: 2999, priceUnit: 'round trip' },
+    { id: '5', title: 'Srisailam Pilgrimage Packages', slug: 'srisailam-cabs', shortDescription: 'Mallikarjuna Temple Darshan', startingPrice: 4800, priceUnit: 'darshan roundtrip' },
+    { id: '6', title: 'Force Urbania Rentals', slug: 'force-urbania-rent-in-hyderabad', shortDescription: '12 & 16 Seater Luxury Vans', startingPrice: 7500, priceUnit: 'per day' },
+    { id: '7', title: 'Wedding Car Service', slug: 'wedding-cars', shortDescription: 'Travel in Luxury Style', startingPrice: 4500, priceUnit: 'per day' },
+    { id: '8', title: 'Corporate Travel', slug: 'corporate-travel', shortDescription: 'Business & Staff Transport', startingPrice: 2200, priceUnit: 'per day' },
+    { id: '9', title: 'On-Demand Driver', slug: 'driver-service', shortDescription: 'Temporary & Permanent Chauffeurs', startingPrice: 999, priceUnit: '8 hours' },
   ]
 
   const pauseAutoScroll = (duration = 3500) => {

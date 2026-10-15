@@ -6,7 +6,9 @@ import { SeoStatusBadge } from '@/components/admin/seo-status-badge'
 import { DeactivateServiceButton } from '@/components/admin/deactivate-service-button'
 import { DeleteServiceButton } from '@/components/admin/delete-service-button'
 import { ToggleQuickBarButton } from '@/components/admin/toggle-quick-bar-button'
+import { SyncServicesButton } from '@/components/admin/sync-services-button'
 import { Briefcase, Plus, ExternalLink } from 'lucide-react'
+import { DEFAULT_SERVICES } from './actions'
 
 export const dynamic = 'force-dynamic'
 
@@ -46,6 +48,34 @@ export default async function AdminServicesPage() {
     }
   }
 
+  // Auto-heal: Ensure all standard website services are present in the admin panel and DB
+  const missingServices = DEFAULT_SERVICES.filter(ds => !items.some(it => it.slug === ds.slug))
+  if (missingServices.length > 0) {
+    try {
+      for (const ms of missingServices) {
+        const created = await prisma.service.upsert({
+          where: { slug: ms.slug },
+          update: {
+            title: ms.title,
+            shortDescription: ms.shortDescription,
+            content: ms.content,
+            startingPrice: ms.startingPrice,
+            priceUnit: ms.priceUnit,
+            sortOrder: ms.sortOrder,
+            isActive: ms.isActive,
+            showInQuickBar: ms.showInQuickBar,
+            seoMetadata: ms.seoMetadata,
+          },
+          create: ms
+        })
+        items.push(created)
+      }
+      items.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
+    } catch (autoHealErr) {
+      console.error('Failed to auto-seed missing services:', autoHealErr)
+    }
+  }
+
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -55,16 +85,19 @@ export default async function AdminServicesPage() {
             Services & Packages
           </h1>
           <p className="text-gray-500 text-sm mt-1">
-            Manage airport cabs, hourly city packages, Force Urbania rentals, and outstation tours.
+            Manage airport cabs, hourly city packages, wedding cars, Force Urbania rentals, and outstation tours.
           </p>
         </div>
-        <Link 
-          href="/admin/services/new" 
-          className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 text-sm font-semibold select-none shadow-sm transition-colors"
-        >
-          <Plus size={16} />
-          <span>Add New Service</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <SyncServicesButton />
+          <Link 
+            href="/admin/services/new" 
+            className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 text-sm font-semibold select-none shadow-sm transition-colors"
+          >
+            <Plus size={16} />
+            <span>Add New Service</span>
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">

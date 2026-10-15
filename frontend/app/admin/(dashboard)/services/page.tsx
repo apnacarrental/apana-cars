@@ -8,7 +8,7 @@ import { DeleteServiceButton } from '@/components/admin/delete-service-button'
 import { ToggleQuickBarButton } from '@/components/admin/toggle-quick-bar-button'
 import { SyncServicesButton } from '@/components/admin/sync-services-button'
 import { Briefcase, Plus, ExternalLink } from 'lucide-react'
-import { DEFAULT_SERVICES } from './actions'
+import { DEFAULT_SERVICES } from './constants'
 
 export const dynamic = 'force-dynamic'
 

@@ -27,17 +27,34 @@ export function FaqSchema({ faqs }: { faqs: { question: string, answer: string }
 export function BlogPostingSchema({ post }: { post: any }) {
   const baseUrl = getBaseUrl()
 
+  let datePublished: string | undefined
+  let dateModified: string | undefined
+
+  try {
+    const rawPub = post.publishedAt || post.createdAt
+    if (rawPub) {
+      const d = new Date(rawPub)
+      if (!isNaN(d.getTime())) datePublished = d.toISOString()
+    }
+    if (post.updatedAt) {
+      const d = new Date(post.updatedAt)
+      if (!isNaN(d.getTime())) dateModified = d.toISOString()
+    }
+  } catch {
+    // ignore
+  }
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    datePublished: post.publishedAt || post.createdAt,
-    dateModified: post.updatedAt,
+    datePublished,
+    dateModified,
     url: `${baseUrl}/blog/${post.slug}`,
     author: {
       '@type': 'Organization',
-      name: 'Apna Car Rental',
+      name: 'Apna Cars',
     }
   }
 

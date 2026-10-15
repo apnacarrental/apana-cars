@@ -14,13 +14,6 @@ import type { Metadata } from 'next'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export async function generateStaticParams() {
-  const blogs = await getPublishedBlogs()
-  return blogs.map((b) => ({
-    slug: b.slug,
-  }))
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params
   const post = await getBlogBySlug(resolvedParams.slug)
@@ -45,6 +38,21 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     notFound()
   }
 
+  const rawDate = post.publishedAt || post.createdAt
+  let displayDate = 'Recently'
+  let isoDate = ''
+  if (rawDate) {
+    try {
+      const d = new Date(rawDate)
+      if (!isNaN(d.getTime())) {
+        displayDate = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+        isoDate = d.toISOString()
+      }
+    } catch {
+      // fallback
+    }
+  }
+
   return (
     <>
       <Header />
@@ -64,9 +72,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             
             <div style={{ display: 'flex', gap: '1rem', color: '#666', marginTop: '1.5rem', paddingBottom: '2rem', borderBottom: '1px solid #eee' }}>
               <span>&bull;</span>
-              <time dateTime={post.publishedAt?.toISOString() || post.createdAt.toISOString()}>
-                {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Recently'}
-              </time>
+              <time dateTime={isoDate}>{displayDate}</time>
             </div>
 
             {post.content ? (

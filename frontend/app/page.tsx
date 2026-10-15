@@ -2,6 +2,8 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { HeroSection } from '@/components/home/hero'
 import { BookingSection } from '@/components/home/booking-section'
+import { QuickServicesBar } from '@/components/home/quick-services-bar'
+import { FleetShowcaseStrip } from '@/components/home/fleet-showcase-strip'
 import { TrustBar } from '@/components/home/trust-bar'
 import { AboutSection } from '@/components/home/about-section'
 import { ServicesSection } from '@/components/home/services-section'
@@ -21,6 +23,8 @@ import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { buildMetadata, getBaseUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 
+import { getServices } from '@/lib/data/db'
+
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
@@ -30,14 +34,17 @@ export async function generateMetadata(): Promise<Metadata> { return await build
   path: '/',
 }) }
 
-export default function Page() {
+export default async function Page() {
+  const services = await getServices()
+
   return (
     <>
       <Header />
       <main id="home">
         <HeroSection />
         <BookingSection />
-        <TrustBar />
+        <QuickServicesBar services={services} />
+        <FleetShowcaseStrip />
         <AboutSection />
         <ServicesSection />
         <PopularSightseeingSection />

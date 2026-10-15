@@ -27,62 +27,64 @@ export function ClientFleetGrid({ cars }: ClientFleetGridProps) {
 
         return (
           <motion.article 
-            className="fleet-card group relative bg-white rounded-xl overflow-hidden border border-neutral-200/80 hover:border-neutral-400 transition-all duration-300 shadow-sm hover:shadow-xl" 
+            className="fleet-card group relative bg-white rounded-xl overflow-hidden border border-[var(--line)] hover:border-neutral-400 transition-all duration-300 shadow-xs hover:shadow-lg flex flex-col justify-between" 
             key={car.id}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -6 }}
+            transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -4 }}
           >
-            {/* Image Container with zoom physics */}
-            <div className="fleet-photo relative h-64 overflow-hidden bg-neutral-100">
+            {/* Image Container with natural vehicle photography framing */}
+            <div className="fleet-photo relative h-56 sm:h-64 overflow-hidden bg-[#f5f2ea]">
               <Image 
                 src={imgUrl} 
                 alt={`${car.name} rental car in Hyderabad`} 
                 fill 
                 sizes="(max-width: 800px) 100vw, 33vw" 
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
-
-              {/* Category pill */}
-              <div className="absolute top-3 left-3 px-3 py-1 bg-black/70 backdrop-blur-md rounded-full text-[11px] font-semibold text-white tracking-wider uppercase border border-white/10 flex items-center gap-1.5">
-                <Sparkles size={11} className="text-amber-400" />
-                <span>{car.category?.name || 'Cab / Rental'}</span>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity" />
 
               {/* Price badge floating top right */}
-              <div className="absolute top-3 right-3 px-3 py-1 bg-white/95 backdrop-blur-md rounded-full text-xs font-bold text-neutral-900 shadow-md">
+              <div className="absolute top-3 right-3 px-3 py-1 bg-white/95 backdrop-blur-md rounded-full text-xs font-bold text-neutral-900 shadow-sm border border-neutral-100">
                 {priceDisplay}
               </div>
             </div>
 
-            {/* Car Details */}
-            <div className="fleet-info p-6">
-              <p className="eyebrow !text-xs !mb-1 text-neutral-500">{car.name}</p>
-              <h3 className="text-xl font-bold text-neutral-900 group-hover:text-black line-clamp-1 mb-2">
-                {car.shortDescription || car.name}
+            {/* Car Details matching Reference Image */}
+            <div className="fleet-info p-6 flex flex-col flex-1">
+              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-neutral-500 mb-1.5 block">
+                {car.category?.name || 'Rental Cab'}
+              </span>
+              
+              <h3 className="text-xl font-bold text-neutral-900 group-hover:text-black tracking-tight mb-1.5">
+                {car.name}
               </h3>
               
-              <div className="flex items-center gap-2 text-xs text-neutral-500 mb-5 py-2 border-y border-neutral-100">
-                <Users size={14} className="text-neutral-400 shrink-0" />
+              <div className="flex items-center gap-1.5 text-xs text-neutral-500 mb-3 font-medium">
                 <span>{meta}</span>
               </div>
 
-              <div className="fleet-bottom flex items-center justify-between pt-2">
-                <div className="flex flex-col">
-                  <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">Starting Rate</span>
-                  <strong className="text-base font-extrabold text-neutral-900">{priceDisplay}</strong>
+              {car.shortDescription && (
+                <p className="text-xs sm:text-[13px] text-neutral-600 leading-relaxed line-clamp-2 mb-4">
+                  {car.shortDescription}
+                </p>
+              )}
+
+              {/* Card Footer matching Reference Image: "Price on request / Starting rate" on left, "INQUIRE →" on right */}
+              <div className="fleet-bottom flex items-center justify-between pt-4 mt-auto border-t border-[var(--line)]">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider block">Rate</span>
+                  <strong className="text-sm font-bold text-neutral-900">{priceDisplay}</strong>
                 </div>
 
                 <Link 
                   href={`/fleet/${car.slug}`} 
-                  style={{ color: '#ffffff', backgroundColor: '#111111' }}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg !text-white text-xs font-semibold uppercase tracking-wider hover:bg-black active:scale-95 transition-all shadow-sm group-hover:shadow"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-[var(--brand-orange)] transition-colors group/btn py-1"
                 >
-                  <span style={{ color: '#ffffff' }} className="!text-white">Book</span>
-                  <ArrowRight size={14} style={{ color: '#ffffff' }} className="!text-white transition-transform group-hover:translate-x-1" />
+                  <span>INQUIRE</span>
+                  <ArrowRight size={14} className="transition-transform group-hover/btn:translate-x-1" />
                 </Link>
               </div>
             </div>

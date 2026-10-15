@@ -3,120 +3,97 @@
 import React from 'react'
 import Image from 'next/image'
 import { motion } from 'motion/react'
-import { ArrowRight, ShieldCheck, Sparkles, PhoneCall } from 'lucide-react'
+import { Star, Users, ShieldCheck, ArrowRight } from 'lucide-react'
 
 export function HeroSection() {
   return (
-    <section className="hero relative overflow-hidden">
-      {/* Background with subtle Ken Burns zoom */}
-      <motion.div 
-        className="absolute inset-0"
-        initial={{ scale: 1.08 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <Image 
-          src="/images/hero-car.png" 
-          alt="Luxury car ready for a journey - Apna Car Rental Hyderabad" 
-          fill 
-          priority 
-          className="hero-image" 
-          sizes="100vw" 
-        />
-      </motion.div>
-
-      {/* Atmospheric lighting overlay */}
-      <div className="hero-overlay" />
-
-      {/* Hero content container with staggered kinetic entry */}
-      <div className="hero-content relative z-10">
-        {/* Live Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-[11px] font-semibold tracking-wider uppercase mb-5"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span>Verified Chauffeurs • 24/7 Hyderabad Dispatch</span>
-        </motion.div>
-
-        {/* Eyebrow */}
-        <motion.p 
-          className="eyebrow light !tracking-[0.22em] !text-white/70"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: 'easeOut' }}
-        >
-          Premium Hyderabad Car & Cab Rentals
-        </motion.p>
-
-        {/* Kinetic Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          Your journey.<br />
-          <motion.span 
-            className="inline-block bg-gradient-to-r from-white via-neutral-200 to-neutral-400 bg-clip-text text-transparent"
-            initial={{ opacity: 0, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 0.4 }}
-          >
-            Your car. Your way.
-          </motion.span>
-        </motion.h1>
-
-        {/* Copy */}
-        <motion.p 
-          className="hero-copy"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
-        >
-          From quick city transfers and Shamshabad airport drop-offs to luxury outstation road trips in Ertiga, Crysta & Force Urbania. Transparent per-km rates with zero surprise charges.
-        </motion.p>
-
-        {/* Buttons with magnetic hover and click feedback */}
-        <motion.div 
-          className="hero-buttons"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.55, ease: 'easeOut' }}
-        >
-          <motion.a 
-            className="button button-light shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all !cursor-pointer" 
-            href="#book"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-          >
-            Book a car <ArrowRight size={17} />
-          </motion.a>
-          <motion.a 
-            className="text-button light hover:opacity-100 transition-opacity !cursor-pointer" 
-            href="#fleet"
-            whileHover={{ x: 4 }}
-          >
-            Explore our fleet <ArrowRight size={17} />
-          </motion.a>
-        </motion.div>
+    <section className="relative min-h-[560px] lg:min-h-[620px] bg-gradient-to-r from-white via-[#FCFAF6] to-[#F5F1E8] overflow-hidden pt-8 pb-20 md:pb-28">
+      {/* Background Graphic - Charminar & Vehicle Fleet on the right side */}
+      <div className="absolute right-0 top-0 bottom-0 w-full md:w-[60%] lg:w-[56%] pointer-events-none select-none z-0 hidden md:block">
+        <div className="relative w-full h-full">
+          <Image
+            src="/images/hero_charminar_perfect.png"
+            alt="Apna Car Rental Fleet at Charminar Hyderabad"
+            fill
+            priority
+            className="object-contain object-right-bottom"
+            sizes="(max-width: 1024px) 60vw, 56vw"
+          />
+        </div>
       </div>
 
-      {/* Editorial floating note at bottom right */}
-      <motion.div 
-        className="hero-note"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.8 }}
-      >
-        <span className="font-mono text-emerald-400">01</span>
-        <span>Move differently</span>
-        <span className="note-line" />
-      </motion.div>
+      {/* Hero Content Container */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-4 md:pt-10">
+        <div className="max-w-xl lg:max-w-2xl">
+          {/* Eyebrow */}
+          <div className="text-xs uppercase tracking-[0.2em] font-bold text-slate-500 mb-3">
+            HYDERABAD&apos;S MOST TRUSTED
+          </div>
+
+          {/* Kinetic Headline */}
+          <h1 className="text-4xl sm:text-5xl lg:text-[62px] font-black text-[#0F172A] leading-[1.08] tracking-tight mb-4">
+            Chauffeur-Driven<br />
+            <span className="text-[#ECA00A]">Taxi Service</span><br />
+            in Hyderabad
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mb-8">
+            Comfortable, safe and reliable chauffeur-driven cars for local travel, airport transfers, outstation trips, corporate bookings, weddings and more.
+          </p>
+
+          {/* 4 Trust Badges in a Row matching reference */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-wrap items-center gap-4 sm:gap-6 pt-2 pb-6"
+          >
+            {/* Badge 1: Google Reviews */}
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-white shadow-xs border border-slate-100 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/>
+                  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.27v3.15C3.25 21.37 7.31 24 12 24z"/>
+                  <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.27C.46 8.2.005 10.04.005 12s.46 3.8 1.27 5.42l4.01-3.15z"/>
+                  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.63 1.27 6.58l4.01 3.15c.95-2.83 3.6-4.93 6.72-4.93z"/>
+                </svg>
+              </div>
+              <div className="leading-tight">
+                <strong className="text-xs font-bold text-[#0F172A] block">1500+</strong>
+                <span className="text-[10px] text-slate-500 font-medium">Genuine Reviews</span>
+              </div>
+            </div>
+
+            {/* Badge 2: Rating */}
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-amber-50 border border-amber-200/60 flex items-center justify-center text-[#ECA00A] shrink-0">
+                <Star size={14} className="fill-current text-[#ECA00A]" />
+              </div>
+              <div className="leading-tight">
+                <strong className="text-xs font-bold text-[#0F172A] block">4.9/5</strong>
+                <span className="text-[10px] text-slate-500 font-medium">Customer Rating</span>
+              </div>
+            </div>
+
+            {/* Badge 3: Trusted by Thousands */}
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-blue-50 border border-blue-200/60 flex items-center justify-center text-[#0A2540] shrink-0">
+                <Users size={14} />
+              </div>
+              <span className="text-xs font-semibold text-slate-700">Trusted by Thousands</span>
+            </div>
+
+            {/* Badge 4: Safe & Reliable Travel */}
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-700 shrink-0">
+                <ShieldCheck size={14} />
+              </div>
+              <span className="text-xs font-semibold text-slate-700">Safe &amp; Reliable Travel</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </section>
   )
 }

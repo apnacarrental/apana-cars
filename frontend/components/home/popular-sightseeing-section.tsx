@@ -22,7 +22,7 @@ export function PopularSightseeingSection() {
     <section 
       id="sightseeing-packages" 
       aria-label="Popular Sightseeing Packages"
-      className="section bg-white border-b border-[var(--line)] py-20 sm:py-24"
+      className="section bg-[var(--paper)] border-b border-[var(--line)] py-20 sm:py-24"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -53,8 +53,7 @@ export function PopularSightseeingSection() {
           {SIGHTSEEING_PACKAGES.map((pkg) => (
             <article 
               key={pkg.id}
-              className="fleet-card flex flex-col justify-between h-full bg-white border border-[var(--line)] overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 group"
-              style={{ borderRadius: '0px' }}
+              className="fleet-card flex flex-col justify-between h-full bg-white border border-[var(--line)] overflow-hidden rounded-2xl shadow-xs hover:shadow-xl transition-all duration-300 group"
             >
               <div>
                 {/* Destination Image Banner */}

@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { ServiceHeroSection } from '@/components/layout/service-hero-section'
 import { FaqAccordion } from '@/components/ui/faq-accordion'
 import { HighwayStreamCanvas } from '@/components/motion/highway-stream-canvas'
 import { TiltCard3D } from '@/components/motion/tilt-card-3d'
@@ -258,88 +259,17 @@ export default function SightseeingCabsPage() {
         {/* Global Navigation Header */}
         <Header />
 
-        {/* HERO SECTION */}
-        <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--paper)] pt-12 pb-20 md:py-24">
-          <HighwayStreamCanvas />
-
-          <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              {/* Left Column: Heading, Context, CTAs */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-white/80 backdrop-blur-sm px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-neutral-800 shadow-sm">
-                  <Camera size={14} className="text-neutral-700" />
-                  <span>Curated Day Tours &amp; Heritage Circuits</span>
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-normal tracking-tight text-neutral-950 leading-[1.12]">
-                  Hyderabad <span className="italic font-serif">Sightseeing</span> Cabs
-                </h1>
-
-                <p className="text-base sm:text-lg text-[var(--soft)] max-w-2xl font-normal leading-relaxed">
-                  Explore Hyderabad&apos;s landmarks, historic palaces, majestic forts, and popular spiritual circuits with a private, comfortable chauffeured cab. Relax with transparent quotations and doorstep pickup.
-                </p>
-
-                {/* Hero CTAs */}
-                <SightseeingHeroCta />
-
-                {/* Trust Metrics Pill Strip */}
-                <div className="pt-6 grid grid-cols-3 gap-4 border-t border-[var(--line)] max-w-xl">
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">5+</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Curated Circuits</span>
-                  </div>
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">Doorstep</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Pickup &amp; Drop</span>
-                  </div>
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">100%</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Customizable Stops</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column: Hero Visual Card */}
-              <div className="lg:col-span-5">
-                <TiltCard3D maxTilt={7}>
-                  <div className="relative overflow-hidden rounded-none border border-[var(--line)] bg-white p-3 shadow-xl">
-                    <div className="relative h-[340px] sm:h-[400px] w-full overflow-hidden bg-neutral-900">
-                      <Image
-                        src="/images/sightseeing/hyderabad-hero.jpg"
-                        alt="Hyderabad Sightseeing Cabs - Apna Cars"
-                        fill
-                        priority
-                        className="object-cover object-center"
-                        sizes="(max-width: 1024px) 100vw, 40vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      <div className="absolute bottom-5 left-5 right-5 text-white">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-300 block mb-1">
-                          Royal Deccan Heritage
-                        </span>
-                        <h2 className="text-xl font-serif font-medium text-white m-0">
-                          Experience Hyderabad at Your Own Pace
-                        </h2>
-                        <p className="text-xs text-neutral-300 mt-1 m-0">
-                          Chauffeured sedans &amp; spacious SUVs dedicated solely to your family.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-[var(--paper)] flex items-center justify-between text-xs text-neutral-700 border-t border-[var(--line)]">
-                      <span className="flex items-center gap-1.5 font-medium">
-                        <CheckCircle2 size={14} className="text-emerald-600" /> Fixed transparent pricing
-                      </span>
-                      <span className="flex items-center gap-1.5 font-medium">
-                        <CheckCircle2 size={14} className="text-emerald-600" /> Commercial permits
-                      </span>
-                    </div>
-                  </div>
-                </TiltCard3D>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* UNIFIED SERVICE HERO */}
+        <ServiceHeroSection
+          eyebrow="CURATED DAY TOURS & HERITAGE CIRCUITS"
+          titleLine1="Hyderabad Private"
+          titleHighlight="Sightseeing Cabs"
+          titleLine2="at Your Own Pace"
+          subtitle="Explore Hyderabad's landmarks, historic palaces, majestic forts, and popular spiritual circuits with a private, comfortable chauffeured cab with transparent quotations and doorstep pickup."
+          defaultTab="local"
+          defaultCarType="Innova Crysta (7-Seater)"
+          extraAction={<SightseeingHeroCta />}
+        />
 
         {/* TRUST BADGES STRIP */}
         <section className="border-b border-[var(--line)] bg-white py-6">

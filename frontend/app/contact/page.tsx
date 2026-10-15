@@ -1,66 +1,102 @@
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { ArrowRight, Mail, Phone, MapPin } from 'lucide-react'
-
+import { ArrowRight, Mail, Phone, MapPin, MessageCircle } from 'lucide-react'
+import prisma from '@/lib/prisma'
+import { InquiryForm } from '@/components/ui/inquiry-form'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
-export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
-  fallbackTitle: 'Contact Us | Apna Car Rental',
-  fallbackDescription: 'Get in touch with Apna Car Rental for bookings and inquiries.',
-  path: '/contact'
-}) }
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+export async function generateMetadata(): Promise<Metadata> {
+  return await buildMetadata({
+    fallbackTitle: 'Contact Us | Apna Cars Hyderabad Cab & Rental Support',
+    fallbackDescription: 'Get in touch with Apna Car Rental for 24/7 bookings, vehicle quotes, and corporate inquiries across Hyderabad.',
+    path: '/contact',
+  })
+}
 
 export default function ContactPage() {
   return (
     <>
       <Header />
       <main>
-        <section className="section" style={{ paddingTop: '160px', minHeight: '60vh' }}>
-          <p className="eyebrow">Get in touch</p>
-          <h1 style={{ fontSize: '3.5rem', margin: '0.5rem 0', letterSpacing: '-0.02em' }}>
-            We&apos;re here to <em>help.</em>
-          </h1>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '4rem' }}>
-            <div style={{ padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
-              <Phone size={32} style={{ marginBottom: '1rem' }} />
-              <h3>Call us</h3>
-              <p style={{ color: '#666', marginBottom: '1rem' }}>Available 24/7 for bookings & inquiries.</p>
-              <a href="tel:+919988123444" className="text-button" style={{ fontSize: '1.2rem', fontWeight: 600 }}>099881 23444</a>
-            </div>
+        <section className="section bg-[var(--paper-subtle)]" style={{ paddingTop: '150px', paddingBottom: '90px' }}>
+          <div className="max-w-5xl mx-auto">
+            <p className="eyebrow">Get in touch</p>
+            <h1 className="text-3xl sm:text-5xl font-bold text-neutral-900 tracking-tight mb-4">
+              We&apos;re here to <em>help.</em>
+            </h1>
+            <p className="text-base sm:text-lg text-[var(--soft)] max-w-xl mb-12">
+              Have questions about our fleet, custom itineraries, outstation tariffs, or airport transfers? Reach our Hyderabad dispatch desk anytime.
+            </p>
             
-            <div style={{ padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '1rem' }}>💬</span>
-              <h3>WhatsApp</h3>
-              <p style={{ color: '#666', marginBottom: '1rem' }}>Quick chat for instant car availability.</p>
-              <a href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" className="text-button" style={{ fontSize: '1.2rem', color: '#25D366', fontWeight: 600 }}>Chat on WhatsApp</a>
-            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              {/* Phone Card */}
+              <div className="p-6 bg-white rounded-2xl border border-[var(--line)] shadow-xs flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 mb-4">
+                    <Phone size={22} />
+                  </div>
+                  <h3 className="text-lg font-bold text-neutral-900 mb-1">Call us</h3>
+                  <p className="text-xs text-[var(--soft)] mb-4">Available 24/7 for instant bookings &amp; fleet queries.</p>
+                </div>
+                <a href="tel:+919988123444" className="text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-[var(--brand-orange)] transition-colors">
+                  099881 23444
+                </a>
+              </div>
+              
+              {/* WhatsApp Card */}
+              <div className="p-6 bg-white rounded-2xl border border-[var(--line)] shadow-xs flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-[#25D366] mb-4">
+                    <MessageCircle size={22} />
+                  </div>
+                  <h3 className="text-lg font-bold text-neutral-900 mb-1">WhatsApp</h3>
+                  <p className="text-xs text-[var(--soft)] mb-4">Instant chat for live vehicle photos and fast quotes.</p>
+                </div>
+                <a href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-wider text-[#25D366] hover:underline">
+                  Chat on WhatsApp &rarr;
+                </a>
+              </div>
 
-            <div style={{ padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
-              <Mail size={32} style={{ marginBottom: '1rem' }} />
-              <h3>Email us</h3>
-              <p style={{ color: '#666', marginBottom: '1rem' }}>Drop us a line anytime.</p>
-              <a href="mailto:hello@apnacarrental.com" className="text-button" style={{ fontSize: '1.2rem' }}>hello@apnacarrental.com</a>
+              {/* Email Card */}
+              <div className="p-6 bg-white rounded-2xl border border-[var(--line)] shadow-xs flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 mb-4">
+                    <Mail size={22} />
+                  </div>
+                  <h3 className="text-lg font-bold text-neutral-900 mb-1">Email us</h3>
+                  <p className="text-xs text-[var(--soft)] mb-4">Corporate contracts &amp; vendor correspondence.</p>
+                </div>
+                <a href="mailto:hello@apnacarrental.com" className="text-xs font-bold text-neutral-900 hover:text-[var(--brand-orange)] transition-colors break-all">
+                  hello@apnacarrental.com
+                </a>
+              </div>
+              
+              {/* Address Card */}
+              <div className="p-6 bg-white rounded-2xl border border-[var(--line)] shadow-xs flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 mb-4">
+                    <MapPin size={22} />
+                  </div>
+                  <h3 className="text-lg font-bold text-neutral-900 mb-1">Visit Office</h3>
+                  <address className="not-italic text-xs text-[var(--soft)] leading-relaxed">
+                    H. No 4-4-123, Garden Colony, opp. SBI ATM, Quthbullapur, Hyderabad 500055
+                  </address>
+                </div>
+                <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider mt-3">Headquarters</span>
+              </div>
             </div>
             
-            <div style={{ padding: '2rem', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
-              <MapPin size={32} style={{ marginBottom: '1rem' }} />
-              <h3>Visit us</h3>
-              <p style={{ color: '#666', marginBottom: '0.5rem' }}>Our main office:</p>
-              <address style={{ fontStyle: 'normal', fontSize: '0.95rem', lineHeight: 1.4, color: '#444' }}>
-                Garden colony, H. No - 4-4-123,<br />
-                opp. SBI ATM, Quthbullapur Garden Colony,<br />
-                Bhagyalaxmi Nagar, Quthbullapur,<br />
-                Hyderabad, Telangana 500055
-              </address>
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-8">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--brand-orange)] block mb-1">Direct Assistance</span>
+                <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight m-0">Send an Online Inquiry</h2>
+              </div>
+              <ContactFormWrapper />
             </div>
-          </div>
-          
-          <div style={{ marginTop: '4rem', maxWidth: '800px', margin: '4rem auto 0' }}>
-            <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Send an Inquiry</h2>
-            {/* Note: In a real app we'd fetch these from a server component wrapper, but since this page is a server component, we can fetch them here. */}
-            <ContactFormWrapper />
           </div>
         </section>
       </main>
@@ -68,9 +104,6 @@ export default function ContactPage() {
     </>
   )
 }
-
-import prisma from '@/lib/prisma'
-import { InquiryForm } from '@/components/ui/inquiry-form'
 
 async function ContactFormWrapper() {
   const [locations, services, cars] = await Promise.all([
@@ -81,4 +114,3 @@ async function ContactFormWrapper() {
 
   return <InquiryForm locations={locations} services={services} cars={cars} />
 }
-

@@ -185,8 +185,8 @@ export function HyderabadTravelGuideCards() {
             <BookOpen size={13} className="text-amber-600" />
             Hyderabad Cab & Travel Guide
           </p>
-          <h2 className="text-3xl sm:text-4xl font-serif font-normal text-neutral-900 tracking-tight">
-            Book a Taxi Service in Hyderabad with <em>Apna Cars.</em>
+          <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 tracking-tight">
+            Book a Taxi Service in Hyderabad with <span className="text-[#ECA00A] font-extrabold">Apna Cars.</span>
           </h2>
         </div>
         <p className="text-sm text-neutral-600 max-w-md">

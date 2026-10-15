@@ -1,8 +1,15 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Suspense } from 'react'
+import { Montserrat } from 'next/font/google'
 import './globals.css'
 
-import { Suspense } from 'react'
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-montserrat',
+  weight: ['400', '500', '600', '700', '800'],
+})
 import { getBaseUrl } from '@/lib/seo'
 import GoogleAnalytics from '@/components/analytics/google-analytics'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
@@ -49,8 +56,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased overflow-x-hidden">
+    <html lang="en" className={montserrat.variable}>
+      <body className={`${montserrat.className} antialiased overflow-x-hidden`}>
         <BookingModalProvider>
           {children}
           <FloatingActionButtons />

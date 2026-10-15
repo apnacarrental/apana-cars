@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { ServiceHeroSection } from '@/components/layout/service-hero-section'
 import { FaqAccordion } from '@/components/ui/faq-accordion'
 import { HighwayStreamCanvas } from '@/components/motion/highway-stream-canvas'
 import { TiltCard3D } from '@/components/motion/tilt-card-3d'
@@ -347,46 +348,22 @@ export default function SrisailamCabsPage() {
       <Header />
 
       <main id="srisailam-cabs">
-        {/* HERO SECTION — Cinematic with Highway Stream Canvas */}
-        <section className="hero relative overflow-hidden">
-          <Image
-            src="/images/srisailam/hero.jpg"
-            alt="Hyderabad to Srisailam cab service with views of Srisailam temple and Nallamala forest"
-            fill
-            priority
-            sizes="100vw"
-            className="hero-image"
-          />
-          <div className="hero-overlay" />
-          
-          {/* Ambient 60fps Highway Light Particles Stream */}
-          <HighwayStreamCanvas density={55} speedMultiplier={1.1} />
-
-          <div className="hero-content relative z-10">
-            <p className="eyebrow light flex items-center gap-2">
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Outstation &bull; Temple Pilgrimage</span>
-            </p>
-            <h1>
-              Hyderabad to<br />
-              <span>Srisailam cabs.</span>
-            </h1>
-            <p className="hero-copy">
-              A serene pilgrimage to Mallikarjuna Jyotirlinga and Bhramaramba Shakti Peetham. 
-              Doorstep pickup, verified ghat drivers, sanitised cars, and transparent pricing.
-            </p>
+        {/* 1. UNIFIED SERVICE HERO */}
+        <ServiceHeroSection
+          eyebrow="OUTSTATION • TEMPLE PILGRIMAGE"
+          titleLine1="Hyderabad to"
+          titleHighlight="Srisailam Cabs"
+          titleLine2="Mallikarjuna Darshan"
+          subtitle="A serene pilgrimage to Mallikarjuna Jyotirlinga and Bhramaramba Shakti Peetham. Doorstep pickup, verified ghat drivers, sanitized cars, and transparent pricing."
+          defaultTab="outstation"
+          defaultCarType="Innova Crysta (7-Seater)"
+          extraAction={
             <OutstationHeroCta 
               contactPhone={contactPhone} 
               displayPhone={displayPhone} 
             />
-          </div>
-
-          <div className="hero-note">
-            <span>01</span>
-            <span>Pilgrimage &bull; ~215 km</span>
-            <span className="note-line" />
-          </div>
-        </section>
+          }
+        />
 
         {/* TRUST BAR — 4 Interactive Columns with 3D Micro-Hover */}
         <section className="trust-bar bg-[var(--paper)]">

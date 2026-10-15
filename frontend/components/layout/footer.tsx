@@ -8,7 +8,7 @@ export function Footer() {
       <footer id="contact" className="footer">
         <div className="footer-top">
           <div>
-            <Image src="/images/logo-apna-car.png" alt="Apna Car Rental" width={182} height={58} />
+            <Image src="/images/logo_clean_dark.png" alt="Apna Car Rental" width={180} height={40} className="h-9 w-auto object-contain" />
             <p>Your trusted partner for moving freely, comfortably, and on your own terms.</p>
           </div>
           <div>

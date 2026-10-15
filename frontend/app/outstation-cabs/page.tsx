@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { ServiceHeroSection } from '@/components/layout/service-hero-section'
 import { FaqAccordion } from '@/components/ui/faq-accordion'
 import { HighwayStreamCanvas } from '@/components/motion/highway-stream-canvas'
 import { TiltCard3D } from '@/components/motion/tilt-card-3d'
@@ -606,46 +607,22 @@ export default function OutstationCabsPage() {
       <Header />
 
       <main id="outstation-cabs">
-        {/* 1. HERO SECTION — Cinematic with Highway Stream Canvas */}
-        <section className="hero relative overflow-hidden">
-          <Image
-            src="/images/hero-car.png"
-            alt="Outstation Cabs from Hyderabad with Apna Cars"
-            fill
-            priority
-            sizes="100vw"
-            className="hero-image"
-          />
-          <div className="hero-overlay" />
-          
-          {/* Ambient 60fps Highway Light Particles Stream */}
-          <HighwayStreamCanvas density={55} speedMultiplier={1.1} />
-
-          <div className="hero-content relative z-10">
-            <p className="eyebrow light flex items-center gap-2">
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Intercity &bull; Pilgrimage &bull; Holidays</span>
-            </p>
-            <h1>
-              Outstation Cabs<br />
-              <span>from Hyderabad.</span>
-            </h1>
-            <p className="hero-copy">
-              Book comfortable outstation journeys from Hyderabad with vehicle options for 
-              family trips, business travel, pilgrimages and holidays across 40+ destinations.
-            </p>
+        {/* 1. UNIFIED SERVICE HERO */}
+        <ServiceHeroSection
+          eyebrow="INTERCITY • PILGRIMAGE • HOLIDAYS"
+          titleLine1="Comfortable Intercity"
+          titleHighlight="Outstation Cabs"
+          titleLine2="from Hyderabad"
+          subtitle="Book comfortable outstation journeys from Hyderabad with vehicle options for family trips, business travel, pilgrimages, and holidays across 40+ destinations."
+          defaultTab="outstation"
+          defaultCarType="Innova Crysta (7-Seater)"
+          extraAction={
             <OutstationHeroCta 
               contactPhone={contactPhone} 
               displayPhone={displayPhone} 
             />
-          </div>
-
-          <div className="hero-note">
-            <span>01</span>
-            <span>42+ Destinations &bull; Clean Fleet</span>
-            <span className="note-line" />
-          </div>
-        </section>
+          }
+        />
 
         {/* 2. TRUST BAR — 4 Interactive Columns with 3D Micro-Hover */}
         <section className="trust-bar bg-[var(--paper)]">

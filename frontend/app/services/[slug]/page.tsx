@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-react'
 import { getServiceBySlug, getServices } from '@/lib/data/db'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return await buildMetadata({
     seoMetadata: service.seoMetadata,
-    fallbackTitle: `${service.title} | Apna Cars`,
+    fallbackTitle: `${service.title} | Apna Cars Hyderabad`,
     fallbackDescription: service.shortDescription || `Experience our ${service.title.toLowerCase()} service with Apna Cars.`,
     path: `/services/${service.slug}`,
   })
@@ -47,38 +47,45 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
     <>
       <Header />
       <main>
-        <section className="section" style={{ paddingTop: '160px' }}>
-          <Breadcrumbs items={[
-            { label: 'Home', href: '/' },
-            { label: 'Services', href: '/#services' },
-            { label: service.title, href: `/services/${service.slug}` },
-          ]} />
+        <section className="section" style={{ paddingTop: '150px', paddingBottom: '90px' }}>
+          <div className="mb-6">
+            <Breadcrumbs items={[
+              { label: 'Home', href: '/' },
+              { label: 'Services', href: '/services' },
+              { label: service.title, href: `/services/${service.slug}` },
+            ]} />
+          </div>
           
-          <div style={{ maxWidth: '800px', marginTop: '2rem' }}>
-            <p className="eyebrow">Service</p>
-            <h1 style={{ fontSize: '3.5rem', margin: '0.5rem 0', letterSpacing: '-0.02em' }}>
+          <div className="max-w-4xl">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-[var(--brand-orange)] bg-[var(--brand-orange-light)] border border-orange-200/60 mb-4">
+              <Sparkles size={12} />
+              Apna Service Solution
+            </span>
+
+            <h1 className="text-3xl sm:text-5xl font-bold text-neutral-900 tracking-tight mb-4">
               {service.title}
             </h1>
             
-            <p style={{ fontSize: '1.5rem', color: '#666', marginTop: '1.5rem', lineHeight: 1.4 }}>
+            <p className="text-base sm:text-xl text-[var(--soft)] leading-relaxed mb-8">
               {service.shortDescription}
             </p>
 
             {service.content && (
-              <div style={{ marginTop: '2rem', fontSize: '1.1rem', lineHeight: 1.6 }}>
-                {service.content}
-              </div>
+              <div 
+                className="prose prose-neutral max-w-none mb-10 p-8 bg-white rounded-2xl border border-[var(--line)] shadow-xs leading-relaxed text-neutral-700" 
+                dangerouslySetInnerHTML={{ __html: service.content }} 
+              />
             )}
 
-            <div style={{ marginTop: '3rem' }}>
+            <div className="mt-8">
               <ServiceBookingButton serviceTitle={service.title} />
             </div>
           </div>
         </section>
 
         {service.faqs && service.faqs.length > 0 && (
-          <section className="section faq" style={{ backgroundColor: '#f9f9f9' }}>
-            <p className="eyebrow">Need to know</p>
+          <section className="section faq bg-white border-t border-[var(--line)]">
+            <p className="eyebrow">Service Inquiries</p>
             <h2>Frequently asked <em>questions.</em></h2>
             <FaqAccordion items={service.faqs} />
             <FaqSchema faqs={service.faqs} />
@@ -91,4 +98,3 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
     </>
   )
 }
-

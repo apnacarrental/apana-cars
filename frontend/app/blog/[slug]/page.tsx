@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Clock, Calendar } from 'lucide-react'
 import { getBlogBySlug, getPublishedBlogs } from '@/lib/data/db'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -67,35 +67,44 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     <>
       <Header />
       <main>
-        <section className="section" style={{ paddingTop: '160px', paddingBottom: '40px' }}>
-          <Breadcrumbs items={[
-            { label: 'Home', href: '/' },
-            { label: 'Blog', href: '/blog' },
-            { label: post.title || 'Guide', href: `/blog/${post.slug}` },
-          ]} />
-          
-          <div style={{ maxWidth: '800px', margin: '2rem auto 0' }}>
-            {post.category && <p className="eyebrow">{post.category.name}</p>}
-            <h1 style={{ fontSize: '3rem', margin: '0.5rem 0', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-              {post.title}
-            </h1>
-            
-            <div style={{ display: 'flex', gap: '1rem', color: '#666', marginTop: '1.5rem', paddingBottom: '2rem', borderBottom: '1px solid #eee' }}>
-              <span>&bull;</span>
-              <time dateTime={isoDate}>{displayDate}</time>
+        <section className="section bg-[var(--paper-subtle)]" style={{ paddingTop: '150px', paddingBottom: '70px' }}>
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-6">
+              <Breadcrumbs items={[
+                { label: 'Home', href: '/' },
+                { label: 'Blog', href: '/blog' },
+                { label: post.title || 'Guide', href: `/blog/${post.slug}` },
+              ]} />
             </div>
-
-            {post.content ? (
-              <div 
-                className="prose prose-lg max-w-none mt-12 mb-12"
-                style={{ lineHeight: 1.8 }}
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
-              />
-            ) : post.excerpt ? (
-              <div className="prose prose-lg max-w-none mt-12 mb-12" style={{ lineHeight: 1.8 }}>
-                <p className="text-lg text-neutral-700 leading-relaxed">{post.excerpt}</p>
+            
+            <article className="p-6 sm:p-10 bg-white rounded-3xl border border-[var(--line)] shadow-xs">
+              {post.category && (
+                <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[var(--brand-orange-light)] text-[var(--brand-orange)] border border-orange-200/60 mb-3">
+                  {post.category.name}
+                </span>
+              )}
+              
+              <h1 className="text-3xl sm:text-5xl font-bold text-neutral-900 tracking-tight leading-tight mb-4">
+                {post.title}
+              </h1>
+              
+              <div className="flex items-center gap-2 text-xs text-neutral-500 pb-6 border-b border-[var(--line)] mb-8">
+                <Calendar size={13} className="text-neutral-400" />
+                <time dateTime={isoDate}>{displayDate}</time>
               </div>
-            ) : null}
+
+              {post.content ? (
+                <div 
+                  className="prose prose-neutral max-w-none leading-relaxed text-neutral-700"
+                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
+                />
+              ) : post.excerpt ? (
+                <div className="prose prose-neutral max-w-none leading-relaxed">
+                  <p className="text-base sm:text-lg text-neutral-700 leading-relaxed">{post.excerpt}</p>
+                </div>
+              ) : null}
+            </article>
+
             <BlogPostingSchema post={post} />
           </div>
         </section>

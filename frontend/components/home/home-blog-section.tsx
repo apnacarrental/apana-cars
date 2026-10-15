@@ -9,15 +9,15 @@ export async function HomeBlogSection() {
   if (!recentBlogs || recentBlogs.length === 0) return null
 
   return (
-    <section className="section bg-white border-t border-[var(--line)]" style={{ paddingTop: '90px', paddingBottom: '90px' }}>
+    <section className="section bg-[var(--paper)] border-t border-[var(--line)]" style={{ paddingTop: '90px', paddingBottom: '90px' }}>
       <div className="section-head mb-10">
         <div>
           <p className="eyebrow flex items-center gap-1.5">
             <BookOpen size={13} className="text-amber-600" />
             Travel Insights & Guides
           </p>
-          <h2 className="text-3xl sm:text-4xl font-serif font-normal text-neutral-900 tracking-tight">
-            Latest from our <em>Travel Journal.</em>
+          <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 tracking-tight">
+            Latest from our <span className="text-[#ECA00A] font-extrabold">Travel Journal.</span>
           </h2>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -42,7 +42,7 @@ export async function HomeBlogSection() {
           return (
             <article 
               key={post.id}
-              className="group flex flex-col justify-between p-6 bg-[var(--paper)] rounded-2xl border border-neutral-200 hover:border-neutral-900 hover:shadow-lg transition-all duration-300"
+              className="group flex flex-col justify-between p-6 bg-white rounded-2xl border border-[var(--line)] hover:border-neutral-400 hover:shadow-lg transition-all duration-300"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">

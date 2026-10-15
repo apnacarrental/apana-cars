@@ -27,6 +27,7 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { ServiceHeroSection } from '@/components/layout/service-hero-section'
 import { HighwayStreamCanvas } from '@/components/motion/highway-stream-canvas'
 import { TiltCard3D } from '@/components/motion/tilt-card-3d'
 import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
@@ -292,93 +293,17 @@ export default function ForceUrbaniaPage() {
           </div>
         </section>
 
-        {/* HERO SECTION */}
-        <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--paper)] pt-12 pb-20 md:py-24">
-          <HighwayStreamCanvas />
-
-          <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              {/* Left Column: Heading, Subheading, Options, CTAs */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-white/80 backdrop-blur-sm px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-neutral-800 shadow-sm">
-                  <Car size={14} className="text-neutral-700" />
-                  <span>Next-Generation Luxury Group Travel</span>
-                </div>
-
-                <div className="space-y-2">
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-normal tracking-tight text-neutral-950 leading-[1.12]">
-                    Force Urbania Rent in Hyderabad
-                  </h1>
-                  <h2 className="text-xl sm:text-2xl font-serif font-medium text-neutral-700 italic">
-                    Premium 12 &amp; 17 Seater Executive Vans
-                  </h2>
-                </div>
-
-                <p className="text-base sm:text-lg text-[var(--soft)] max-w-2xl font-normal leading-relaxed">
-                  Experience business-class luxury for group travel. Featuring high-roof headroom, individual reclining leather seats, individual AC vents, and advanced highway suspension.
-                </p>
-
-                {/* Hero Variant Buttons & CTAs */}
-                <UrbaniaHeroCta />
-
-                {/* Metric Strip */}
-                <div className="pt-6 grid grid-cols-3 gap-4 border-t border-[var(--line)] max-w-xl">
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">12 &amp; 17</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Seater Variants</span>
-                  </div>
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">6+ Feet</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Walk-In Height</span>
-                  </div>
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">100%</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Verified Drivers</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column: Hero Visual Card */}
-              <div className="lg:col-span-5">
-                <TiltCard3D maxTilt={7}>
-                  <div className="relative overflow-hidden rounded-none border border-[var(--line)] bg-white p-3 shadow-xl">
-                    <div className="relative h-[340px] sm:h-[400px] w-full overflow-hidden bg-neutral-900">
-                      <Image
-                        src="/images/urbania/urbania-hero.jpg"
-                        alt="Force Urbania Luxury Van in Hyderabad - Apna Cars"
-                        fill
-                        priority
-                        className="object-cover object-center"
-                        sizes="(max-width: 1024px) 100vw, 40vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      <div className="absolute bottom-5 left-5 right-5 text-white">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block mb-1">
-                          Executive Class Travel
-                        </span>
-                        <h3 className="text-xl font-serif font-medium text-white m-0">
-                          Force Urbania Luxury Van
-                        </h3>
-                        <p className="text-xs text-neutral-300 mt-1 m-0">
-                          Available for weddings, corporate offsites, and interstate tours.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-[var(--paper)] flex items-center justify-between text-xs text-neutral-700 border-t border-[var(--line)]">
-                      <span className="flex items-center gap-1.5 font-medium">
-                        <CheckCircle2 size={14} className="text-emerald-600" /> Commercial Transport Permit
-                      </span>
-                      <span className="flex items-center gap-1.5 font-medium">
-                        <CheckCircle2 size={14} className="text-emerald-600" /> Doorstep Pickup
-                      </span>
-                    </div>
-                  </div>
-                </TiltCard3D>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* UNIFIED SERVICE HERO */}
+        <ServiceHeroSection
+          eyebrow="NEXT-GENERATION LUXURY GROUP TRAVEL"
+          titleLine1="Luxury 12 & 17 Seater"
+          titleHighlight="Force Urbania"
+          titleLine2="Rent in Hyderabad"
+          subtitle="Experience business-class luxury for group travel. Featuring high-roof headroom, individual reclining leather seats, individual AC vents, and advanced highway suspension."
+          defaultTab="outstation"
+          defaultCarType="Force Urbania (12/16-Seater)"
+          extraAction={<UrbaniaHeroCta />}
+        />
 
         {/* SECTION 3: NEW VEHICLE ANNOUNCEMENT */}
         <section className="py-16 bg-white border-b border-[var(--line)]">

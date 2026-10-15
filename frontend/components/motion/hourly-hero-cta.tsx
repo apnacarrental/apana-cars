@@ -16,34 +16,30 @@ export function HourlyHeroCta({
   const { openBookingModal } = useBookingModal()
 
   return (
-    <div className="hero-buttons">
+    <div className="flex flex-wrap items-center gap-4">
       <a 
         href="#packages"
-        className="button button-light shadow-lg hover:scale-105 active:scale-95 transition-transform cursor-pointer"
-        style={{
-          background: '#ffffff',
-          color: '#111111',
-          border: '1px solid #ffffff'
-        }}
+        className="button button-dark !bg-[#111111] !text-white hover:!bg-black shadow-md hover:scale-105 active:scale-95 transition-transform cursor-pointer px-6 py-3.5 text-xs font-bold uppercase tracking-wider rounded-lg flex items-center gap-2"
       >
-        <span style={{ color: '#111111', fontWeight: 700 }}>Explore Packages</span>
-        <ArrowRight size={17} style={{ color: '#111111' }} />
+        <span>Explore Packages</span>
+        <ArrowRight size={15} />
       </a>
 
       <button 
         type="button"
         onClick={() => openBookingModal({ destination: 'Hourly Rental (Hyderabad)', carType: 'Executive Sedan' })}
-        className="text-button light cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0F172A] hover:text-[#ECA00A] transition-colors cursor-pointer"
       >
         <span>Instant Quote</span>
-        <ArrowRight size={15} />
+        <ArrowRight size={14} />
       </button>
 
       <a 
-        className="text-button light" 
+        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0F172A] hover:text-[#ECA00A] transition-colors ml-2" 
         href={`tel:${contactPhone}`}
       >
-        Call {displayPhone} <Phone size={16} />
+        <Phone size={14} />
+        <span>Call {displayPhone}</span>
       </a>
     </div>
   )

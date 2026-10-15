@@ -169,8 +169,8 @@ export function HomeCabPackages() {
               <span className="text-[11px] text-neutral-500 font-normal">Hyderabad &amp; Beyond</span>
             </div>
 
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-normal text-neutral-950 tracking-tight leading-[1.08]">
-              Specialized <span className="italic font-serif">Cab Packages</span> &amp; Tours
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-neutral-950 tracking-tight leading-[1.08]">
+              Specialized <span className="text-[#ECA00A] font-extrabold">Cab Packages</span> &amp; Tours
             </h2>
 
             <p className="text-sm sm:text-base text-[var(--soft)] mt-4 leading-relaxed max-w-2xl">
@@ -218,8 +218,7 @@ export function HomeCabPackages() {
             return (
               <TiltCard3D key={pkg.id} maxTilt={6} className="h-full">
                 <article 
-                  className="fleet-card group flex h-full flex-col justify-between overflow-hidden bg-white border border-[var(--line)] shadow-sm hover:shadow-2xl transition-all duration-300 hover:border-neutral-900"
-                  style={{ borderRadius: '0px' }}
+                  className="fleet-card group flex h-full flex-col justify-between overflow-hidden bg-white border border-[var(--line)] rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 hover:border-neutral-900"
                 >
                   <div>
                     {/* Visual Photo with Gradient Overlay */}

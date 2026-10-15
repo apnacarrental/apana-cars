@@ -12,8 +12,8 @@ export async function Header() {
 
   return (
     <HeaderWrapper navItems={activeNav}>
-      <Link href="/" className="brand">
-        <Image src="/images/logo-apna-car.png" alt="Apna Car Rental" width={182} height={58} priority />
+      <Link href="/" className="brand mr-6 lg:mr-8 shrink-0">
+        <Image src="/images/logo_clean_dark.png" alt="Apna Car Rental" width={200} height={44} priority className="h-9 w-auto object-contain" />
       </Link>
       <HeaderNavDropdown items={activeNav} />
       <div className="header-actions !gap-2.5">
@@ -31,15 +31,17 @@ export async function Header() {
         </a>
         <a 
           href="tel:+919988123444"
-          title="Call 099881 23444"
-          aria-label="Call 099881 23444"
-          className="flex items-center justify-center w-9 h-9 rounded-full bg-neutral-100 text-neutral-800 hover:bg-neutral-900 hover:text-white border border-neutral-200 transition-all shadow-xs shrink-0"
+          title="Call for Booking: 9988123444"
+          className="flex items-center gap-2.5 bg-[#0A2540] hover:bg-[#07192b] text-white px-3.5 py-1.5 rounded-xl transition-all shadow-sm group shrink-0"
         >
-          <Phone size={15} />
+          <div className="w-7 h-7 rounded-full bg-[#F59E0B] text-[#0A2540] flex items-center justify-center shrink-0 shadow-xs">
+            <Phone size={13} className="fill-current" />
+          </div>
+          <div className="text-left leading-tight">
+            <div className="text-[13px] font-bold tracking-wide">9988123444</div>
+            <div className="text-[9.5px] text-slate-300 font-medium">Call for Booking</div>
+          </div>
         </a>
-        <Link className="button button-dark !py-2.5 !px-4" href="/#book">
-          Book a car <ArrowRight size={15} />
-        </Link>
       </div>
     </HeaderWrapper>
   )

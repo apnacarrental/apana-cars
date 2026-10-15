@@ -10,7 +10,7 @@ export async function HomeRoutesSection() {
   if (!routes || routes.length === 0) return null
 
   return (
-    <section id="popular-routes" className="section bg-white border-b border-[var(--line)] py-20 sm:py-24">
+    <section id="popular-routes" className="section bg-[var(--paper)] border-b border-[var(--line)] py-20 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="section-head mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">

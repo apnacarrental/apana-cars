@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
+import { ServiceHeroSection } from '@/components/layout/service-hero-section'
 import { HighwayStreamCanvas } from '@/components/motion/highway-stream-canvas'
 import { TiltCard3D } from '@/components/motion/tilt-card-3d'
 import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
@@ -264,94 +265,17 @@ export default function AirportCabsPage() {
           </div>
         </section>
 
-        {/* SECTION 3: AIRPORT CABS HERO */}
-        <section className="relative overflow-hidden border-b border-[var(--line)] bg-[var(--paper)] pt-12 pb-20 md:py-24">
-          <HighwayStreamCanvas />
-
-          <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              {/* Left Column: Heading, Subheading, Options, Copy, CTA */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-white/80 backdrop-blur-sm px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-neutral-800 shadow-sm">
-                  <Plane size={14} className="text-neutral-700" />
-                  <span>Rajiv Gandhi International Airport (RGIA)</span>
-                </div>
-
-                <div className="space-y-2">
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-normal tracking-tight text-neutral-950 leading-[1.12]">
-                    Airport Cabs
-                  </h1>
-                  <h2 className="text-xl sm:text-2xl font-serif font-medium text-neutral-700 italic">
-                    Airport Taxi Service
-                  </h2>
-                </div>
-
-                {/* Reference Introductory Copy */}
-                <p className="text-base sm:text-lg text-[var(--soft)] max-w-2xl font-normal leading-relaxed">
-                  Ensure a hassle-free airport journey by booking your cab ahead of time. Enjoy economical fares and punctual service for all your airport travel needs in Hyderabad.
-                </p>
-
-                {/* Airport Options & CTAs */}
-                <AirportHeroCta />
-
-                {/* Feature Metric Strip */}
-                <div className="pt-6 grid grid-cols-3 gap-4 border-t border-[var(--line)] max-w-xl">
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">24/7</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Flight Tracking</span>
-                  </div>
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">Zero</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Surge Pricing</span>
-                  </div>
-                  <div>
-                    <strong className="block text-xl font-serif text-neutral-900 font-semibold">Punctual</strong>
-                    <span className="text-[11px] text-[var(--soft)] uppercase tracking-wider">Chauffeur Arrival</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column: Hero Visual Card */}
-              <div className="lg:col-span-5">
-                <TiltCard3D maxTilt={7}>
-                  <div className="relative overflow-hidden rounded-none border border-[var(--line)] bg-white p-3 shadow-xl">
-                    <div className="relative h-[340px] sm:h-[400px] w-full overflow-hidden bg-neutral-900">
-                      <Image
-                        src="/images/airport/hero.jpg"
-                        alt="Airport Cabs in Hyderabad - Apna Cars"
-                        fill
-                        priority
-                        className="object-cover object-center"
-                        sizes="(max-width: 1024px) 100vw, 40vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                      <div className="absolute bottom-5 left-5 right-5 text-white">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block mb-1">
-                          Rajiv Gandhi International Airport (HYD)
-                        </span>
-                        <h3 className="text-xl font-serif font-medium text-white m-0">
-                          Punctual Airport Pickups &amp; Drops
-                        </h3>
-                        <p className="text-xs text-neutral-300 mt-1 m-0">
-                          Direct transfers connecting RGIA Shamshabad with all areas of Hyderabad.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-[var(--paper)] flex items-center justify-between text-xs text-neutral-700 border-t border-[var(--line)]">
-                      <span className="flex items-center gap-1.5 font-medium">
-                        <CheckCircle2 size={14} className="text-emerald-600" /> Dedicated Chauffeur
-                      </span>
-                      <span className="flex items-center gap-1.5 font-medium">
-                        <CheckCircle2 size={14} className="text-emerald-600" /> Transparent Billing
-                      </span>
-                    </div>
-                  </div>
-                </TiltCard3D>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* SECTION 3: UNIFIED SERVICE HERO */}
+        <ServiceHeroSection
+          eyebrow="HYDERABAD'S MOST TRUSTED AIRPORT TAXI"
+          titleLine1="Punctual & Reliable"
+          titleHighlight="Airport Cabs"
+          titleLine2="in Hyderabad"
+          subtitle="Ensure a hassle-free airport journey with 24/7 flight tracking, doorstep pickup, zero surge pricing, and sanitized cabs connecting RGIA Shamshabad across Hyderabad."
+          defaultTab="airport"
+          defaultCarType="Swift Dzire (4-Seater)"
+          extraAction={<AirportHeroCta />}
+        />
 
         {/* SECTION 4: OUR FLEET */}
         <section id="fleet" className="py-20 bg-[var(--paper)] border-b border-[var(--line)]">

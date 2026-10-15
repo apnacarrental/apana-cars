@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, ArrowLeft } from 'lucide-react'
+import { ArrowRight, ArrowLeft, Users, Fuel, Sparkles, CheckCircle2 } from 'lucide-react'
 import { getCarBySlug, getCars } from '@/lib/data/db'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -64,56 +64,77 @@ export default async function CarDetailPage({ params }: { params: Promise<{ slug
     <>
       <Header />
       <main>
-        <section className="section" style={{ paddingTop: '160px' }}>
-          <Breadcrumbs items={[
-            { label: 'Home', href: '/' },
-            { label: 'Fleet', href: '/fleet' },
-            { label: car.name, href: `/fleet/${car.slug}` },
-          ]} />
+        <section className="section" style={{ paddingTop: '150px', paddingBottom: '90px' }}>
+          <div className="mb-6">
+            <Breadcrumbs items={[
+              { label: 'Home', href: '/' },
+              { label: 'Fleet', href: '/fleet' },
+              { label: car.name, href: `/fleet/${car.slug}` },
+            ]} />
+          </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center', marginTop: '2rem' }}>
-            <div style={{ position: 'relative', aspectRatio: '16/9', borderRadius: '12px', overflow: 'hidden', backgroundColor: '#f5f5f5' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+            {/* Image Presentation */}
+            <div className="relative aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-[#f5f2ea] border border-[var(--line)] shadow-sm">
               <Image 
                 src={imgUrl} 
                 alt={`${car.name} rental car`} 
                 fill 
-                style={{ objectFit: 'contain' }}
+                className="object-contain p-4 transition-transform duration-500 hover:scale-105"
                 sizes="(max-width: 800px) 100vw, 50vw" 
+                priority
               />
+              <div className="absolute top-4 left-4">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-white/90 backdrop-blur-md text-neutral-900 border border-[var(--line)] shadow-xs">
+                  <Sparkles size={11} className="text-[var(--brand-orange)]" />
+                  {car.category?.name || 'Verified Fleet'}
+                </span>
+              </div>
             </div>
             
+            {/* Vehicle Details Card */}
             <div>
-              <p className="eyebrow">{(car.brand?.name || 'Apna') + ' • ' + (car.categories[0]?.name || 'Car')}</p>
-              <h1 style={{ fontSize: '3rem', margin: '0.5rem 0', letterSpacing: '-0.02em' }}>{car.name}</h1>
-              <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '1.5rem' }}>{car.shortDescription}</p>
+              <p className="eyebrow mb-2">{(car.brand?.name || 'Apna Cars') + ' • ' + (car.category?.name || 'Car')}</p>
+              <h1 className="text-3xl sm:text-5xl font-bold text-neutral-900 tracking-tight mb-3">
+                {car.name}
+              </h1>
+              <p className="text-sm sm:text-base text-[var(--soft)] leading-relaxed mb-6">
+                {car.shortDescription}
+              </p>
               
-              <div style={{ padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '12px', marginBottom: '2rem' }}>
-                <span className="fleet-meta" style={{ fontSize: '1rem' }}>{meta}</span>
+              <div className="p-6 sm:p-7 bg-white rounded-2xl border border-[var(--line)] shadow-xs mb-6">
+                <div className="flex items-center gap-2 text-xs font-semibold text-neutral-700 pb-4 border-b border-[var(--line)]">
+                  <Users size={15} className="text-[var(--brand-orange)]" />
+                  <span>{meta}</span>
+                </div>
                 
-                <div style={{ marginTop: '1.25rem' }}>
-                  <h4 style={{ fontSize: '0.85rem', fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
-                    Pricing per kilometer
+                <div className="mt-5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-3">
+                    Pricing Tariff per Kilometer
                   </h4>
                   {fuelPrices.length > 0 ? (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '0.75rem', marginBottom: '1.25rem' }}>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
                       {fuelPrices.map((item) => (
-                        <div key={item.type} style={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '0.75rem 1rem' }}>
-                          <span style={{ fontSize: '0.8rem', color: '#666', display: 'block' }}>{item.type}</span>
-                          <strong style={{ fontSize: '1.2rem', color: '#000' }}>₹{item.price.toLocaleString('en-IN')}<span style={{ fontSize: '0.8rem', fontWeight: 400, color: '#666' }}>/km</span></strong>
+                        <div key={item.type} className="bg-[var(--paper-subtle)] border border-[var(--line)] rounded-xl p-3.5">
+                          <span className="text-[11px] font-medium text-[var(--soft)] block">{item.type}</span>
+                          <strong className="text-lg font-bold text-neutral-900">₹{item.price.toLocaleString('en-IN')}<span className="text-xs font-normal text-neutral-500">/km</span></strong>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p style={{ fontSize: '1.1rem', fontWeight: 600, color: '#333', marginBottom: '1.25rem' }}>
+                    <p className="text-base font-bold text-neutral-800 mb-5">
                       Price on request
                     </p>
                   )}
                 </div>
 
-                <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #e5e7eb', paddingTop: '1rem' }}>
-                  <span style={{ fontSize: '0.9rem', color: '#666' }}>Rate: <strong style={{ color: '#000' }}>{startingPriceText}</strong></span>
+                <div className="flex items-center justify-between pt-4 border-t border-[var(--line)]">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider block">Estimated Rate</span>
+                    <strong className="text-base font-extrabold text-neutral-900">{startingPriceText}</strong>
+                  </div>
                   <a className="button button-dark" href="/#book">
-                    Book now <ArrowRight size={16} />
+                    Book this car <ArrowRight size={15} />
                   </a>
                 </div>
               </div>
@@ -122,8 +143,8 @@ export default async function CarDetailPage({ params }: { params: Promise<{ slug
         </section>
 
         {car.faqs && car.faqs.length > 0 && (
-          <section className="section faq" style={{ backgroundColor: '#f9f9f9' }}>
-            <p className="eyebrow">Need to know</p>
+          <section className="section faq bg-white border-t border-[var(--line)]">
+            <p className="eyebrow">Vehicle Specifics</p>
             <h2>Frequently asked <em>questions.</em></h2>
             <FaqAccordion items={car.faqs} />
             <FaqSchema faqs={car.faqs} />
@@ -136,4 +157,3 @@ export default async function CarDetailPage({ params }: { params: Promise<{ slug
     </>
   )
 }
-

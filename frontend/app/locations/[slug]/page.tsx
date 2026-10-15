@@ -51,45 +51,55 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
     <>
       <Header />
       <main>
-        <section className="section" style={{ paddingTop: '160px' }}>
-          <Breadcrumbs items={[
-            { label: 'Home', href: '/' },
-            { label: 'Locations', href: '/locations' },
-            { label: location.name, href: `/locations/${location.slug}` },
-          ]} />
-          
-          <div style={{ maxWidth: '800px', marginTop: '2rem' }}>
-            <p className="eyebrow">{location.type ? (location.type.charAt(0) + location.type.slice(1).toLowerCase()) : 'Location'}</p>
-            <h1 style={{ fontSize: '3rem', margin: '0.5rem 0', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <MapPin size={40} /> {location.name}
+        <section className="section bg-[var(--paper-subtle)]" style={{ paddingTop: '150px', paddingBottom: '80px' }}>
+          <div className="max-w-4xl">
+            <div className="mb-6">
+              <Breadcrumbs items={[
+                { label: 'Home', href: '/' },
+                { label: 'Locations', href: '/locations' },
+                { label: location.name, href: `/locations/${location.slug}` },
+              ]} />
+            </div>
+            
+            <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-neutral-900 text-white mb-3">
+              {location.type ? (location.type.charAt(0) + location.type.slice(1).toLowerCase()) : 'Location'}
+            </span>
+            
+            <h1 className="text-3xl sm:text-5xl font-bold text-neutral-900 tracking-tight flex items-center gap-3 mb-3">
+              <MapPin size={36} className="text-[var(--brand-orange)] shrink-0" />
+              <span>{location.name}</span>
             </h1>
             
             {location.parent && (
-              <p style={{ fontSize: '1.2rem', color: '#666' }}>Part of {location.parent.name}</p>
+              <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-4">
+                Part of {location.parent.name}
+              </p>
             )}
             
             {location.description && (
-              <p style={{ fontSize: '1.2rem', marginTop: '1.5rem', lineHeight: 1.6 }}>{location.description}</p>
+              <p className="text-base sm:text-lg text-[var(--soft)] leading-relaxed mb-8">
+                {location.description}
+              </p>
             )}
 
-            <div style={{ marginTop: '3rem' }}>
+            <div>
               <a className="button button-dark" href="/#book">
-                Book a car in {location.name} <ArrowRight size={16} />
+                Book a cab in {location.name} <ArrowRight size={15} />
               </a>
             </div>
           </div>
         </section>
 
         {location.children && location.children.length > 0 && (
-          <section className="section locations" style={{ backgroundColor: '#f9f9f9' }}>
-            <p className="eyebrow">Areas</p>
-            <h2>Explore {location.name}</h2>
-            <div className="location-list" style={{ marginTop: '2rem' }}>
+          <section className="section locations bg-white border-t border-[var(--line)]">
+            <p className="eyebrow">Covered Areas</p>
+            <h2>Explore {location.name} &amp; Hubs</h2>
+            <div className="location-list mt-8">
               {location.children.map((child: any) => (
                 <Link href={`/locations/${child.slug}`} key={child.id}>
-                  <MapPin size={17} />
-                  {child.name}
-                  <ArrowRight size={15} />
+                  <MapPin size={16} />
+                  <span>{child.name}</span>
+                  <ArrowRight size={14} />
                 </Link>
               ))}
             </div>
@@ -97,7 +107,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
         )}
 
         {location.faqs && location.faqs.length > 0 && (
-          <section className="section faq">
+          <section className="section faq bg-[var(--paper)] border-t border-[var(--line)]">
             <p className="eyebrow">Need to know</p>
             <h2>Frequently asked <em>questions.</em></h2>
             <FaqAccordion items={location.faqs} />
@@ -105,13 +115,12 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
           </section>
         )}
         
-        <div className="max-w-5xl mx-auto px-[5%]"><InternalLinks path={"/locations/${location.slug}"} /></div>
+        <div className="max-w-5xl mx-auto px-[5%] py-6">
+          <InternalLinks path={`/locations/${location.slug}`} />
+        </div>
         <FinalCtaSection />
       </main>
       <Footer />
     </>
   )
 }
-
-
-

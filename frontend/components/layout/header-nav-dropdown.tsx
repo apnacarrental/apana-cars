@@ -9,7 +9,7 @@ export interface NavItem {
   href: string
 }
 
-// 1. All Cab packages kept directly visible in the nav bar
+// All Cab packages kept directly visible in the nav bar
 const CAB_PACKAGES = [
   { label: 'Airport Cabs', href: '/airport-cabs' },
   { label: 'Hourly Cabs', href: '/hourly-cabs' },
@@ -94,7 +94,7 @@ export function HeaderNavDropdown({
 
   return (
     <nav className="desktop-nav" aria-label="Main navigation" style={{ position: 'relative', zIndex: 100 }}>
-      <Link href="/" className="hover:opacity-70 transition-opacity py-2">
+      <Link href="/" className="hover:opacity-70 transition-opacity py-2 font-semibold">
         Home
       </Link>
 
@@ -103,7 +103,7 @@ export function HeaderNavDropdown({
         <Link
           key={pkg.href}
           href={pkg.href}
-          className="hover:opacity-70 transition-opacity py-2 whitespace-nowrap"
+          className="hover:opacity-70 transition-opacity py-2 whitespace-nowrap font-semibold"
         >
           {pkg.label}
         </Link>
@@ -112,7 +112,7 @@ export function HeaderNavDropdown({
       {/* Visible Blog Link */}
       <Link
         href="/blog"
-        className="hover:opacity-70 transition-opacity py-2 whitespace-nowrap"
+        className="hover:opacity-70 transition-opacity py-2 whitespace-nowrap font-semibold"
       >
         Blog
       </Link>

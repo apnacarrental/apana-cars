@@ -6,6 +6,7 @@ import { SeoStatusBadge } from '@/components/admin/seo-status-badge'
 import { DeactivateCarButton } from '@/components/admin/deactivate-car-button'
 import { DeleteCarButton } from '@/components/admin/delete-car-button'
 import { Plus, Car as CarIcon, Users, Fuel, Sparkles, ExternalLink } from 'lucide-react'
+import { getSafeImageUrl } from '@/lib/utils/image'
 
 export default async function AdminCarsPage() {
   const session = await getAuthSession()
@@ -112,7 +113,11 @@ export default async function AdminCarsPage() {
                               className="w-full h-full object-cover" 
                             />
                           ) : (
-                            <CarIcon className="w-5 h-5 text-gray-400" />
+                            <img 
+                              src={getSafeImageUrl(undefined, car.name || car.slug)} 
+                              alt={car.name} 
+                              className="w-full h-full object-cover opacity-85" 
+                            />
                           )}
                         </div>
                         <div>

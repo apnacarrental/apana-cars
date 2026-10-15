@@ -14,6 +14,9 @@ import { getCarFuelPrices, getCarStartingPricePerKm } from '@/lib/utils/pricing'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function generateStaticParams() {
   const cars = await getCars()
   return cars.map((car) => ({
@@ -45,7 +48,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ slug
     notFound()
   }
 
-  const imgUrl = getSafeImageUrl(car.images[0]?.media?.secureUrl)
+  const imgUrl = getSafeImageUrl(car.images[0]?.media?.secureUrl, car.name || car.slug)
   
   const metaParts = [
     car.seats ? `${car.seats} seats` : null,

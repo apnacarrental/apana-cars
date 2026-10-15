@@ -411,29 +411,45 @@ export function CarForm({ car, brands }: { car?: any, brands: any[] }) {
           </div>
         </div>
 
-        {/* Direct Car Photo Upload Area (for new cars) */}
-        {!car && (
-          <div className="pt-4 border-t border-gray-100">
-            <h4 className="text-sm font-semibold text-gray-900 mb-1">Upload Car Photo (Direct)</h4>
-            <p className="text-xs text-gray-500 mb-3">Upload a photo directly from your device. It will automatically upload and attach to this car.</p>
-            <input 
-              type="file" 
-              name="carImage" 
-              id="carImage"
-              accept="image/jpeg,image/png,image/webp,image/gif"
-              onChange={handleImageChange}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800 cursor-pointer border border-gray-200 rounded-md p-1"
-            />
-            {imagePreview && (
-              <div className="mt-3 flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                <img src={imagePreview} alt="Selected preview" className="w-24 h-16 object-cover rounded border border-gray-200" />
-                <span className="text-xs text-emerald-700 font-medium flex items-center gap-1">
-                  <CheckCircle className="w-4 h-4 text-emerald-600" /> Image ready to upload with car
-                </span>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Direct Car Photo Upload Area (for new and existing cars) */}
+        <div className="pt-4 border-t border-gray-100">
+          <h4 className="text-sm font-semibold text-gray-900 mb-1">
+            {car ? 'Change / Upload Car Photo' : 'Upload Car Photo (Direct)'}
+          </h4>
+          <p className="text-xs text-gray-500 mb-3">
+            Upload a photo directly from your device (JPG, PNG, WEBP). It will automatically attach as the primary photo.
+          </p>
+
+          {car?.images?.[0]?.media?.secureUrl && !imagePreview && (
+            <div className="mb-3 flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+              <img 
+                src={car.images[0].media.secureUrl} 
+                alt={car.name} 
+                className="w-24 h-16 object-cover rounded border border-gray-200" 
+              />
+              <span className="text-xs text-gray-600 font-medium">
+                Current primary photo. Select a new file below to replace it.
+              </span>
+            </div>
+          )}
+
+          <input 
+            type="file" 
+            name="carImage" 
+            id="carImage"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            onChange={handleImageChange}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800 cursor-pointer border border-gray-200 rounded-md p-1"
+          />
+          {imagePreview && (
+            <div className="mt-3 flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+              <img src={imagePreview} alt="Selected preview" className="w-24 h-16 object-cover rounded border border-gray-200" />
+              <span className="text-xs text-emerald-700 font-medium flex items-center gap-1">
+                <CheckCircle className="w-4 h-4 text-emerald-600" /> New photo ready to upload with car
+              </span>
+            </div>
+          )}
+        </div>
 
         {/* Status */}
         <div className="flex items-center pt-2">

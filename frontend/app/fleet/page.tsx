@@ -11,6 +11,9 @@ import { getCarStartingPricePerKm } from '@/lib/utils/pricing'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
   fallbackTitle: 'Our Fleet | Apna Car Rental',
   fallbackDescription: 'Explore our fleet of well-maintained cars for rent.',
@@ -35,7 +38,7 @@ export default async function FleetPage() {
           {cars && cars.length > 0 ? (
             <div className="fleet-grid">
               {cars.map((car) => {
-                const imgUrl = getSafeImageUrl(car.images[0]?.media?.secureUrl)
+                const imgUrl = getSafeImageUrl(car.images[0]?.media?.secureUrl, car.name || car.slug)
                 const metaParts = [
                   car.seats ? `${car.seats} seats` : null,
                   car.luggage ? `${car.luggage} bags` : null,

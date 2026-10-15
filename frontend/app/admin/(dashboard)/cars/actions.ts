@@ -127,6 +127,7 @@ export async function createCar(formData: FormData): Promise<ActionResponse> {
   revalidatePath(`/fleet/${parsed.data.slug}`)
   revalidatePath('/admin/cars')
   revalidatePath('/')
+  revalidatePath('/', 'layout')
   redirect('/admin/cars')
 }
 
@@ -187,10 +188,46 @@ export async function updateCar(id: string, formData: FormData): Promise<ActionR
     return { success: false, error: err.message || 'Failed to update vehicle.' }
   }
 
+  // Direct image upload support during car update
+  const imageFile = formData.get('carImage') as File | null
+  if (imageFile && imageFile.size > 0 && ['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(imageFile.type)) {
+    try {
+      const arrayBuffer = await imageFile.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+      const uploadRes = await uploadToCloudinary(buffer, imageFile.type)
+
+      const media = await prisma.media.create({
+        data: {
+          publicId: uploadRes.public_id,
+          secureUrl: uploadRes.secure_url,
+          altText: `${parsed.data.name} Car Photo`,
+        }
+      })
+
+      // Shift existing images to higher sortOrder and place new one at 0
+      await prisma.carImage.updateMany({
+        where: { carId: id },
+        data: { sortOrder: { increment: 1 } }
+      })
+
+      await prisma.carImage.create({
+        data: {
+          carId: id,
+          mediaId: media.id,
+          sortOrder: 0
+        }
+      })
+    } catch (uploadErr) {
+      console.warn('Direct image upload warning during updateCar:', uploadErr)
+    }
+  }
+
   revalidatePath('/fleet')
   revalidatePath(`/fleet/${parsed.data.slug}`)
   revalidatePath('/admin/cars')
+  revalidatePath(`/admin/cars/${id}/edit`)
   revalidatePath('/')
+  revalidatePath('/', 'layout')
   redirect('/admin/cars')
 }
 
@@ -207,6 +244,7 @@ export async function deactivateCar(id: string): Promise<ActionResponse> {
     if (car?.slug) revalidatePath(`/fleet/${car.slug}`)
     revalidatePath('/admin/cars')
     revalidatePath('/')
+    revalidatePath('/', 'layout')
     return undefined
   } catch (err: any) {
     console.error('Error deactivating car:', err)
@@ -231,6 +269,7 @@ export async function deleteCar(id: string): Promise<ActionResponse> {
     if (car?.slug) revalidatePath(`/fleet/${car.slug}`)
     revalidatePath('/admin/cars')
     revalidatePath('/')
+    revalidatePath('/', 'layout')
     return undefined
   } catch (err: any) {
     console.error('Error deleting car:', err)

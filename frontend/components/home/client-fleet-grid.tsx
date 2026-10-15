@@ -16,7 +16,7 @@ export function ClientFleetGrid({ cars }: ClientFleetGridProps) {
   return (
     <div className="fleet-grid">
       {cars.map((car, index) => {
-        const imgUrl = getSafeImageUrl(car.images?.[0]?.media?.secureUrl)
+        const imgUrl = getSafeImageUrl(car.images?.[0]?.media?.secureUrl, car.name || car.slug)
         const metaParts = [
           car.seats ? `${car.seats} seats` : null,
           car.luggage ? `${car.luggage} bags` : null,

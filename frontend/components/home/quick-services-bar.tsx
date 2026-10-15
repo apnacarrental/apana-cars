@@ -93,7 +93,7 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
     }
   }
 
-  // Smooth continuous auto-scrolling loop with increased speed
+  // Smooth continuous auto-scrolling loop with zero-shiver wrapping and consistent speed on all screens (60Hz & 120Hz)
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return
@@ -104,18 +104,25 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
     }
 
     let animationId: number
-    const speed = 2.0 // Brisk, active auto-scrolling speed (2.5x previous rate)
+    let lastTime = performance.now()
+    let currentPos = el.scrollLeft
+    const pixelsPerSecond = 85 // Consistent glide speed (~85px/sec) across mobile & desktop regardless of screen refresh rate
 
-    const tick = () => {
+    const tick = (now: number) => {
+      const elapsed = Math.min((now - lastTime) / 1000, 0.1)
+      lastTime = now
+
       if (el && !isHoveredRef.current && !isInteractingRef.current) {
         const halfWidth = el.scrollWidth / 2
         if (halfWidth > 0) {
-          if (el.scrollLeft >= halfWidth) {
-            el.scrollLeft -= halfWidth
-          } else {
-            el.scrollLeft += speed
+          currentPos += pixelsPerSecond * elapsed
+          if (currentPos >= halfWidth) {
+            currentPos -= halfWidth
           }
+          el.scrollLeft = currentPos
         }
+      } else if (el) {
+        currentPos = el.scrollLeft
       }
       animationId = requestAnimationFrame(tick)
     }
@@ -135,6 +142,9 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
       onMouseEnter={() => { isHoveredRef.current = true }}
       onMouseLeave={() => { isHoveredRef.current = false }}
       onTouchStart={() => pauseAutoScroll(4000)}
+      onTouchMove={() => pauseAutoScroll(4000)}
+      onWheel={() => pauseAutoScroll(3000)}
+      onPointerDown={() => pauseAutoScroll(4000)}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Left Scroll Button */}
@@ -147,11 +157,11 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
           <ChevronLeft size={16} />
         </button>
 
-        {/* Scrollable Container with duplicated items for seamless infinite loop */}
+        {/* Scrollable Container with duplicated items for seamless infinite loop (NO scroll-smooth to prevent shivering on wrap) */}
         <div
           ref={scrollRef}
-          className="flex items-center gap-3 overflow-x-auto scroll-smooth py-1 px-1 sm:px-7 select-none"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="flex items-center gap-3 overflow-x-auto py-1 px-1 sm:px-7 select-none"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', scrollBehavior: 'auto' }}
         >
           {[0, 1].map((setIndex) => (
             <React.Fragment key={`set-${setIndex}`}>

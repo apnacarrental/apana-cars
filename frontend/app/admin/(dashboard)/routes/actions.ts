@@ -42,6 +42,14 @@ function parseList(input: FormDataEntryValue | null): string[] {
     .filter(Boolean)
 }
 
+function cleanNumber(val: FormDataEntryValue | null): number | null {
+  if (!val || typeof val !== 'string') return null
+  const cleaned = val.replace(/[^0-9.]/g, '')
+  if (!cleaned) return null
+  const num = parseFloat(cleaned)
+  return isNaN(num) ? null : num
+}
+
 export async function createRoute(formData: FormData): Promise<ActionResponse> {
   await requireAdmin()
 
@@ -51,17 +59,17 @@ export async function createRoute(formData: FormData): Promise<ActionResponse> {
   const rawSlug = (formData.get('slug') as string) || `${origin}-to-${destination}`
   const slug = slugify(rawSlug)
 
-  const distanceRaw = formData.get('distance') as string | null
-  const startingPriceRaw = formData.get('startingPrice') as string | null
+  const distance = cleanNumber(formData.get('distance'))
+  const startingPrice = cleanNumber(formData.get('startingPrice'))
 
   const data = {
     origin,
     destination,
     slug,
     title: rawTitle,
-    distance: distanceRaw && !isNaN(parseFloat(distanceRaw)) ? parseFloat(distanceRaw) : null,
+    distance,
     duration: (formData.get('duration') as string)?.trim() || null,
-    startingPrice: startingPriceRaw && !isNaN(parseFloat(startingPriceRaw)) ? parseFloat(startingPriceRaw) : null,
+    startingPrice,
     content: (formData.get('content') as string)?.trim() || null,
     inclusions: parseList(formData.get('inclusions')),
     exclusions: parseList(formData.get('exclusions')),
@@ -104,17 +112,17 @@ export async function updateRoute(id: string, formData: FormData): Promise<Actio
   const rawSlug = (formData.get('slug') as string) || `${origin}-to-${destination}`
   const slug = slugify(rawSlug)
 
-  const distanceRaw = formData.get('distance') as string | null
-  const startingPriceRaw = formData.get('startingPrice') as string | null
+  const distance = cleanNumber(formData.get('distance'))
+  const startingPrice = cleanNumber(formData.get('startingPrice'))
 
   const data = {
     origin,
     destination,
     slug,
     title: rawTitle,
-    distance: distanceRaw && !isNaN(parseFloat(distanceRaw)) ? parseFloat(distanceRaw) : null,
+    distance,
     duration: (formData.get('duration') as string)?.trim() || null,
-    startingPrice: startingPriceRaw && !isNaN(parseFloat(startingPriceRaw)) ? parseFloat(startingPriceRaw) : null,
+    startingPrice,
     content: (formData.get('content') as string)?.trim() || null,
     inclusions: parseList(formData.get('inclusions')),
     exclusions: parseList(formData.get('exclusions')),

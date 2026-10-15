@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { deleteLead } from './actions'
 import { DeleteButton } from '@/components/admin/delete-button'
-import { Inbox, Plus, Phone, MapPin, CheckCircle, Clock } from 'lucide-react'
+import { Inbox, Plus, Phone, MapPin, CheckCircle, Clock, Users } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -78,6 +78,7 @@ export default async function AdminLeadsPage() {
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date & Time</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Customer Name</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Contact Phone</th>
+              <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Passengers</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Route / Locations</th>
               <th className="px-6 py-3.5 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
               <th className="px-6 py-3.5 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
@@ -91,6 +92,16 @@ export default async function AdminLeadsPage() {
                 </td>
                 <td className="px-6 py-4 font-semibold text-gray-900">{item.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-mono">{item.phone}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-700 font-medium">
+                  {item.passengers ? (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-900 border border-amber-200/80 font-semibold">
+                      <Users size={12} className="text-amber-600 shrink-0" />
+                      <span>{item.passengers}</span>
+                    </span>
+                  ) : (
+                    <span className="text-gray-400 italic">-</span>
+                  )}
+                </td>
                 <td className="px-6 py-4 text-xs text-gray-500">
                   {item.pickupLocation || item.dropLocation ? (
                     <div className="flex items-center gap-1 text-gray-700">

@@ -138,17 +138,21 @@ export function InquiryForm({
           />
         </div>
         <div>
-          <label htmlFor="vehicle" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
-            Preferred Vehicle
+          <label htmlFor="passengers" className="block text-[11px] font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
+            No. of Passengers
           </label>
+          {preselectedCar && <input type="hidden" name="vehicle" value={preselectedCar} />}
           <select 
-            name="vehicle" 
-            id="vehicle" 
-            defaultValue={preselectedCar} 
+            name="passengers" 
+            id="passengers" 
             className="block w-full rounded-xl border border-[var(--line)] bg-[var(--paper-subtle)] px-3.5 py-2.5 text-sm text-neutral-900 focus:bg-white focus:border-neutral-900 focus:outline-none transition-colors"
           >
-            <option value="">Any available vehicle</option>
-            {cars.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            <option value="1-4 Passengers (Executive Sedan)">1-4 Passengers (Executive Sedan)</option>
+            <option value="5-6 Passengers (Family MUV / Ertiga)">5-6 Passengers (Family MUV / Ertiga)</option>
+            <option value="7 Passengers (Luxury SUV / Innova Crysta)">7 Passengers (Luxury SUV / Innova Crysta)</option>
+            <option value="8-12 Passengers (Force Urbania / Minivan)">8-12 Passengers (Force Urbania / Minivan)</option>
+            <option value="13-17 Passengers (Tempo Traveller / Van)">13-17 Passengers (Tempo Traveller / Van)</option>
+            <option value="18+ Passengers (Group Bus / Coach)">18+ Passengers (Group Bus / Coach)</option>
           </select>
         </div>
       </div>

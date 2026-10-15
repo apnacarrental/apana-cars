@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useActionState } from 'react'
 import { submitLead, ActionState } from '@/lib/actions/lead'
-import { MapPin, Calendar, Car, ArrowRight, CheckCircle, ChevronDown, Phone } from 'lucide-react'
+import { MapPin, Calendar, Users, ArrowRight, CheckCircle, ChevronDown, Phone, User } from 'lucide-react'
 import { trackEvent } from '@/lib/analytics'
 
 const TABS = [
@@ -13,14 +13,40 @@ const TABS = [
   { id: 'oneway', label: 'One Way Trip' },
 ]
 
+function mapVehicleToPassengers(val?: string): string {
+  if (!val) return '1-4 Passengers (Executive Sedan)'
+  const str = val.toLowerCase()
+  if (str.includes('dzire') || str.includes('etios') || str.includes('4-seater') || str.includes('sedan') || str.includes('1-4')) {
+    return '1-4 Passengers (Executive Sedan)'
+  }
+  if (str.includes('ertiga') || str.includes('6-seater') || str.includes('5-6') || str.includes('muv')) {
+    return '5-6 Passengers (Family MUV / Ertiga)'
+  }
+  if (str.includes('crysta') || str.includes('innova') || str.includes('7-seater') || str.includes('fortuner') || str.includes('carnival')) {
+    return '7 Passengers (Luxury SUV / Innova Crysta)'
+  }
+  if (str.includes('urbania') || str.includes('8-12') || str.includes('12-seater')) {
+    return '8-12 Passengers (Force Urbania / Minivan)'
+  }
+  if (str.includes('tempo') || str.includes('traveller') || str.includes('13-17') || str.includes('16-seater') || str.includes('17-seater')) {
+    return '13-17 Passengers (Tempo Traveller / Van)'
+  }
+  if (str.includes('18+') || str.includes('bus') || str.includes('coach')) {
+    return '18+ Passengers (Group Bus / Coach)'
+  }
+  return val
+}
+
 interface BookingFormProps {
   initialTab?: string
   initialCarType?: string
+  initialPassengers?: string
 }
 
 export function BookingForm({ 
   initialTab = 'local',
-  initialCarType = 'Innova Crysta (7-Seater)'
+  initialCarType,
+  initialPassengers,
 }: BookingFormProps = {}) {
   const [activeTab, setActiveTab] = useState(initialTab)
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(submitLead, {})
@@ -113,26 +139,24 @@ export function BookingForm({
             </div>
           </div>
 
-          {/* 3. Vehicle Type */}
+          {/* 3. No. of Passengers */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[11px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-              <Car size={13} className="text-[#0A2540]" />
-              Vehicle Type
+              <Users size={13} className="text-[#0A2540]" />
+              No. of Passengers
             </label>
             <div className="relative">
               <select
-                name="carType"
-                defaultValue={initialCarType}
+                name="passengers"
+                defaultValue={mapVehicleToPassengers(initialPassengers || initialCarType)}
                 className="w-full appearance-none px-3.5 py-3 rounded-xl border border-slate-200 bg-[#FBF9F5] focus:bg-white focus:border-[#ECA00A] focus:ring-2 focus:ring-amber-200 text-sm text-slate-900 outline-none transition-all font-medium cursor-pointer pr-9"
               >
-                <option value="Swift Dzire (4-Seater)">Swift Dzire (4 Seater)</option>
-                <option value="Toyota Etios (4-Seater)">Toyota Etios (4 Seater)</option>
-                <option value="Maruti Ertiga (6-Seater)">Maruti Ertiga (6 Seater)</option>
-                <option value="Innova Crysta (7-Seater)">Innova Crysta (7 Seater)</option>
-                <option value="Toyota Fortuner (7-Seater)">Toyota Fortuner (7 Seater)</option>
-                <option value="Kia Carnival (7-Seater)">Kia Carnival (7 Seater)</option>
-                <option value="Force Urbania (12/16-Seater)">Force Urbania (16 Seater)</option>
-                <option value="Tempo Traveller (12/17-Seater)">Tempo Traveller (17 Seater)</option>
+                <option value="1-4 Passengers (Executive Sedan)">1-4 Passengers (Executive Sedan)</option>
+                <option value="5-6 Passengers (Family MUV / Ertiga)">5-6 Passengers (Family MUV / Ertiga)</option>
+                <option value="7 Passengers (Luxury SUV / Innova Crysta)">7 Passengers (Luxury SUV / Innova Crysta)</option>
+                <option value="8-12 Passengers (Force Urbania / Minivan)">8-12 Passengers (Force Urbania / Minivan)</option>
+                <option value="13-17 Passengers (Tempo Traveller / Van)">13-17 Passengers (Tempo Traveller / Van)</option>
+                <option value="18+ Passengers (Group Bus / Coach)">18+ Passengers (Group Bus / Coach)</option>
               </select>
               <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             </div>
@@ -153,14 +177,24 @@ export function BookingForm({
 
         {/* Quick Contact Input bar below for seamless lead booking */}
         <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
-          <div className="flex items-center gap-2 flex-1 min-w-[240px]">
-            <Phone size={13} className="text-[#0A2540]" />
-            <input
-              name="phone"
-              required
-              placeholder="Your Phone / WhatsApp for instant fare quote"
-              className="w-full max-w-sm px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs text-slate-800 outline-none focus:border-[#ECA00A]"
-            />
+          <div className="flex flex-wrap items-center gap-2 flex-1 min-w-[280px]">
+            <div className="flex items-center gap-1.5 flex-1 min-w-[140px] max-w-[180px]">
+              <User size={13} className="text-[#0A2540] shrink-0" />
+              <input
+                name="name"
+                placeholder="Your Name (Optional)"
+                className="w-full px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs text-slate-800 outline-none focus:border-[#ECA00A]"
+              />
+            </div>
+            <div className="flex items-center gap-1.5 flex-1 min-w-[190px] max-w-sm">
+              <Phone size={13} className="text-[#0A2540] shrink-0" />
+              <input
+                name="phone"
+                required
+                placeholder="Your Phone / WhatsApp"
+                className="w-full px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs text-slate-800 outline-none focus:border-[#ECA00A]"
+              />
+            </div>
           </div>
           <div className="flex items-center gap-4 text-[11px] text-slate-400 font-medium">
             <span>✓ Zero Cancellation Fee</span>

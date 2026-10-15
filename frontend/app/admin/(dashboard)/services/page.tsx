@@ -13,9 +13,36 @@ export default async function AdminServicesPage() {
   const session = await getAuthSession()
   if (!session) redirect('/admin/login')
 
-  const items = await prisma.service.findMany({
-    orderBy: { sortOrder: 'asc' }
-  })
+  let items: any[] = []
+  try {
+    items = await prisma.service.findMany({
+      orderBy: { sortOrder: 'asc' }
+    })
+  } catch (err: any) {
+    console.error('Error querying services in admin, executing self-healing schema migration:', err)
+    try {
+      await prisma.$executeRawUnsafe(`
+        ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "startingPrice" DOUBLE PRECISION;
+        ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "priceUnit" TEXT;
+        ALTER TABLE "Lead" ADD COLUMN IF NOT EXISTS "passengers" TEXT;
+      `)
+      items = await prisma.service.findMany({
+        orderBy: { sortOrder: 'asc' }
+      })
+    } catch (retryErr) {
+      console.error('Retry after schema fix failed, falling back to base columns:', retryErr)
+      try {
+        items = await prisma.$queryRawUnsafe(`
+          SELECT id, title, slug, "shortDescription", "content", "isActive", "sortOrder", "seoMetadata"
+          FROM "Service"
+          ORDER BY "sortOrder" ASC
+        `)
+      } catch (rawErr) {
+        console.error('Raw query fallback failed:', rawErr)
+        items = []
+      }
+    }
+  }
 
   return (
     <div>

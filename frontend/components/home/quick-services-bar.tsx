@@ -75,7 +75,7 @@ export function QuickServicesBar({ services }: QuickServicesBarProps) {
   ]
 
   return (
-    <section className="bg-white border-y border-slate-200/80 py-3.5 shadow-2xs relative">
+    <section className="bg-white/95 backdrop-blur-md sticky top-[68px] min-[801px]:top-[78px] z-30 border-y border-slate-200/90 py-2.5 sm:py-3 shadow-xs relative transition-all duration-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Left Scroll Button */}
         <button

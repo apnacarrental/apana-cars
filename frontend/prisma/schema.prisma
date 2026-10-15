@@ -274,6 +274,7 @@ model Lead {
   pickupDatetime DateTime?
   service        String?
   vehicle        String?
+  passengers     String?
   message        String?
   notes          String?
   status         LeadStatus @default(NEW)

@@ -23,7 +23,7 @@ import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { buildMetadata, getBaseUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 
-import { getServices } from '@/lib/data/db'
+import { getServices, getCars } from '@/lib/data/db'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -35,7 +35,10 @@ export async function generateMetadata(): Promise<Metadata> { return await build
 }) }
 
 export default async function Page() {
-  const services = await getServices()
+  const [services, cars] = await Promise.all([
+    getServices(),
+    getCars()
+  ])
 
   return (
     <>
@@ -44,7 +47,7 @@ export default async function Page() {
         <HeroSection />
         <BookingSection />
         <QuickServicesBar services={services} />
-        <FleetShowcaseStrip />
+        <FleetShowcaseStrip cars={cars} />
         <AboutSection />
         <ServicesSection />
         <PopularSightseeingSection />

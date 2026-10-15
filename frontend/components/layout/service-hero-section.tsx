@@ -14,6 +14,7 @@ export interface ServiceHeroProps {
   subtitle: string
   defaultTab?: 'local' | 'outstation' | 'airport' | 'oneway'
   defaultCarType?: string
+  defaultPassengers?: string
   extraAction?: React.ReactNode
 }
 
@@ -24,7 +25,8 @@ export function ServiceHeroSection({
   titleLine2,
   subtitle,
   defaultTab = 'local',
-  defaultCarType = 'Innova Crysta (7-Seater)',
+  defaultCarType,
+  defaultPassengers,
   extraAction,
 }: ServiceHeroProps) {
   return (
@@ -128,7 +130,7 @@ export function ServiceHeroSection({
 
       {/* 2. Interactive Booking Form Container (Overlapping Hero) */}
       <section id="book" className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-14 relative z-30 mb-10">
-        <BookingForm initialTab={defaultTab} initialCarType={defaultCarType} />
+        <BookingForm initialTab={defaultTab} initialPassengers={defaultPassengers || defaultCarType} />
       </section>
     </>
   )

@@ -224,6 +224,21 @@ export const getCarBySlug = cache(async (slug: string) => {
   return (FALLBACK_CARS.find(c => c.slug === slug || c.slug === decoded) as any) || null;
 })
 
+let serviceColumnsEnsured = false;
+async function ensureDbColumns() {
+  if (serviceColumnsEnsured) return;
+  try {
+    await prisma.$executeRawUnsafe(`
+      ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "startingPrice" DOUBLE PRECISION;
+      ALTER TABLE "Service" ADD COLUMN IF NOT EXISTS "priceUnit" TEXT;
+      ALTER TABLE "Lead" ADD COLUMN IF NOT EXISTS "passengers" TEXT;
+    `);
+    serviceColumnsEnsured = true;
+  } catch (err) {
+    // safe to ignore
+  }
+}
+
 export const getServices = cache(async () => {
   try {
     const services = await prisma.service.findMany({
@@ -232,7 +247,17 @@ export const getServices = cache(async () => {
     });
     if (services && services.length > 0) return services;
   } catch (e) {
-    console.warn('getServices db error, using fallback:', e);
+    console.warn('getServices db error, attempting auto-migration:', e);
+    await ensureDbColumns();
+    try {
+      const services = await prisma.service.findMany({
+        where: { isActive: true },
+        orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
+      });
+      if (services && services.length > 0) return services;
+    } catch (retryErr) {
+      console.warn('Retry failed, using fallback:', retryErr);
+    }
   }
   return FALLBACK_SERVICES as any[];
 })

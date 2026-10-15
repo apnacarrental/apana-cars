@@ -53,28 +53,30 @@ export async function submitLead(prevState: ActionState, formData: FormData): Pr
 
     const pickupCity = (formData.get('pickupCity') as string)?.trim()
     const dropCity = (formData.get('dropCity') as string)?.trim()
+    const passengers = (formData.get('passengers') as string)?.trim()
     const carType = (formData.get('carType') as string)?.trim()
     const userMessage = (formData.get('message') as string)?.trim()
 
     const details: string[] = []
     if (pickupCity) details.push(`Pickup: ${pickupCity}`)
     if (dropCity) details.push(`Drop: ${dropCity}`)
+    if (passengers) details.push(`Passengers: ${passengers}`)
     if (carType) details.push(`Vehicle: ${carType}`)
     if (userMessage) details.push(`Notes: ${userMessage}`)
 
     const compositeMessage = details.length > 0 ? details.join('\n') : null
 
     const data = {
-      name: formData.get('name') as string,
+      name: (formData.get('name') as string)?.trim() || 'Direct Inquiry',
       phone: rawPhone,
-      email: formData.get('email') as string,
-      pickupLocation: formData.get('pickupLocation') as string,
-      dropLocation: formData.get('dropLocation') as string,
-      pickupDatetime: formData.get('pickupDatetime') as string,
-      service: formData.get('service') as string,
-      vehicle: formData.get('vehicle') as string,
-      message: compositeMessage || userMessage,
-      _website: formData.get('_website') as string
+      email: (formData.get('email') as string) || '',
+      pickupLocation: (formData.get('pickupLocation') as string) || '',
+      dropLocation: (formData.get('dropLocation') as string) || '',
+      pickupDatetime: (formData.get('pickupDatetime') as string) || '',
+      service: (formData.get('service') as string) || '',
+      vehicle: (formData.get('vehicle') as string) || '',
+      message: compositeMessage || userMessage || undefined,
+      _website: (formData.get('_website') as string) || undefined
     }
 
     // 3. Honeypot check
@@ -138,6 +140,7 @@ export async function submitLead(prevState: ActionState, formData: FormData): Pr
         pickupDatetime: validData.pickupDatetime ? new Date(validData.pickupDatetime) : null,
         service: validData.service || null,
         vehicle: validData.vehicle || null,
+        passengers: passengers || null,
         message: validData.message || null,
         status: 'NEW'
       }

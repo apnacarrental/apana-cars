@@ -1,116 +1,182 @@
 'use client'
 
-import React from 'react'
+import React, { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'motion/react'
-import { ArrowRight } from 'lucide-react'
-import { useBookingModal } from '@/components/ui/smart-booking-modal'
+import { ArrowRight, ChevronLeft, ChevronRight, Users } from 'lucide-react'
 
-const FLEET_SHOWCASE = [
-  {
-    name: 'Dzire',
-    seats: '4 Seater',
-    image: '/images/fleet_showcase/dzire.png',
-    slug: 'swift-dzire',
-  },
-  {
-    name: 'Ertiga',
-    seats: '7 Seater',
-    image: '/images/fleet_showcase/ertiga.png',
-    slug: 'maruti-ertiga',
-  },
-  {
-    name: 'Innova Crysta',
-    seats: '7 Seater',
-    image: '/images/fleet_showcase/innova_crysta.png',
-    slug: 'toyota-innova-crysta',
-  },
-  {
-    name: 'Toyota Fortuner',
-    seats: '7 Seater',
-    image: '/images/fleet_showcase/toyota_fortuner.png',
-    slug: 'toyota-fortuner',
-  },
-  {
-    name: 'Kia Carnival',
-    seats: '7 Seater',
-    image: '/images/fleet_showcase/kia_carnival.png',
-    slug: 'kia-carnival',
-  },
-  {
-    name: 'Force Urbania',
-    seats: '16 Seater',
-    image: '/images/fleet_showcase/force_urbania.png',
-    slug: 'force-urbania-rent-in-hyderabad',
-  },
+export interface FleetItem {
+  id: string
+  name: string
+  slug: string
+  seats: number
+  pricePerDay?: number | null
+  petrolPricePerKm?: number | null
+  dieselPricePerKm?: number | null
+  isActive?: boolean
+  images?: Array<{ media?: { secureUrl?: string; altText?: string } | null }>
+}
+
+interface FleetShowcaseStripProps {
+  cars?: FleetItem[]
+}
+
+const FALLBACK_FLEET: FleetItem[] = [
+  { id: '1', name: 'Swift Dzire Sedan', slug: 'sedan', seats: 4, petrolPricePerKm: 14, pricePerDay: 1800 },
+  { id: '2', name: 'Maruti Ertiga', slug: 'ertiga', seats: 6, petrolPricePerKm: 18, pricePerDay: 2800 },
+  { id: '3', name: 'Toyota Innova Crysta', slug: 'innova-crysta', seats: 7, dieselPricePerKm: 22, pricePerDay: 3800 },
+  { id: '4', name: 'Toyota Fortuner', slug: 'toyota-fortuner', seats: 7, dieselPricePerKm: 32, pricePerDay: 6500 },
+  { id: '5', name: 'Force Urbania Luxury', slug: 'force-urbania-rent-in-hyderabad', seats: 16, dieselPricePerKm: 42, pricePerDay: 8500 },
 ]
 
-export function FleetShowcaseStrip() {
-  const { openBookingModal } = useBookingModal()
+function getCarImage(car: FleetItem): string {
+  const name = (car.name || '').toLowerCase()
+  const slug = (car.slug || '').toLowerCase()
+
+  if (slug.includes('dzire') || name.includes('dzire') || name.includes('sedan') || slug.includes('sedan') || name.includes('etios')) {
+    return '/images/fleet_showcase/dzire.png'
+  }
+  if (slug.includes('ertiga') || name.includes('ertiga')) {
+    return '/images/fleet_showcase/ertiga.png'
+  }
+  if (slug.includes('crysta') || name.includes('crysta') || slug.includes('innova') || name.includes('innova')) {
+    return '/images/fleet_showcase/innova_crysta.png'
+  }
+  if (slug.includes('fortuner') || name.includes('fortuner')) {
+    return '/images/fleet_showcase/toyota_fortuner.png'
+  }
+  if (slug.includes('carnival') || name.includes('carnival')) {
+    return '/images/fleet_showcase/kia_carnival.png'
+  }
+  if (slug.includes('urbania') || name.includes('urbania') || slug.includes('tempo') || name.includes('tempo')) {
+    return '/images/fleet_showcase/force_urbania.png'
+  }
+  if (car.images?.[0]?.media?.secureUrl && !car.images[0].media.secureUrl.includes('journey-road')) {
+    return car.images[0].media.secureUrl
+  }
+  return '/images/fleet_showcase/dzire.png'
+}
+
+export function FleetShowcaseStrip({ cars }: FleetShowcaseStripProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === 'left' ? -340 : 340
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+    }
+  }
+
+  // Display a curated subset of active admin cars (up to 6)
+  const displayCars = (cars && cars.length > 0 ? cars.filter(c => c.isActive !== false).slice(0, 6) : FALLBACK_FLEET)
 
   return (
-    <section className="py-12 bg-[#F8F6F0] border-b border-slate-200/80">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          {/* Left Column: Heading, Subtitle & Button */}
-          <div className="lg:col-span-3">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-2">
-              Our Vehicle Fleet
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-5">
-              Well-maintained vehicles with professional drivers for a comfortable journey.
+    <section className="bg-[#F8F6F0] border-b border-slate-200/80 py-4 relative shadow-2xs">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Left Scroll Button */}
+        <button
+          type="button"
+          onClick={() => scroll('left')}
+          aria-label="Scroll fleet left"
+          className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-slate-300 shadow-md items-center justify-center text-slate-700 hover:bg-[#0A2540] hover:text-white transition-all cursor-pointer"
+        >
+          <ChevronLeft size={16} />
+        </button>
+
+        {/* Scrollable Container of Admin Cars */}
+        <div
+          ref={scrollRef}
+          className="flex items-center gap-3 overflow-x-auto scroll-smooth py-1 px-1 sm:px-7 select-none"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {/* Header pill / intro card */}
+          <div className="hidden lg:flex flex-col justify-center shrink-0 min-w-[170px] pr-2 border-r border-slate-300/70">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#0A2540]">
+              Our Fleet
+            </span>
+            <p className="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">
+              Clean AC vehicles with verified drivers
             </p>
-            <Link
-              href="/fleet"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-800 text-xs font-bold uppercase tracking-wider text-slate-900 hover:bg-[#0A2540] hover:text-white transition-all shadow-2xs"
-            >
-              <span>View All Vehicles</span>
-              <ArrowRight size={14} />
-            </Link>
           </div>
 
-          {/* Right Column: 6 Fleet Cards */}
-          <div className="lg:col-span-9">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4">
-              {FLEET_SHOWCASE.map((car, idx) => (
-                <motion.div
-                  key={car.name}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.06 }}
-                >
-                  <Link
-                    href={`/fleet`}
-                    className="group bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col justify-between items-center text-center h-full cursor-pointer"
-                  >
-                    {/* Vehicle Cutout Image */}
-                    <div className="relative w-full h-16 sm:h-20 mb-2 flex items-center justify-center">
-                      <Image
-                        src={car.image}
-                        alt={`${car.name} rental cab in Hyderabad`}
-                        fill
-                        className="object-contain transition-transform duration-500 ease-out group-hover:scale-110"
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 15vw"
-                      />
-                    </div>
+          {displayCars.map((car) => {
+            const carImg = getCarImage(car)
+            const priceLabel = car.dieselPricePerKm 
+              ? `₹${car.dieselPricePerKm}/km` 
+              : car.petrolPricePerKm 
+              ? `₹${car.petrolPricePerKm}/km` 
+              : car.pricePerDay 
+              ? `₹${car.pricePerDay.toLocaleString('en-IN')}/day` 
+              : null
 
-                    {/* Vehicle Name & Seater info */}
-                    <div className="w-full">
-                      <h3 className="text-xs sm:text-[13px] font-bold text-slate-900 group-hover:text-[#ECA00A] transition-colors leading-tight">
-                        {car.name}
-                      </h3>
-                      <span className="text-[11px] text-slate-400 font-medium block mt-0.5">
-                        {car.seats}
+            return (
+              <Link
+                key={car.id}
+                href="/fleet"
+                className="group flex items-center gap-3 p-2.5 rounded-xl bg-white hover:bg-[#FFFDF9] border border-slate-200/90 hover:border-slate-300 hover:shadow-md transition-all shrink-0 min-w-[220px] max-w-[250px] cursor-pointer"
+              >
+                {/* Vehicle Cutout Image */}
+                <div className="relative w-14 h-11 shrink-0 flex items-center justify-center bg-slate-50/70 rounded-lg p-1">
+                  <Image
+                    src={carImg}
+                    alt={`${car.name} cab rental Hyderabad`}
+                    fill
+                    className="object-contain transition-transform duration-300 group-hover:scale-110"
+                    sizes="56px"
+                  />
+                </div>
+
+                {/* Details */}
+                <div className="min-w-0 flex-1">
+                  <strong className="text-[12.5px] font-bold text-slate-900 group-hover:text-[#ECA00A] transition-colors block leading-tight truncate">
+                    {car.name}
+                  </strong>
+                  
+                  <div className="flex items-center gap-1.5 mt-1">
+                    <span className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">
+                      <Users size={11} className="text-[#0A2540]" />
+                      {car.seats} Seater
+                    </span>
+
+                    {priceLabel && (
+                      <span className="inline-flex items-center text-[10.5px] font-bold text-amber-900 bg-amber-50 border border-amber-200/60 px-1.5 py-0.5 rounded leading-none font-mono">
+                        {priceLabel}
                       </span>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                    )}
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+
+          {/* Dedicated "View All Fleet →" Arrow Item */}
+          <Link
+            href="/fleet"
+            className="group flex items-center gap-3 p-2.5 rounded-xl bg-amber-50/80 hover:bg-[#ECA00A] border border-amber-200/90 hover:border-[#ECA00A] transition-all shrink-0 min-w-[190px] cursor-pointer shadow-xs"
+          >
+            <div className="w-10 h-10 rounded-full bg-[#ECA00A] group-hover:bg-[#0A2540] text-[#0A2540] group-hover:text-white flex items-center justify-center transition-all shadow-xs shrink-0">
+              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </div>
-          </div>
+            <div className="min-w-0 flex-1">
+              <strong className="text-[12.5px] font-bold text-slate-900 group-hover:text-[#0A2540] transition-colors block leading-tight">
+                View All Fleet
+              </strong>
+              <span className="text-[10px] text-amber-900/80 group-hover:text-slate-900 font-bold block leading-tight mt-0.5">
+                Explore Full Fleet →
+              </span>
+            </div>
+          </Link>
         </div>
+
+        {/* Right Scroll Button */}
+        <button
+          type="button"
+          onClick={() => scroll('right')}
+          aria-label="Scroll fleet right"
+          className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-white/95 border border-slate-300 shadow-md items-center justify-center text-slate-700 hover:bg-[#0A2540] hover:text-white transition-all cursor-pointer"
+        >
+          <ChevronRight size={16} />
+        </button>
       </div>
     </section>
   )

@@ -13,12 +13,14 @@ const AdminLeadCreateSchema = z.object({
   email: z.string().email().optional().nullable(),
   pickupLocation: z.string().optional().nullable(),
   dropLocation: z.string().optional().nullable(),
+  passengers: z.string().optional().nullable(),
   status: z.nativeEnum(LeadStatus).default(LeadStatus.NEW),
   notes: z.string().optional().nullable()
 })
 
 const AdminLeadUpdateSchema = z.object({
   status: z.nativeEnum(LeadStatus),
+  passengers: z.string().optional().nullable(),
   notes: z.string().optional().nullable()
 })
 
@@ -33,6 +35,7 @@ export async function createLead(formData: FormData): Promise<{ success: false; 
     email: rawEmail && rawEmail.includes('@') ? rawEmail : null,
     pickupLocation: (formData.get('pickupLocation') as string)?.trim() || null,
     dropLocation: (formData.get('dropLocation') as string)?.trim() || null,
+    passengers: (formData.get('passengers') as string)?.trim() || null,
     status: ((formData.get('status') as string)?.toUpperCase() as LeadStatus) || LeadStatus.NEW,
     notes: (formData.get('notes') as string)?.trim() || null,
   }
@@ -58,8 +61,11 @@ export async function createLead(formData: FormData): Promise<{ success: false; 
 export async function updateLeadStatus(id: string, formData: FormData) {
   await requireAdmin()
 
+  const rawPassengers = formData.get('passengers')
+
   const data = {
     status: formData.get('status') as LeadStatus,
+    passengers: typeof rawPassengers === 'string' ? rawPassengers.trim() || null : undefined,
     notes: formData.get('notes') as string,
   }
 
@@ -69,6 +75,7 @@ export async function updateLeadStatus(id: string, formData: FormData) {
     where: { id },
     data: {
       status: parsed.status,
+      ...(parsed.passengers !== undefined ? { passengers: parsed.passengers } : {}),
       notes: parsed.notes || null,
     }
   })

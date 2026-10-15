@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useTransition } from 'react'
-import { X, ArrowRight, ShieldCheck, MapPin, Phone, User, Calendar, Car } from 'lucide-react'
+import { X, ArrowRight, ShieldCheck, MapPin, Phone, User, Calendar, Users } from 'lucide-react'
 import { submitLead } from '@/lib/actions/lead'
 import { trackEvent } from '@/lib/analytics'
 
@@ -30,14 +30,14 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
   const [bookingData, setBookingData] = useState<ModalBookingData>({
     destination: 'Outstation Trip',
     distance: '',
-    carType: 'Executive Sedan (Dzire / Etios)',
+    carType: '1-4 Passengers (Executive Sedan)',
   })
 
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [pickupDate, setPickupDate] = useState('')
   const [destination, setDestination] = useState('')
-  const [carType, setCarType] = useState('Executive Sedan (Dzire / Etios)')
+  const [carType, setCarType] = useState('1-4 Passengers (Executive Sedan)')
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -106,13 +106,14 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
         formData.append('phone', cleanPhone)
         formData.append('pickupCity', 'Hyderabad')
         formData.append('dropCity', destination || bookingData.destination)
+        formData.append('passengers', carType)
         formData.append('carType', carType)
         if (pickupDate) {
           formData.append('pickupDatetime', pickupDate)
         }
         formData.append(
           'message',
-          `Outstation Modal Lead | Route: Hyd to ${destination || bookingData.destination} | Vehicle: ${carType}${
+          `Outstation Modal Lead | Route: Hyd to ${destination || bookingData.destination} | Passengers: ${carType}${
             pickupDate ? ` | Date: ${pickupDate}` : ''
           }`
         )
@@ -243,22 +244,24 @@ export function BookingModalProvider({ children }: { children: React.ReactNode }
                   </div>
                 </div>
 
-                {/* Vehicle Selection */}
+                {/* Passengers Selection */}
                 <div>
                   <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-neutral-700">
-                    Vehicle Type
+                    No. of Passengers
                   </label>
                   <div className="relative">
-                    <Car size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
+                    <Users size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" />
                     <select
                       value={carType}
                       onChange={(e) => setCarType(e.target.value)}
                       className="w-full rounded-lg border border-[var(--line)] bg-[var(--paper)] py-2.5 pl-10 pr-2 text-xs outline-none transition-colors focus:border-neutral-900 focus:bg-white"
                     >
-                      <option value="Executive Sedan (Dzire / Etios)">Sedan (Dzire / Etios)</option>
-                      <option value="Family MUV (Maruti Ertiga)">MUV (Maruti Ertiga)</option>
-                      <option value="Premium MPV (Innova Crysta)">MPV (Innova Crysta)</option>
-                      <option value="Tempo Traveller (12-26 Seater)">Tempo Traveller</option>
+                      <option value="1-4 Passengers (Executive Sedan)">1-4 Passengers (Executive Sedan)</option>
+                      <option value="5-6 Passengers (Family MUV / Ertiga)">5-6 Passengers (Family MUV / Ertiga)</option>
+                      <option value="7 Passengers (Luxury SUV / Innova Crysta)">7 Passengers (Luxury SUV / Innova Crysta)</option>
+                      <option value="8-12 Passengers (Force Urbania / Minivan)">8-12 Passengers (Force Urbania / Minivan)</option>
+                      <option value="13-17 Passengers (Tempo Traveller / Van)">13-17 Passengers (Tempo Traveller / Van)</option>
+                      <option value="18+ Passengers (Group Bus / Coach)">18+ Passengers (Group Bus / Coach)</option>
                     </select>
                   </div>
                 </div>

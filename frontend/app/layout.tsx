@@ -62,7 +62,7 @@ export default function RootLayout({
           {children}
           <FloatingActionButtons />
         </BookingModalProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NEXT_PUBLIC_VERCEL_ANALYTICS === 'true' && <Analytics />}
         <Suspense fallback={null}><GoogleAnalytics /></Suspense>
       </body>
     </html>

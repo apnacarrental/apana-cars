@@ -2,7 +2,7 @@
 
 import React, { useActionState, useEffect } from 'react'
 import { submitLead, ActionState } from '@/lib/actions/lead'
-import { ArrowRight, CheckCircle, ShieldCheck, MapPin, Calendar, Car, Phone, User } from 'lucide-react'
+import { ArrowRight, CheckCircle, ShieldCheck, MapPin, Calendar, Users, Phone, User } from 'lucide-react'
 import { trackEvent } from '@/lib/analytics'
 
 interface OutstationBookingFormProps {
@@ -191,20 +191,22 @@ export function OutstationBookingForm({
             />
           </div>
 
-          {/* 6. Vehicle Choice */}
+          {/* 6. No. of Passengers */}
           <div className="flex flex-col gap-2">
             <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 flex items-center gap-1.5">
-              <Car size={14} className="text-neutral-400" />
-              <span>Vehicle Category</span>
+              <Users size={14} className="text-neutral-400" />
+              <span>No. of Passengers</span>
             </label>
             <select
-              name="carType"
+              name="passengers"
               className="w-full rounded-md border border-[var(--line)] bg-[var(--paper)] px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 focus:bg-white"
             >
-              <option value="Executive Sedan (Dzire / Etios 4+1)">Executive Sedan (Dzire / Etios 4+1)</option>
-              <option value="Family MUV (Maruti Ertiga 6+1)">Family MUV (Maruti Ertiga 6+1)</option>
-              <option value="Premium MPV (Innova Crysta 7+1)">Premium MPV (Innova Crysta 7+1)</option>
-              <option value="Tempo Traveller (12 to 26 Seater)">Tempo Traveller (12 to 26 Seater)</option>
+              <option value="1-4 Passengers (Executive Sedan)">1-4 Passengers (Executive Sedan)</option>
+              <option value="5-6 Passengers (Family MUV / Ertiga)">5-6 Passengers (Family MUV / Ertiga)</option>
+              <option value="7 Passengers (Luxury SUV / Innova Crysta)">7 Passengers (Luxury SUV / Innova Crysta)</option>
+              <option value="8-12 Passengers (Force Urbania / Minivan)">8-12 Passengers (Force Urbania / Minivan)</option>
+              <option value="13-17 Passengers (Tempo Traveller / Van)">13-17 Passengers (Tempo Traveller / Van)</option>
+              <option value="18+ Passengers (Group Bus / Coach)">18+ Passengers (Group Bus / Coach)</option>
             </select>
           </div>
         </div>

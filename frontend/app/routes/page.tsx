@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 import { ArrowRight, MapPin } from 'lucide-react'
 import { getRoutes } from '@/lib/data/db'
 import { Header } from '@/components/layout/header'
@@ -6,6 +6,9 @@ import { Footer } from '@/components/layout/footer'
 import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
   fallbackTitle: 'Popular Routes | Apna Car Rental',

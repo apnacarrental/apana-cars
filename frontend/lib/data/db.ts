@@ -417,6 +417,7 @@ export const getRoutes = cache(async () => {
       orderBy: { createdAt: 'desc' }
     });
   } catch (e) {
+    console.warn('getRoutes db error:', e);
     return [];
   }
 })

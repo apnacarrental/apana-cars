@@ -33,6 +33,9 @@ import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { OutstationHeroCta } from '@/components/motion/outstation-hero-cta'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata: Metadata = {
   title: 'Outstation Cabs from Hyderabad | Intercity Car Rental | Apna Cars',
   description: 'Book premium outstation cabs from Hyderabad to 40+ destinations including Vijayawada, Tirupati, Bengaluru, Goa, Shirdi & Vizag. Transparent pricing, verified drivers, clean sedans and SUVs.',

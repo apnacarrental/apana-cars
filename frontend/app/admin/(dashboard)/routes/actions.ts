@@ -98,8 +98,10 @@ export async function createRoute(formData: FormData): Promise<ActionResponse> {
   }
 
   revalidatePath('/admin/routes')
+  revalidatePath('/routes')
   revalidatePath(`/routes/${parsed.data.slug}`)
   revalidatePath('/')
+  revalidatePath('/', 'layout')
   redirect('/admin/routes')
 }
 
@@ -162,8 +164,10 @@ export async function updateRoute(id: string, formData: FormData): Promise<Actio
 
   revalidatePath('/admin/routes')
   revalidatePath(`/admin/routes/${id}/edit`)
+  revalidatePath('/routes')
   revalidatePath(`/routes/${parsed.data.slug}`)
   revalidatePath('/')
+  revalidatePath('/', 'layout')
   redirect('/admin/routes')
 }
 
@@ -177,8 +181,10 @@ export async function deactivateRoute(id: string): Promise<ActionResponse> {
     })
 
     revalidatePath('/admin/routes')
+    revalidatePath('/routes')
     if (r?.slug) revalidatePath(`/routes/${r.slug}`)
     revalidatePath('/')
+    revalidatePath('/', 'layout')
     return undefined
   } catch (err: any) {
     console.error('Error deactivating route:', err)
@@ -195,8 +201,10 @@ export async function deleteRoute(id: string): Promise<ActionResponse> {
     })
 
     revalidatePath('/admin/routes')
+    revalidatePath('/routes')
     if (r?.slug) revalidatePath(`/routes/${r.slug}`)
     revalidatePath('/')
+    revalidatePath('/', 'layout')
     return undefined
   } catch (err: any) {
     console.error('Error deleting route:', err)

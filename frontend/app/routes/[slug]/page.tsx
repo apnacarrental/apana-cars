@@ -1,4 +1,4 @@
-﻿import { notFound } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { ArrowRight, MapPin } from 'lucide-react'
 import { getRouteBySlug } from '@/lib/data/db'
 import { Header } from '@/components/layout/header'
@@ -9,6 +9,9 @@ import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import { FaqSchema } from '@/components/seo/schemas'
 import { buildMetadata } from '@/lib/seo'
 import type { Metadata } from 'next'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params

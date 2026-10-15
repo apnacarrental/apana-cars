@@ -7,6 +7,7 @@ import { AboutSection } from '@/components/home/about-section'
 import { ServicesSection } from '@/components/home/services-section'
 import { PopularSightseeingSection } from '@/components/home/popular-sightseeing-section'
 import { HomeCabPackages } from '@/components/home/home-cab-packages'
+import { HomeRoutesSection } from '@/components/home/routes-section'
 import { FleetSection } from '@/components/home/fleet-section'
 import { BenefitsSection } from '@/components/home/benefits-section'
 import { ProcessSection } from '@/components/home/process-section'
@@ -40,6 +41,7 @@ export default function Page() {
         <AboutSection />
         <ServicesSection />
         <PopularSightseeingSection />
+        <HomeRoutesSection />
         <HyderabadTravelGuideCards />
         <HomeCabPackages />
         <FleetSection />

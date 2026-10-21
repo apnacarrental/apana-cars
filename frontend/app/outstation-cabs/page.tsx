@@ -44,12 +44,12 @@ export const metadata: Metadata = {
   title: 'Outstation Cabs from Hyderabad | Intercity Car Rental | Apna Cars',
   description: 'Book premium outstation cabs from Hyderabad to 40+ destinations including Vijayawada, Tirupati, Bengaluru, Goa, Shirdi & Vizag. Transparent pricing, verified drivers, clean sedans and SUVs.',
   alternates: {
-    canonical: 'https://apnacarrental.com/outstation-cabs',
+    canonical: 'https://www.apnacarrental.in/outstation-cabs',
   },
   openGraph: {
     title: 'Outstation Cabs from Hyderabad | Apna Cars',
     description: 'Book comfortable outstation journeys from Hyderabad for family road trips, business travel, pilgrimages, and holiday getaways.',
-    url: 'https://apnacarrental.com/outstation-cabs',
+    url: 'https://www.apnacarrental.in/outstation-cabs',
     siteName: 'Apna Car Rental',
     images: [
       {

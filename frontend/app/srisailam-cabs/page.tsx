@@ -35,12 +35,12 @@ export const metadata: Metadata = {
   title: 'Hyderabad to Srisailam Cab Service | Round Trip Car Rental | Apna Cars',
   description: 'Book Hyderabad to Srisailam round-trip cabs with Apna Cars. Clean fleet of Dzire, Etios, Ertiga, Innova Crysta & Tempo Traveller with experienced ghat drivers. Get a transparent quote today.',
   alternates: {
-    canonical: 'https://apnacarrental.com/srisailam-cabs',
+    canonical: 'https://www.apnacarrental.in/srisailam-cabs',
   },
   openGraph: {
     title: 'Hyderabad to Srisailam Cab Service | Apna Cars',
     description: 'Comfortable Hyderabad to Srisailam cab service for temple darshan, sightseeing, and family road trips through Nallamala Forest.',
-    url: 'https://apnacarrental.com/srisailam-cabs',
+    url: 'https://www.apnacarrental.in/srisailam-cabs',
     siteName: 'Apna Car Rental',
     images: [
       {

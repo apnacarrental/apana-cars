@@ -17,7 +17,7 @@ import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
-  title: 'Apna Cars | Premium Cab Services & Chauffeur Travel in Hyderabad',
+  title: 'Apna Car Rental | Premium Cab Services & Chauffeur Travel in Hyderabad',
   description: 'Premium chauffeur-driven cabs, airport transfers, sightseeing tours, and outstation rentals across Hyderabad and beyond.',
   generator: 'v0.app',
   verification: {

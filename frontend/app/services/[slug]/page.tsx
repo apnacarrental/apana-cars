@@ -12,6 +12,15 @@ import { buildMetadata } from '@/lib/seo'
 import { ServiceBookingButton } from '@/components/services/service-booking-button'
 import type { Metadata } from 'next'
 
+const DEDICATED_ROUTES = new Set([
+  'airport-cabs',
+  'hourly-cabs',
+  'sightseeing-cabs',
+  'outstation-cabs',
+  'srisailam-cabs',
+  'force-urbania-rent-in-hyderabad'
+])
+
 export async function generateStaticParams() {
   const services = await getServices()
   return services.map((s) => ({
@@ -27,11 +36,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {}
   }
 
+  const isDedicated = DEDICATED_ROUTES.has(resolvedParams.slug)
+  const canonicalPath = isDedicated ? `/${resolvedParams.slug}` : `/services/${resolvedParams.slug}`
+
   return await buildMetadata({
     seoMetadata: service.seoMetadata,
-    fallbackTitle: `${service.title} | Apna Cars Hyderabad`,
-    fallbackDescription: service.shortDescription || `Experience our ${service.title.toLowerCase()} service with Apna Cars.`,
-    path: `/services/${service.slug}`,
+    fallbackTitle: `${service.title} | Apna Car Rental Hyderabad`,
+    fallbackDescription: service.shortDescription || `Experience our ${service.title.toLowerCase()} service with Apna Car Rental.`,
+    path: canonicalPath,
   })
 }
 

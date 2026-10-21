@@ -41,12 +41,12 @@ export const metadata: Metadata = {
   title: 'Force Urbania Rental in Hyderabad | Luxury Tempo Traveller | Apna Cars',
   description: 'Explore Force Urbania rental options in Hyderabad for group travel, family outings, corporate trips and outstation journeys with Apna Cars. Premium 12 & 17 seater luxury vans with business-class comfort.',
   alternates: {
-    canonical: 'https://apnacarrental.com/force-urbania-rent-in-hyderabad',
+    canonical: 'https://www.apnacarrental.in/force-urbania-rent-in-hyderabad',
   },
   openGraph: {
     title: 'Force Urbania Rental in Hyderabad | Apna Cars',
     description: 'Book luxury 12 & 17 seater Force Urbania vans in Hyderabad for corporate events, outstation tours, airport transfers, and family celebrations.',
-    url: 'https://apnacarrental.com/force-urbania-rent-in-hyderabad',
+    url: 'https://www.apnacarrental.in/force-urbania-rent-in-hyderabad',
     siteName: 'Apna Car Rental',
     images: [
       {
@@ -254,7 +254,7 @@ export default async function ForceUrbaniaPage() {
         postalCode: '500055',
         addressCountry: 'IN',
       },
-      url: 'https://apnacarrental.com',
+      url: 'https://www.apnacarrental.in',
     },
     areaServed: {
       '@type': 'City',

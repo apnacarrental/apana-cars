@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
@@ -42,9 +42,11 @@ export function EntitySeoForm({
   const titleLength = title.length
   const descLength = description.length
 
-  const serpTitle = title || 'Default Title | Apna Cars'
+  const serpTitle = title || 'Default Title | Apna Car Rental'
   const serpDesc = description || 'This is how your description will appear in search results.'
-  const serpUrl = canonical || `https://apnacars.com${basePath}/${slug}`
+  const cleanBasePath = basePath === '/' ? '' : basePath
+  const pathPart = cleanBasePath ? `${cleanBasePath}/${slug}` : `/${slug}`
+  const serpUrl = canonical || `https://www.apnacarrental.in${pathPart}`
 
   const socialTitle = ogTitle || title || serpTitle
   const socialDesc = ogDescription || description || serpDesc
@@ -135,7 +137,7 @@ export function EntitySeoForm({
             <div className="flex items-center gap-2 mb-1">
               <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-xs">AC</div>
               <div>
-                <div className="text-sm text-[#202124] leading-tight">Apna Cars</div>
+                <div className="text-sm text-[#202124] leading-tight">Apna Car Rental</div>
                 <div className="text-xs text-[#4d5156] leading-tight">{serpUrl}</div>
               </div>
             </div>
@@ -156,7 +158,7 @@ export function EntitySeoForm({
               )}
             </div>
             <div className="p-4 bg-[#f2f3f5] border-t border-gray-200">
-              <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">apnacars.com</div>
+              <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">apnacarrental.in</div>
               <h4 className="font-bold text-gray-900 mb-1 truncate">{socialTitle}</h4>
               <p className="text-sm text-gray-600 line-clamp-1">{socialDesc}</p>
             </div>

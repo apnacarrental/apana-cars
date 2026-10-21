@@ -44,12 +44,12 @@ export const metadata: Metadata = {
   title: 'Hyderabad Sightseeing Cabs | Day Tours & Heritage Packages | Apna Cars',
   description: 'Book Hyderabad sightseeing cabs with verified chauffeurs. Explore Charminar, Golconda Fort, Ramoji Film City, Statue of Equality, Yadagirigutta & temple circuits. Transparent prices, clean AC cars & doorstep pickup.',
   alternates: {
-    canonical: 'https://apnacarrental.com/sightseeing-cabs',
+    canonical: 'https://www.apnacarrental.in/sightseeing-cabs',
   },
   openGraph: {
     title: 'Hyderabad Sightseeing Cabs | Apna Cars',
     description: 'Explore Hyderabad’s iconic monuments, lakes, palaces, and spiritual temple circuits with verified chauffeured cabs.',
-    url: 'https://apnacarrental.com/sightseeing-cabs',
+    url: 'https://www.apnacarrental.in/sightseeing-cabs',
     siteName: 'Apna Car Rental',
     images: [
       {
@@ -244,7 +244,7 @@ export default async function SightseeingCabsPage() {
         postalCode: '500055',
         addressCountry: 'IN',
       },
-      url: 'https://apnacarrental.com',
+      url: 'https://www.apnacarrental.in',
     },
     areaServed: {
       '@type': 'City',

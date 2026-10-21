@@ -4,6 +4,15 @@ import { redirect, notFound } from 'next/navigation'
 import { ServiceForm } from '@/components/admin/service-form'
 import { EntitySeoForm } from '@/components/admin/entity-seo-form'
 
+const DEDICATED_SERVICES = new Set([
+  'airport-cabs',
+  'hourly-cabs',
+  'sightseeing-cabs',
+  'outstation-cabs',
+  'srisailam-cabs',
+  'force-urbania-rent-in-hyderabad'
+])
+
 export default async function EditServicePage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params
   const session = await getAuthSession()
@@ -27,11 +36,13 @@ export default async function EditServicePage({ params }: { params: Promise<{ id
 
   if (!item) notFound()
 
+  const basePath = DEDICATED_SERVICES.has(item.slug) ? '' : '/services'
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8">Edit Service</h1>
       <ServiceForm item={item} />
-      <EntitySeoForm entityType="SERVICE" entityId={item.id} slug={item.slug} basePath="/services" seoMetadata={item.seoMetadata} />
+      <EntitySeoForm entityType="SERVICE" entityId={item.id} slug={item.slug} basePath={basePath} seoMetadata={item.seoMetadata} />
     </div>
   )
 }

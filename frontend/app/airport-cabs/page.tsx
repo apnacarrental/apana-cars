@@ -34,12 +34,12 @@ export const metadata: Metadata = {
   title: 'Airport Cabs in Hyderabad | Airport Taxi Service | Apna Cars',
   description: 'Book airport pickup and drop cabs in Hyderabad with Apna Cars. Enjoy punctual transfers, clean executive sedans, spacious SUVs and outstation routes from Rajiv Gandhi International Airport.',
   alternates: {
-    canonical: 'https://apnacarrental.com/airport-cabs',
+    canonical: 'https://www.apnacarrental.in/airport-cabs',
   },
   openGraph: {
     title: 'Airport Cabs in Hyderabad | Airport Taxi Service | Apna Cars',
     description: 'Ensure a hassle-free airport journey by booking your cab ahead of time. Enjoy economical fares and punctual service for all your airport travel needs in Hyderabad.',
-    url: 'https://apnacarrental.com/airport-cabs',
+    url: 'https://www.apnacarrental.in/airport-cabs',
     siteName: 'Apna Car Rental',
     images: [
       {
@@ -213,7 +213,7 @@ export default async function AirportCabsPage() {
         postalCode: '500055',
         addressCountry: 'IN',
       },
-      url: 'https://apnacarrental.com',
+      url: 'https://www.apnacarrental.in',
     },
     areaServed: {
       '@type': 'City',

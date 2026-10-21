@@ -29,8 +29,8 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
-  fallbackTitle: 'Apna Cars | Hyderabad Cab Services & Chauffeur Travel',
-  fallbackDescription: 'Premium chauffeur-driven cabs, airport transfers, sightseeing tours, and outstation rentals across Hyderabad and beyond.',
+  fallbackTitle: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
+  fallbackDescription: 'Premium chauffeur services, airport transfers, sightseeing tours, and outstation rentals across Hyderabad with transparent per-km fuel pricing.',
   path: '/',
 }) }
 

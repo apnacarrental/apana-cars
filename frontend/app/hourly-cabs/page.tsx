@@ -40,12 +40,12 @@ export const metadata: Metadata = {
   title: 'Hourly Car Rental in Hyderabad | Local Cabs by the Hour | Apna Cars',
   description: 'Book hourly cabs in Hyderabad for business meetings, shopping, city sightseeing, and multi-stop errands. Choose 8 Hr / 80 Km or 12 Hr / 120 Km packages with verified chauffeurs and clean sedans, SUVs & MUVs.',
   alternates: {
-    canonical: 'https://apnacarrental.com/hourly-cabs',
+    canonical: 'https://www.apnacarrental.in/hourly-cabs',
   },
   openGraph: {
     title: 'Hourly Car Rental in Hyderabad | Apna Cars',
     description: 'Book hourly cabs by the hour for local city travel, appointments, shopping, and multi-stop journeys across Hyderabad.',
-    url: 'https://apnacarrental.com/hourly-cabs',
+    url: 'https://www.apnacarrental.in/hourly-cabs',
     siteName: 'Apna Car Rental',
     images: [
       {

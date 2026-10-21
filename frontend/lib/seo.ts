@@ -8,7 +8,10 @@ export function getBaseUrl() {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`
   }
-  return 'http://localhost:3000'
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:3000'
+  }
+  return 'https://www.apnacarrental.in'
 }
 
 type SeoMetadataJson = {
@@ -83,4 +86,3 @@ export async function buildMetadata({ seoMetadata, fallbackTitle, fallbackDescri
     }
   }
 }
-

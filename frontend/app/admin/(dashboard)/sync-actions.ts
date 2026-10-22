@@ -576,7 +576,7 @@ export async function syncWebsiteDataAction(): Promise<{ success: boolean; messa
       {
         path: '/',
         title: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
-        description: 'Premium chauffeur services, airport transfers, and outstation rentals across Hyderabad with transparent per-km fuel pricing.',
+        description: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
         canonicalUrl: 'https://www.apnacarrental.in/',
         robotsIndex: true,
         robotsFollow: true,
@@ -733,7 +733,7 @@ export async function syncWebsiteDataAction(): Promise<{ success: boolean; messa
         data: {
           siteName: 'Apna Car Rental',
           homepageTitle: 'Apna Car Rental | Your journey. Your car. Your way.',
-          homepageDescription: 'Premium chauffeur services, airport transfers, and outstation rentals across Hyderabad with transparent per-km fuel pricing.',
+          homepageDescription: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
           organizationName: 'Apna Car Rental Private Limited',
           canonicalBaseUrl: 'https://www.apnacarrental.in',
           defaultRobotsIndex: true,
@@ -747,7 +747,7 @@ export async function syncWebsiteDataAction(): Promise<{ success: boolean; messa
         data: {
           siteName: 'Apna Car Rental',
           homepageTitle: 'Apna Car Rental | Your journey. Your car. Your way.',
-          homepageDescription: 'Premium chauffeur services, airport transfers, and outstation rentals across Hyderabad with transparent per-km fuel pricing.',
+          homepageDescription: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
           canonicalBaseUrl: 'https://www.apnacarrental.in',
           defaultOgImageId: 'https://www.apnacarrental.in/images/hero-car.png'
         }

@@ -9,6 +9,9 @@ export async function HomeRoutesSection() {
 
   if (!routes || routes.length === 0) return null
 
+  // Display 6 routes on the homepage to maintain a balanced 2-row x 3-col grid
+  const displayedRoutes = routes.slice(0, 6)
+
   return (
     <section id="popular-routes" className="section bg-[var(--paper)] border-b border-[var(--line)] py-20 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,7 +40,7 @@ export async function HomeRoutesSection() {
 
         {/* Dynamic Route Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {routes.slice(0, 6).map((route) => (
+          {displayedRoutes.map((route) => (
             <article
               key={route.id}
               className="fleet-card flex flex-col justify-between h-full bg-white border border-[var(--line)] p-6 rounded-2xl shadow-xs hover:shadow-xl transition-all duration-300 group"
@@ -113,6 +116,17 @@ export async function HomeRoutesSection() {
               </div>
             </article>
           ))}
+        </div>
+
+        {/* View All Routes Button */}
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="/routes"
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-neutral-900 text-white hover:bg-neutral-800 text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
+          >
+            <span>View All Routes</span>
+            <ArrowRight size={15} />
+          </Link>
         </div>
       </div>
     </section>

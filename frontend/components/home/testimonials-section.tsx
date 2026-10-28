@@ -1,9 +1,14 @@
-import { getTestimonials } from '@/lib/data/db'
+import { getTestimonials, getReviewBadgeSettings, type ReviewBadgeSettings } from '@/lib/data/db'
 
-export async function TestimonialsSection() {
-  const testimonials = await getTestimonials()
+export async function TestimonialsSection({ settings }: { settings?: ReviewBadgeSettings } = {}) {
+  const [testimonials, badgeSettings] = await Promise.all([
+    getTestimonials(),
+    settings ? Promise.resolve(settings) : getReviewBadgeSettings(),
+  ])
 
   if (!testimonials || testimonials.length === 0) return null
+
+  const ratingDisplay = badgeSettings.ratingValue.replace('/5', '')
 
   return (
     <section className="section testimonials">
@@ -12,11 +17,17 @@ export async function TestimonialsSection() {
           <p className="eyebrow">Customer experiences</p>
           <h2>Loved by people who<br /><em>travel with us.</em></h2>
         </div>
-        <div className="rating">
-          <strong>4.9</strong>
+        <a 
+          href={badgeSettings.gmbUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`Read our ${badgeSettings.reviewCountText} Google Reviews`}
+          className="rating hover:opacity-90 transition-opacity cursor-pointer group"
+        >
+          <strong>{ratingDisplay}</strong>
           <span>★★★★★</span>
-          <small>Google rating</small>
-        </div>
+          <small className="group-hover:underline">Google rating &rarr;</small>
+        </a>
       </div>
       <div className="testimonial-grid">
         {testimonials.map((t) => (

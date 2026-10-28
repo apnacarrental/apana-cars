@@ -115,3 +115,33 @@ export async function deleteTestimonial(id: string): Promise<ActionResponse> {
     return { success: false, error: err.message || 'Failed to delete testimonial.' }
   }
 }
+
+export async function updateReviewBadgeSettings(formData: FormData): Promise<{ success: boolean; error?: string }> {
+  await requireAdmin()
+
+  const reviewCountText = ((formData.get('reviewCountText') as string) || '1500+').trim()
+  const reviewSubtext = ((formData.get('reviewSubtext') as string) || 'Genuine Reviews').trim()
+  const ratingValue = ((formData.get('ratingValue') as string) || '4.9/5').trim()
+  const gmbUrl = ((formData.get('gmbUrl') as string) || 'https://share.google/z8cDjKFU53sT1UXHv').trim()
+
+  try {
+    const existing = await prisma.seoSettings.findFirst()
+    if (existing) {
+      await prisma.seoSettings.update({
+        where: { id: existing.id },
+        data: { reviewCountText, reviewSubtext, ratingValue, gmbUrl }
+      })
+    } else {
+      await prisma.seoSettings.create({
+        data: { reviewCountText, reviewSubtext, ratingValue, gmbUrl }
+      })
+    }
+
+    revalidatePath('/', 'layout')
+    revalidatePath('/admin/testimonials')
+    return { success: true }
+  } catch (err: any) {
+    console.error('Error updating review badge settings:', err)
+    return { success: false, error: err.message || 'Failed to update review badge settings.' }
+  }
+}

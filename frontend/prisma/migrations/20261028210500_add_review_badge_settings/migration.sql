@@ -1,0 +1,5 @@
+-- AlterTable SeoSettings
+ALTER TABLE "SeoSettings" ADD COLUMN IF NOT EXISTS "reviewCountText" TEXT NOT NULL DEFAULT '1500+';
+ALTER TABLE "SeoSettings" ADD COLUMN IF NOT EXISTS "reviewSubtext" TEXT NOT NULL DEFAULT 'Genuine Reviews';
+ALTER TABLE "SeoSettings" ADD COLUMN IF NOT EXISTS "ratingValue" TEXT NOT NULL DEFAULT '4.9/5';
+ALTER TABLE "SeoSettings" ADD COLUMN IF NOT EXISTS "gmbUrl" TEXT NOT NULL DEFAULT 'https://share.google/z8cDjKFU53sT1UXHv';

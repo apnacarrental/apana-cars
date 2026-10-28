@@ -461,3 +461,39 @@ export const getRoutes = cache(async () => {
     return [];
   }
 })
+
+export interface ReviewBadgeSettings {
+  reviewCountText: string
+  reviewSubtext: string
+  ratingValue: string
+  gmbUrl: string
+}
+
+export const getReviewBadgeSettings = cache(async (): Promise<ReviewBadgeSettings> => {
+  try {
+    const settings = await prisma.seoSettings.findFirst({
+      select: {
+        reviewCountText: true,
+        reviewSubtext: true,
+        ratingValue: true,
+        gmbUrl: true,
+      }
+    });
+    if (settings) {
+      return {
+        reviewCountText: settings.reviewCountText || '1500+',
+        reviewSubtext: settings.reviewSubtext || 'Genuine Reviews',
+        ratingValue: settings.ratingValue || '4.9/5',
+        gmbUrl: settings.gmbUrl || 'https://share.google/z8cDjKFU53sT1UXHv',
+      };
+    }
+  } catch (e) {
+    console.warn('getReviewBadgeSettings db error, using fallback:', e);
+  }
+  return {
+    reviewCountText: '1500+',
+    reviewSubtext: 'Genuine Reviews',
+    ratingValue: '4.9/5',
+    gmbUrl: 'https://share.google/z8cDjKFU53sT1UXHv',
+  };
+})

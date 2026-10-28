@@ -28,7 +28,7 @@ import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { OutstationHeroCta } from '@/components/motion/outstation-hero-cta'
 import { HourlyVehicleGrid } from '@/components/motion/hourly-vehicle-grid'
-import { getCars } from '@/lib/data/db'
+import { getCars , getReviewBadgeSettings } from '@/lib/data/db'
 import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
@@ -289,7 +289,7 @@ const FAQS = [
 ]
 
 export default async function SrisailamCabsPage() {
-  const cars = await getCars()
+  const [cars, reviewSettings] = await Promise.all([getCars(), getReviewBadgeSettings()])
   const fleetVehicles = mapCarsToVehicleItems(cars)
 
   const contactPhone = '+919988123444'
@@ -356,6 +356,7 @@ export default async function SrisailamCabsPage() {
       <main id="srisailam-cabs">
         {/* 1. UNIFIED SERVICE HERO */}
         <ServiceHeroSection
+          {...reviewSettings}
           eyebrow="OUTSTATION • TEMPLE PILGRIMAGE"
           titleLine1="Hyderabad to"
           titleHighlight="Srisailam Cabs"

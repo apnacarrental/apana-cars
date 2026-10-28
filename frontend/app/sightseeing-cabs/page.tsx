@@ -37,7 +37,7 @@ import { SightseeingHeroCta } from '@/components/motion/sightseeing-hero-cta'
 import { SightseeingPackageCards } from '@/components/motion/sightseeing-package-cards'
 import { SIGHTSEEING_PACKAGES } from '@/lib/data/sightseeing'
 import { HourlyVehicleGrid, VehicleItem } from '@/components/motion/hourly-vehicle-grid'
-import { getCars } from '@/lib/data/db'
+import { getCars , getReviewBadgeSettings } from '@/lib/data/db'
 import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
@@ -225,7 +225,7 @@ const FAQS = [
 ]
 
 export default async function SightseeingCabsPage() {
-  const cars = await getCars()
+  const [cars, reviewSettings] = await Promise.all([getCars(), getReviewBadgeSettings()])
   const fleetVehicles = cars && cars.length > 0 ? mapCarsToVehicleItems(cars) : FLEET_VEHICLES
 
   const jsonLd = {
@@ -266,6 +266,7 @@ export default async function SightseeingCabsPage() {
 
         {/* UNIFIED SERVICE HERO */}
         <ServiceHeroSection
+          {...reviewSettings}
           eyebrow="CURATED DAY TOURS & HERITAGE CIRCUITS"
           titleLine1="Hyderabad Private"
           titleHighlight="Sightseeing Cabs"

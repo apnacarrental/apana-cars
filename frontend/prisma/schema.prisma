@@ -304,6 +304,10 @@ model SeoSettings {
   canonicalBaseUrl    String?
   defaultRobotsIndex  Boolean  @default(true)
   defaultRobotsFollow Boolean  @default(true)
+  reviewCountText     String   @default("1500+")
+  reviewSubtext       String   @default("Genuine Reviews")
+  ratingValue         String   @default("4.9/5")
+  gmbUrl              String   @default("https://share.google/z8cDjKFU53sT1UXHv")
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }

@@ -86,7 +86,17 @@ export default function ContactPage() {
                     Flat no.403, saraswathi kunj, opp. Krishna Kunj Gardens, Vimana Puri, Quthbullapur, Hyderabad, Telangana 500055
                   </address>
                 </div>
-                <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider mt-3">Headquarters</span>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">Headquarters</span>
+                  <a 
+                    href="https://share.google/z8cDjKFU53sT1UXHv" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-bold text-[var(--brand-orange)] hover:underline"
+                  >
+                    View on Google &rarr;
+                  </a>
+                </div>
               </div>
             </div>
             

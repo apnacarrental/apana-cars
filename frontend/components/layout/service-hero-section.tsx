@@ -16,6 +16,10 @@ export interface ServiceHeroProps {
   defaultCarType?: string
   defaultPassengers?: string
   extraAction?: React.ReactNode
+  reviewCountText?: string
+  reviewSubtext?: string
+  ratingValue?: string
+  gmbUrl?: string
 }
 
 export function ServiceHeroSection({
@@ -28,6 +32,10 @@ export function ServiceHeroSection({
   defaultCarType,
   defaultPassengers,
   extraAction,
+  reviewCountText = '1500+',
+  reviewSubtext = 'Genuine Reviews',
+  ratingValue = '4.9/5',
+  gmbUrl = 'https://share.google/z8cDjKFU53sT1UXHv'
 }: ServiceHeroProps) {
   return (
     <>
@@ -94,8 +102,14 @@ export function ServiceHeroSection({
               className="flex flex-wrap items-center gap-4 sm:gap-6 pt-2 pb-4"
             >
               {/* Badge 1: Google Reviews */}
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-white shadow-xs border border-slate-100 flex items-center justify-center shrink-0">
+              <a
+                href={gmbUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`View ${reviewCountText} reviews on Google`}
+                className="flex items-center gap-2 group hover:opacity-95 transition-all cursor-pointer"
+              >
+                <div className="w-7 h-7 rounded-full bg-white shadow-xs border border-slate-100 flex items-center justify-center shrink-0 group-hover:border-blue-300 group-hover:shadow-sm transition-all">
                   <svg className="w-4 h-4" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/>
                     <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.27v3.15C3.25 21.37 7.31 24 12 24z"/>
@@ -104,21 +118,27 @@ export function ServiceHeroSection({
                   </svg>
                 </div>
                 <div className="leading-tight">
-                  <strong className="text-xs font-bold text-[#0F172A] block">1500+</strong>
-                  <span className="text-[10px] text-slate-500 font-medium">Genuine Reviews</span>
+                  <strong className="text-xs font-bold text-[#0F172A] block group-hover:text-blue-600 transition-colors">{reviewCountText}</strong>
+                  <span className="text-[10px] text-slate-500 font-medium group-hover:text-blue-600/80 transition-colors">{reviewSubtext}</span>
                 </div>
-              </div>
+              </a>
 
               {/* Badge 2: Rating */}
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-amber-50 border border-amber-200/60 flex items-center justify-center text-[#ECA00A] shrink-0">
+              <a
+                href={gmbUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="View customer rating on Google"
+                className="flex items-center gap-2 group hover:opacity-95 transition-all cursor-pointer"
+              >
+                <div className="w-7 h-7 rounded-full bg-amber-50 border border-amber-200/60 flex items-center justify-center text-[#ECA00A] shrink-0 group-hover:border-amber-300 group-hover:shadow-sm transition-all">
                   <Star size={14} className="fill-current text-[#ECA00A]" />
                 </div>
                 <div className="leading-tight">
-                  <strong className="text-xs font-bold text-[#0F172A] block">4.9/5</strong>
-                  <span className="text-[10px] text-slate-500 font-medium">Customer Rating</span>
+                  <strong className="text-xs font-bold text-[#0F172A] block group-hover:text-amber-700 transition-colors">{ratingValue}</strong>
+                  <span className="text-[10px] text-slate-500 font-medium group-hover:text-amber-700/80 transition-colors">Customer Rating</span>
                 </div>
-              </div>
+              </a>
 
               {/* Badge 3: Trusted by Thousands */}
               <div className="flex items-center gap-2">

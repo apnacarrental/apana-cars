@@ -33,7 +33,7 @@ import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { HourlyHeroCta } from '@/components/motion/hourly-hero-cta'
 import { HourlyPackageCards, HourlyPackageItem } from '@/components/motion/hourly-package-cards'
 import { HourlyVehicleGrid, VehicleItem } from '@/components/motion/hourly-vehicle-grid'
-import { getCars } from '@/lib/data/db'
+import { getCars , getReviewBadgeSettings } from '@/lib/data/db'
 import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
@@ -230,7 +230,7 @@ const FAQS = [
 ]
 
 export default async function HourlyCabsPage() {
-  const cars = await getCars()
+  const [cars, reviewSettings] = await Promise.all([getCars(), getReviewBadgeSettings()])
   const hourlyVehicles = cars && cars.length > 0 ? mapCarsToVehicleItems(cars) : HOURLY_VEHICLES
 
   const contactPhone = '+919988123444'
@@ -287,6 +287,7 @@ export default async function HourlyCabsPage() {
       <main id="hourly-cabs">
         {/* 1. UNIFIED SERVICE HERO */}
         <ServiceHeroSection
+          {...reviewSettings}
           eyebrow="LOCAL CAR RENTAL • HYDERABAD CITY"
           titleLine1="Chauffeur-Driven"
           titleHighlight="Hourly Cabs"

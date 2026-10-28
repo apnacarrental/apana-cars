@@ -23,7 +23,7 @@ import { FinalCtaSection } from '@/components/home/final-cta-section'
 import { buildMetadata, getBaseUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 
-import { getServices, getCars } from '@/lib/data/db'
+import { getServices, getCars, getReviewBadgeSettings } from '@/lib/data/db'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -35,16 +35,17 @@ export async function generateMetadata(): Promise<Metadata> { return await build
 }) }
 
 export default async function Page() {
-  const [services, cars] = await Promise.all([
+  const [services, cars, reviewSettings] = await Promise.all([
     getServices(),
-    getCars()
+    getCars(),
+    getReviewBadgeSettings()
   ])
 
   return (
     <>
       <Header />
       <main id="home">
-        <HeroSection />
+        <HeroSection {...reviewSettings} />
         <QuickServicesBar services={services} />
         <FleetShowcaseStrip cars={cars} />
         <BookingSection />
@@ -59,7 +60,7 @@ export default async function Page() {
         <ProcessSection />
         <CorporateSection />
         <LocationsSection />
-        <TestimonialsSection />
+        <TestimonialsSection settings={reviewSettings} />
         <HomeBlogSection />
         <FaqSection />
         <FinalCtaSection />
@@ -82,6 +83,8 @@ export default async function Page() {
               postalCode: '500055',
               addressCountry: 'IN'
             },
+            hasMap: 'https://share.google/z8cDjKFU53sT1UXHv',
+            sameAs: ['https://share.google/z8cDjKFU53sT1UXHv'],
             areaServed: 'Hyderabad' 
           }) 
         }} 

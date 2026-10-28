@@ -34,7 +34,7 @@ import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 import { BookingModalProvider } from '@/components/ui/smart-booking-modal'
 import { UrbaniaHeroCta, UrbaniaBookingCta } from '@/components/motion/urbania-hero-cta'
 import { HourlyVehicleGrid } from '@/components/motion/hourly-vehicle-grid'
-import { getCars } from '@/lib/data/db'
+import { getCars , getReviewBadgeSettings } from '@/lib/data/db'
 import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
@@ -230,7 +230,7 @@ const WHY_RENT_SECTIONS = [
 ]
 
 export default async function ForceUrbaniaPage() {
-  const cars = await getCars()
+  const [cars, reviewSettings] = await Promise.all([getCars(), getReviewBadgeSettings()])
   const urbaniaCars = cars.filter(c => {
     const lower = (c.name + ' ' + c.slug).toLowerCase()
     return lower.includes('urbania') || lower.includes('tempo') || lower.includes('force') || c.seats >= 10
@@ -306,6 +306,7 @@ export default async function ForceUrbaniaPage() {
 
         {/* UNIFIED SERVICE HERO */}
         <ServiceHeroSection
+          {...reviewSettings}
           eyebrow="NEXT-GENERATION LUXURY GROUP TRAVEL"
           titleLine1="Luxury 12 & 17 Seater"
           titleHighlight="Force Urbania"

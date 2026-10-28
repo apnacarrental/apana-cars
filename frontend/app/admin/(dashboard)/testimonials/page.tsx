@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { DeactivateTestimonialButton } from '@/components/admin/deactivate-testimonial-button'
 import { DeleteTestimonialButton } from '@/components/admin/delete-testimonial-button'
+import { ReviewBadgeSettingsCard } from '@/components/admin/review-badge-settings-card'
 import { Star, Plus, Quote } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -12,9 +13,26 @@ export default async function AdminTestimonialsPage() {
   const session = await getAuthSession()
   if (!session) redirect('/admin/login')
 
-  const items = await prisma.testimonial.findMany({
-    orderBy: { sortOrder: 'asc' }
-  })
+  const [items, seoSettings] = await Promise.all([
+    prisma.testimonial.findMany({
+      orderBy: { sortOrder: 'asc' }
+    }),
+    prisma.seoSettings.findFirst({
+      select: {
+        reviewCountText: true,
+        reviewSubtext: true,
+        ratingValue: true,
+        gmbUrl: true,
+      }
+    })
+  ])
+
+  const initialBadgeSettings = {
+    reviewCountText: seoSettings?.reviewCountText || '1500+',
+    reviewSubtext: seoSettings?.reviewSubtext || 'Genuine Reviews',
+    ratingValue: seoSettings?.ratingValue || '4.9/5',
+    gmbUrl: seoSettings?.gmbUrl || 'https://share.google/z8cDjKFU53sT1UXHv',
+  }
 
   return (
     <div>
@@ -36,6 +54,8 @@ export default async function AdminTestimonialsPage() {
           <span>Add New Review</span>
         </Link>
       </div>
+
+      <ReviewBadgeSettingsCard initialSettings={initialBadgeSettings} />
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">

@@ -27,7 +27,7 @@ import { AirportHeroCta, AirportFleetCta } from '@/components/motion/airport-her
 import { HourlyVehicleGrid, VehicleItem } from '@/components/motion/hourly-vehicle-grid'
 import { AirportDestinationGrid, AirportDestinationItem } from '@/components/motion/airport-destination-grid'
 import { AirportAttractionGrid, AirportAttractionItem } from '@/components/motion/airport-attraction-grid'
-import { getCars } from '@/lib/data/db'
+import { getCars , getReviewBadgeSettings } from '@/lib/data/db'
 import { mapCarsToVehicleItems } from '@/lib/utils/fleet'
 
 export const metadata: Metadata = {
@@ -194,7 +194,7 @@ const LOCAL_ATTRACTIONS: AirportAttractionItem[] = [
 ]
 
 export default async function AirportCabsPage() {
-  const cars = await getCars()
+  const [cars, reviewSettings] = await Promise.all([getCars(), getReviewBadgeSettings()])
   const fleetVehicles = cars && cars.length > 0 ? mapCarsToVehicleItems(cars) : FLEET_VEHICLES
 
   const jsonLd = {
@@ -272,6 +272,7 @@ export default async function AirportCabsPage() {
 
         {/* SECTION 3: UNIFIED SERVICE HERO */}
         <ServiceHeroSection
+          {...reviewSettings}
           eyebrow="HYDERABAD'S MOST TRUSTED AIRPORT TAXI"
           titleLine1="Punctual & Reliable"
           titleHighlight="Airport Cabs"

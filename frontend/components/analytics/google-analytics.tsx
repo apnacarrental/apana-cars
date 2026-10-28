@@ -1,9 +1,8 @@
 'use client'
 
-import Script from 'next/script'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, useRef } from 'react'
-import { GA_MEASUREMENT_ID, IS_ANALYTICS_ENABLED, pageview, trackEvent } from '@/lib/analytics'
+import { pageview, trackEvent } from '@/lib/analytics'
 
 export default function GoogleAnalytics() {
   const pathname = usePathname()
@@ -12,7 +11,6 @@ export default function GoogleAnalytics() {
   const isFirstRender = useRef(true)
 
   useEffect(() => {
-    if (!IS_ANALYTICS_ENABLED || !GA_MEASUREMENT_ID) return
     if (!pathname) return
     
     if (pathname.startsWith('/admin') || pathname.startsWith('/api')) {
@@ -21,7 +19,7 @@ export default function GoogleAnalytics() {
 
     const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '')
     
-    // Skip first mount because gtag('config', ID) already fires the landing pageview
+    // Skip first mount because the Google tag in <head> already fires the landing pageview
     if (isFirstRender.current) {
       isFirstRender.current = false
       lastTrackedUrl.current = url
@@ -40,8 +38,6 @@ export default function GoogleAnalytics() {
   }, [pathname, searchParams])
 
   useEffect(() => {
-    if (!IS_ANALYTICS_ENABLED || !GA_MEASUREMENT_ID) return
-
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       const link = target.closest('a')
@@ -62,32 +58,5 @@ export default function GoogleAnalytics() {
     return () => document.removeEventListener('click', handleClick)
   }, [])
 
-  if (!IS_ANALYTICS_ENABLED || !GA_MEASUREMENT_ID) {
-    return null
-  }
-
-  if (pathname && (pathname.startsWith('/admin') || pathname.startsWith('/api'))) {
-    return null
-  }
-
-  return (
-    <>
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
-          `,
-        }}
-      />
-    </>
-  )
+  return null
 }

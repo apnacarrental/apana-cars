@@ -34,7 +34,7 @@ export function Footer() {
             <a href="https://wa.me/919988123444" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', fontWeight: 600 }}>Chat on WhatsApp</a>
             <a href="mailto:hello@apnacarrental.com">hello@apnacarrental.com</a>
             <span style={{ fontSize: '0.85rem', lineHeight: '1.4', marginTop: '0.5rem', display: 'block', color: '#888' }}>
-              Garden colony, H. No - 4-4-123, opp. SBI ATM, Quthbullapur Garden Colony, Bhagyalaxmi Nagar, Quthbullapur, Hyderabad, Telangana 500055
+              Flat no.403, saraswathi kunj, opp. Krishna Kunj Gardens, Vimana Puri, Quthbullapur, Hyderabad, Telangana 500055
             </span>
           </div>
         </div>

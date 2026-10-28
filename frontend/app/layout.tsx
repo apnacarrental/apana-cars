@@ -57,6 +57,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={montserrat.variable}>
+      <head>
+        {/* Google tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9CSHWBSKR7" />
+        <script
+          id="google-tag-gtag"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'G-9CSHWBSKR7');
+            `,
+          }}
+        />
+      </head>
       <body className={`${montserrat.className} antialiased overflow-x-hidden`}>
         <BookingModalProvider>
           {children}
@@ -68,5 +84,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-

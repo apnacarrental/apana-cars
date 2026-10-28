@@ -238,7 +238,7 @@ export default async function SightseeingCabsPage() {
       telephone: '+919988123444',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Garden colony, H. No - 4-4-123, opp. SBI ATM, Quthbullapur Garden Colony, Bhagyalaxmi Nagar',
+        streetAddress: 'Flat no.403, saraswathi kunj, opp. Krishna Kunj Gardens, Vimana Puri, Quthbullapur',
         addressLocality: 'Hyderabad',
         addressRegion: 'Telangana',
         postalCode: '500055',

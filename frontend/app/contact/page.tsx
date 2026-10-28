@@ -83,7 +83,7 @@ export default function ContactPage() {
                   </div>
                   <h3 className="text-lg font-bold text-neutral-900 mb-1">Visit Office</h3>
                   <address className="not-italic text-xs text-[var(--soft)] leading-relaxed">
-                    H. No 4-4-123, Garden Colony, opp. SBI ATM, Quthbullapur, Hyderabad 500055
+                    Flat no.403, saraswathi kunj, opp. Krishna Kunj Gardens, Vimana Puri, Quthbullapur, Hyderabad, Telangana 500055
                   </address>
                 </div>
                 <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider mt-3">Headquarters</span>

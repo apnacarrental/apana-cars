@@ -225,7 +225,7 @@ const FAQS = [
   {
     id: 'faq-9',
     question: 'How can I contact Apna Cars?',
-    answer: 'You can reach Apna Cars directly by calling 099881 23444, messaging on WhatsApp at +91 99881 23444, or visiting our Hyderabad dispatch center at Garden Colony, H. No - 4-4-123, opp. SBI ATM, Quthbullapur, Hyderabad, Telangana 500055.'
+    answer: 'You can reach Apna Cars directly by calling 099881 23444, messaging on WhatsApp at +91 99881 23444, or visiting our Hyderabad dispatch center at Flat no.403, saraswathi kunj, opp. Krishna Kunj Gardens, Vimana Puri, Quthbullapur, Hyderabad, Telangana 500055.'
   }
 ]
 
@@ -262,7 +262,7 @@ export default async function HourlyCabsPage() {
       telephone: '+919988123444',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Garden colony, H. No - 4-4-123, opp. SBI ATM, Quthbullapur Garden Colony',
+        streetAddress: 'Flat no.403, saraswathi kunj, opp. Krishna Kunj Gardens, Vimana Puri, Quthbullapur',
         addressLocality: 'Hyderabad',
         addressRegion: 'Telangana',
         postalCode: '500055',

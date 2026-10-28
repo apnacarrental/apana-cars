@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import Script from 'next/script'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -9,6 +9,7 @@ export default function GoogleAnalytics() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const lastTrackedUrl = useRef<string | null>(null)
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
     if (!IS_ANALYTICS_ENABLED || !GA_MEASUREMENT_ID) return
@@ -20,6 +21,13 @@ export default function GoogleAnalytics() {
 
     const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '')
     
+    // Skip first mount because gtag('config', ID) already fires the landing pageview
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      lastTrackedUrl.current = url
+      return
+    }
+
     // Prevent duplicate pageview fires in React Strict Mode
     if (lastTrackedUrl.current === url) return
     lastTrackedUrl.current = url
@@ -76,10 +84,7 @@ export default function GoogleAnalytics() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}', {
-              page_path: window.location.pathname,
-              send_page_view: false
-            });
+            gtag('config', '${GA_MEASUREMENT_ID}');
           `,
         }}
       />

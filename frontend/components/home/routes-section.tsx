@@ -30,7 +30,7 @@ export async function HomeRoutesSection() {
           <div className="shrink-0 flex items-center gap-3">
             <Link
               href="/routes"
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-900 bg-[var(--paper)] hover:bg-neutral-900 hover:text-white px-5 py-3 border border-neutral-900 transition-all shadow-xs"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-900 bg-white hover:bg-neutral-900 hover:text-white px-5 py-2.5 rounded-lg border border-neutral-300 transition-all shadow-xs"
             >
               <span>View All Routes</span>
               <ArrowRight size={13} />
@@ -122,10 +122,10 @@ export async function HomeRoutesSection() {
         <div className="mt-12 flex justify-center">
           <Link
             href="/routes"
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-neutral-900 text-white hover:bg-neutral-800 text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
+            className="button button-dark !text-white !bg-neutral-950 hover:!bg-neutral-800 inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
           >
-            <span>View All Routes</span>
-            <ArrowRight size={15} />
+            <span className="!text-white font-bold">View All Routes</span>
+            <ArrowRight size={15} className="!text-white" />
           </Link>
         </div>
       </div>

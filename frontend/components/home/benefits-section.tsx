@@ -15,7 +15,9 @@ export function BenefitsSection() {
           transition={{ duration: 0.6 }}
         >
           <p className="eyebrow light">The Apna difference</p>
-          <h2>Why travel <em>with</em> Apna?</h2>
+          <h2 className="!text-white text-3xl sm:text-5xl font-bold tracking-tight mb-6">
+            Why travel <em className="text-[#ECA00A] not-italic font-bold">with</em> Apna?
+          </h2>
         </motion.div>
 
         <div className="benefit-grid">

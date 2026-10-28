@@ -13,7 +13,7 @@ export async function ServicesSection() {
 
   return (
     <section id="services" className="section services">
-      <div className="section-head">
+      <div className="section-head mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <p className="eyebrow">Ways to move</p>
           <h2>Built around <em>your</em> journey.</h2>
@@ -23,10 +23,11 @@ export async function ServicesSection() {
             Whatever the destination, there&apos;s an Apna way to get there.
           </p>
           <Link 
-            className="text-button text-xs font-bold uppercase tracking-wider text-neutral-900 hover:text-[var(--brand-orange)] shrink-0" 
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-900 bg-white hover:bg-neutral-900 hover:text-white px-5 py-2.5 rounded-lg border border-neutral-300 transition-all shadow-xs shrink-0" 
             href="/services"
           >
-            View all services <ArrowRight size={15} />
+            <span>View all services</span>
+            <ArrowRight size={14} />
           </Link>
         </div>
       </div>
@@ -36,13 +37,12 @@ export async function ServicesSection() {
       <div className="mt-12 flex justify-center">
         <Link
           href="/services"
-          className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-neutral-900 text-white hover:bg-neutral-800 text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
+          className="button button-dark !text-white !bg-neutral-950 hover:!bg-neutral-800 inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
         >
-          <span>View All Services</span>
-          <ArrowRight size={15} />
+          <span className="!text-white font-bold">View All Services</span>
+          <ArrowRight size={15} className="!text-white" />
         </Link>
       </div>
     </section>
   )
 }
-

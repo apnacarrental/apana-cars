@@ -2,14 +2,11 @@ import { Metadata } from 'next'
 import prisma from '@/lib/prisma'
 
 export function getBaseUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return process.env.NEXT_PUBLIC_SITE_URL
-  }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`
-  }
   if (process.env.NODE_ENV === 'development') {
     return 'http://localhost:3000'
+  }
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '')
   }
   return 'https://www.apnacarrental.in'
 }

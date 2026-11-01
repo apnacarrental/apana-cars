@@ -35,6 +35,19 @@ type BuildMetadataOptions = {
   fallbackOgImage?: string
 }
 
+function sanitizeSeoText(val: string | null | undefined, fallback: string): string {
+  if (!val || typeof val !== 'string') return fallback
+  if (/self[- ]?drive/i.test(val)) {
+    return fallback
+  }
+  return val.replace(/https?:\/\/(www\.)?apnacars\.com/gi, 'https://www.apnacarrental.in').trim() || fallback
+}
+
+function sanitizeUrl(val: string | null | undefined, fallback: string): string {
+  if (!val || typeof val !== 'string') return fallback
+  return val.replace(/https?:\/\/(www\.)?apnacars\.com/gi, 'https://www.apnacarrental.in').trim() || fallback
+}
+
 export async function buildMetadata({ seoMetadata, fallbackTitle, fallbackDescription, path, fallbackOgImage }: BuildMetadataOptions): Promise<Metadata> {
   let globalSeo = null
   let pageSeo = null
@@ -49,16 +62,27 @@ export async function buildMetadata({ seoMetadata, fallbackTitle, fallbackDescri
   const entitySeo = (seoMetadata as SeoMetadataJson) || {}
   
   // Precedence: Page SEO > Entity SEO > Global SEO > Fallback
-  const title = pageSeo?.title || entitySeo.title || globalSeo?.homepageTitle || fallbackTitle
-  const description = pageSeo?.description || entitySeo.description || globalSeo?.homepageDescription || fallbackDescription
-  const canonical = pageSeo?.canonicalUrl || entitySeo.canonical_url || `${globalSeo?.canonicalBaseUrl || getBaseUrl()}${path}`
+  const rawTitle = pageSeo?.title || entitySeo.title || globalSeo?.homepageTitle || fallbackTitle
+  const rawDescription = pageSeo?.description || entitySeo.description || globalSeo?.homepageDescription || fallbackDescription
+  const rawCanonical = pageSeo?.canonicalUrl || entitySeo.canonical_url || `${globalSeo?.canonicalBaseUrl || getBaseUrl()}${path}`
+
+  const title = sanitizeSeoText(rawTitle, fallbackTitle)
+  const description = sanitizeSeoText(rawDescription, fallbackDescription)
+  const canonical = sanitizeUrl(rawCanonical, `${getBaseUrl()}${path}`)
   
   const index = pageSeo?.robotsIndex ?? entitySeo.robots_index ?? globalSeo?.defaultRobotsIndex ?? true
   const follow = pageSeo?.robotsFollow ?? entitySeo.robots_follow ?? globalSeo?.defaultRobotsFollow ?? true
 
-  const ogImage = pageSeo?.ogImageId || entitySeo.og_image_id || globalSeo?.defaultOgImageId || fallbackOgImage || null
+  const rawOgImage = pageSeo?.ogImageId || entitySeo.og_image_id || globalSeo?.defaultOgImageId || fallbackOgImage || null
+  const ogImage = rawOgImage ? sanitizeUrl(rawOgImage, rawOgImage) : null
 
   const siteName = globalSeo?.siteName || 'Apna Car Rental'
+
+  const rawOgTitle = pageSeo?.ogTitle || entitySeo.og_title || rawTitle
+  const rawOgDescription = pageSeo?.ogDescription || entitySeo.og_description || rawDescription
+
+  const ogTitle = sanitizeSeoText(rawOgTitle, title)
+  const ogDescription = sanitizeSeoText(rawOgDescription, description)
 
   return {
     title,
@@ -71,8 +95,8 @@ export async function buildMetadata({ seoMetadata, fallbackTitle, fallbackDescri
       follow,
     },
     openGraph: {
-      title: pageSeo?.ogTitle || entitySeo.og_title || title,
-      description: pageSeo?.ogDescription || entitySeo.og_description || description,
+      title: ogTitle,
+      description: ogDescription,
       url: canonical,
       siteName,
       type: 'website',
@@ -80,8 +104,8 @@ export async function buildMetadata({ seoMetadata, fallbackTitle, fallbackDescri
     },
     twitter: {
       card: 'summary_large_image',
-      title: pageSeo?.ogTitle || entitySeo.og_title || title,
-      description: pageSeo?.ogDescription || entitySeo.og_description || description,
+      title: ogTitle,
+      description: ogDescription,
       ...(ogImage && { images: [ogImage] })
     }
   }

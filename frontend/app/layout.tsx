@@ -1,3 +1,4 @@
+import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Suspense } from 'react'
@@ -17,11 +18,14 @@ import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
-  title: 'Apna Car Rental | Premium Cab Services & Chauffeur Travel in Hyderabad',
+  title: {
+    default: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
+    template: '%s | Apna Car Rental',
+  },
   description: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
   generator: 'v0.app',
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '8lt9UIHtEF8Yj4YGacJAqN97mnioPFoV90gVPicFDEU',
   },
   icons: {
     icon: [
@@ -57,23 +61,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={montserrat.variable}>
-      <head>
-        {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9CSHWBSKR7" />
-        <script
-          id="google-tag-gtag"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-
-              gtag('config', 'G-9CSHWBSKR7');
-            `,
-          }}
-        />
-      </head>
       <body className={`${montserrat.className} antialiased overflow-x-hidden`}>
+        {/* Google tag (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-9CSHWBSKR7"
+          strategy="afterInteractive"
+        />
+        <Script id="google-tag-gtag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-9CSHWBSKR7');
+          `}
+        </Script>
         <BookingModalProvider>
           {children}
           <FloatingActionButtons />

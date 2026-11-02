@@ -58,9 +58,9 @@ export async function buildMetadata({ seoMetadata, fallbackTitle, fallbackDescri
 
   const entitySeo = (seoMetadata as SeoMetadataJson) || {}
   
-  // Precedence: Page SEO > Entity SEO > Global SEO > Fallback
-  const rawTitle = pageSeo?.title || entitySeo.title || globalSeo?.homepageTitle || fallbackTitle
-  const rawDescription = pageSeo?.description || entitySeo.description || globalSeo?.homepageDescription || fallbackDescription
+  // Precedence: Page SEO > Entity SEO > Fallback (for root '/') > Global SEO > Fallback
+  const rawTitle = pageSeo?.title || entitySeo.title || (path === '/' ? fallbackTitle : globalSeo?.homepageTitle) || fallbackTitle
+  const rawDescription = pageSeo?.description || entitySeo.description || (path === '/' ? fallbackDescription : globalSeo?.homepageDescription) || fallbackDescription
   const rawCanonical = pageSeo?.canonicalUrl || entitySeo.canonical_url || `${globalSeo?.canonicalBaseUrl || getBaseUrl()}${path}`
 
   const title = sanitizeSeoText(rawTitle, fallbackTitle)

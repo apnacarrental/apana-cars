@@ -28,11 +28,33 @@ import { getServices, getCars, getReviewBadgeSettings } from '@/lib/data/db'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
-  fallbackTitle: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
-  fallbackDescription: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
-  path: '/',
-}) }
+export const metadata: Metadata = {
+  title: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
+  description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
+  alternates: {
+    canonical: 'https://www.apnacarrental.in',
+  },
+  openGraph: {
+    title: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
+    description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
+    url: 'https://www.apnacarrental.in',
+    siteName: 'Apna Car Rental',
+    type: 'website',
+    images: [{ url: 'https://www.apnacarrental.in/images/hero-car.png' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
+    description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
+    images: ['https://www.apnacarrental.in/images/hero-car.png'],
+  },
+}
+
+
+
+
+
+
 
 export default async function Page() {
   const [services, cars, reviewSettings] = await Promise.all([

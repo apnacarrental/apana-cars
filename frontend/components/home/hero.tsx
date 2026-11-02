@@ -51,7 +51,7 @@ export function HeroSection({
 
           {/* Subtitle */}
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mb-5 md:mb-8">
-            Comfortable, safe and reliable chauffeur-driven cars for local travel, airport transfers, outstation trips, corporate bookings, weddings and more.
+            Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services.
           </p>
 
           {/* Mobile View Hero Image - Charminar & Fleet */}

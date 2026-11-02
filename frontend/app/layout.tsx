@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     default: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
     template: '%s | Apna Car Rental',
   },
-  description: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
+  description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
   generator: 'v0.app',
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '8lt9UIHtEF8Yj4YGacJAqN97mnioPFoV90gVPicFDEU',

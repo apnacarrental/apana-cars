@@ -30,7 +30,7 @@ export const revalidate = 0
 
 export async function generateMetadata(): Promise<Metadata> { return await buildMetadata({
   fallbackTitle: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
-  fallbackDescription: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
+  fallbackDescription: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
   path: '/',
 }) }
 

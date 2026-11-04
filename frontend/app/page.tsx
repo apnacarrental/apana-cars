@@ -93,8 +93,9 @@ export default async function Page() {
         dangerouslySetInnerHTML={{ 
           __html: JSON.stringify({ 
             '@context': 'https://schema.org', 
-            '@type': 'AutoRental', 
-            name: 'Apna Cars', 
+            '@type': 'TaxiService', 
+            name: 'Apna Car Rental', 
+            description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
             url: getBaseUrl(), 
             telephone: '+91 99881 23444', 
             address: {

@@ -9,7 +9,7 @@ export async function HomeBlogSection() {
   if (!recentBlogs || recentBlogs.length === 0) return null
 
   return (
-    <section className="section bg-[var(--paper)] border-t border-[var(--line)]" style={{ paddingTop: '90px', paddingBottom: '90px' }}>
+    <section data-nosnippet className="section bg-[var(--paper)] border-t border-[var(--line)]" style={{ paddingTop: '90px', paddingBottom: '90px' }}>
       <div className="section-head mb-10">
         <div>
           <p className="eyebrow flex items-center gap-1.5">

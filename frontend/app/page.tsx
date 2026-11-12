@@ -29,13 +29,15 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
+  title: {
+    absolute: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
+  },
   description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
   alternates: {
     canonical: 'https://www.apnacarrental.in',
   },
   openGraph: {
-    title: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
+    title: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
     description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
     url: 'https://www.apnacarrental.in',
     siteName: 'Apna Car Rental',
@@ -44,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Apna Car Rental Hyderabad | Best Cabs, Chauffeur & Fleet',
+    title: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
     description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
     images: ['https://www.apnacarrental.in/images/hero-car.png'],
   },

@@ -7,8 +7,15 @@ import { HeaderWrapper } from '@/components/ui/mobile-menu'
 import { HeaderNavDropdown } from '@/components/layout/header-nav-dropdown'
 
 export async function Header() {
-  const dbNav = await getNavigationItems()
-  const activeNav = dbNav.length ? dbNav.map(n => ({ label: n.label, href: n.href })) : staticNav
+  let activeNav = staticNav
+  try {
+    const dbNav = await getNavigationItems()
+    if (dbNav && dbNav.length > 0) {
+      activeNav = dbNav.map(n => ({ label: n.label, href: n.href }))
+    }
+  } catch (error) {
+    console.error('Failed to load navigation in Header, using static nav:', error)
+  }
 
   return (
     <HeaderWrapper navItems={activeNav}>

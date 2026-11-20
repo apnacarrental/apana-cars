@@ -19,7 +19,7 @@ import { FloatingActionButtons } from '@/components/ui/floating-action-buttons'
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
   title: {
-    default: 'Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
+    default: 'Apna Car Rental | Best Cab service in Hyderabad | Outstation Cabs | Hyderabad to Srisailam Taxi',
     template: '%s | Apna Car Rental',
   },
   description: 'Apna Car Rental: Best Cab service in Hyderabad | Outstation Cabs in Hyderabad | Hyderabad to Srisailam Taxi Services',
